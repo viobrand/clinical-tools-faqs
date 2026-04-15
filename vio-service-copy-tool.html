@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIO Service Copy Tool</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FEFFF9;color:#030303;min-height:100vh}
+.wrap{max-width:800px;margin:0 auto;padding:40px 24px}
+.hdr{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;border-bottom:0.5px solid rgba(3,3,3,0.15);margin-bottom:32px}
+.brand{font-family:'Georgia',serif;font-size:13px;letter-spacing:0.22em;color:#030303;text-transform:uppercase}
+.hdr-sub{font-size:11px;letter-spacing:0.13em;color:#B29D92;text-transform:uppercase}
+.field-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B29D92;margin-bottom:7px}
+.row{margin-bottom:20px}
+input[type=password],input[type=text]{width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:#030303;background:#fff;border:0.5px solid rgba(3,3,3,0.22);border-radius:6px;padding:9px 12px;outline:none}
+input:focus{border-color:rgba(3,3,3,0.5)}
+.hint{font-size:11px;color:#B29D92;margin-top:5px}
+.topic-list{display:flex;flex-direction:column;gap:0;border:0.5px solid rgba(3,3,3,0.18);border-radius:8px;overflow:hidden;margin-bottom:8px}
+.topic-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:0.5px solid rgba(3,3,3,0.08);cursor:pointer;transition:background 0.1s;user-select:none}
+.topic-item:last-child{border-bottom:none}
+.topic-item:hover{background:#F2F0E6}
+.topic-item.selected{background:#F2F0E6}
+.topic-check{width:16px;height:16px;border:0.5px solid rgba(3,3,3,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topic-item.selected .topic-check{background:#030303;border-color:#030303}
+.check-mark{width:8px;height:8px;display:none}
+.topic-item.selected .check-mark{display:block;fill:#FEFFF9}
+.topic-name{font-size:13px;color:#030303;flex:1}
+.topic-notes{font-size:11px;color:#B29D92;font-style:italic}
+.topic-actions{display:flex;gap:14px;margin-bottom:4px;align-items:center}
+.topic-action-btn{font-size:11px;color:#B29D92;background:none;border:none;cursor:pointer;padding:0;letter-spacing:0.06em}
+.topic-action-btn:hover{color:#030303}
+.sel-count{font-size:11px;color:#B29D92;letter-spacing:0.06em;margin-left:auto}
+.add-row{display:flex;gap:8px;margin-top:8px}
+.add-row input{flex:1}
+.add-btn{font-size:12px;color:#B29D92;background:none;border:0.5px solid rgba(3,3,3,0.18);border-radius:6px;padding:8px 14px;cursor:pointer;white-space:nowrap;letter-spacing:0.06em}
+.add-btn:hover{color:#030303;border-color:rgba(3,3,3,0.4)}
+.empty{padding:16px;font-size:13px;color:#ccc;text-align:center}
+.btn-row{display:flex;gap:10px;align-items:center;margin-top:4px}
+.btn-primary{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#FEFFF9;background:#030303;border:none;border-radius:6px;padding:11px 24px;cursor:pointer}
+.btn-primary:hover{opacity:0.82}
+.btn-primary:disabled{opacity:0.3;cursor:default}
+.btn-ghost{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#B29D92;background:none;border:0.5px solid rgba(3,3,3,0.18);border-radius:6px;padding:11px 18px;cursor:pointer}
+.btn-ghost:hover{background:#F2F0E6}
+.status{font-size:12px;color:#B29D92;padding:10px 0;display:none;letter-spacing:0.04em}
+.status.on{display:block}
+.prog{height:1.5px;background:rgba(3,3,3,0.08);border-radius:2px;margin:6px 0;display:none}
+.prog.on{display:block}
+.prog-fill{height:100%;background:#030303;border-radius:2px;transition:width 0.35s ease;width:0%}
+.results{margin-top:28px}
+.result-card{border:0.5px solid rgba(3,3,3,0.12);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.card-head{padding:12px 16px;background:#F2F0E6;border-bottom:0.5px solid rgba(3,3,3,0.1);display:flex;justify-content:space-between;align-items:center}
+.card-name{font-size:11px;font-weight:500;color:#030303;letter-spacing:0.1em;text-transform:uppercase}
+.copy-all{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#B29D92;background:none;border:0.5px solid rgba(3,3,3,0.15);border-radius:5px;padding:4px 10px;cursor:pointer}
+.copy-all:hover{color:#030303}
+.zone{border-bottom:0.5px solid rgba(3,3,3,0.07);padding:14px 16px}
+.zone:last-child{border-bottom:none}
+.zone-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.zone-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B29D92}
+.copy-btn{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#B29D92;background:none;border:0.5px solid rgba(3,3,3,0.12);border-radius:5px;padding:2px 8px;cursor:pointer}
+.copy-btn:hover{color:#030303}
+.zone-copy{font-family:'Georgia',serif;font-size:13.5px;line-height:1.8;color:#030303;white-space:pre-wrap}
+.zone-copy.closer{font-style:italic}
+.err-card{border:0.5px solid rgba(192,57,43,0.3);border-radius:10px;padding:14px 16px;margin-bottom:12px;font-size:12px;color:#c0392b;letter-spacing:0.04em}
+.divider{height:0.5px;background:rgba(3,3,3,0.08);margin:28px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <span class="brand">V I O</span>
+    <span class="hdr-sub">Service Copy Tool</span>
+  </div>
+
+  <div class="row">
+    <div class="field-label">API Key</div>
+    <input type="password" id="api-key" placeholder="sk-ant-...">
+    <div class="hint">Stored in session only. Never saved.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="row">
+    <div class="field-label" style="margin-bottom:10px">Treatments</div>
+    <div class="topic-list" id="topic-list">
+      <div class="empty">Add treatments below to get started</div>
+    </div>
+    <div class="topic-actions" id="topic-actions" style="display:none">
+      <button class="topic-action-btn" onclick="selectAll()">Select all</button>
+      <button class="topic-action-btn" onclick="deselectAll()">Deselect all</button>
+      <span class="sel-count" id="sel-count"></span>
+    </div>
+    <div class="add-row">
+      <input type="text" id="new-topic" placeholder="Treatment name — add notes after a colon e.g. Sculptra: collagen stimulator, gradual arc" onkeydown="if(event.key==='Enter')addTopic()">
+      <button class="add-btn" onclick="addTopic()">+ Add</button>
+    </div>
+    <div class="hint" style="margin-top:8px">Add one or many. Generate runs them all.</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" id="gen-btn" onclick="runGenerate()" disabled>Generate ↗</button>
+    <button class="btn-ghost" onclick="clearAll()">Clear</button>
+  </div>
+
+  <div class="prog" id="prog"><div class="prog-fill" id="prog-fill"></div></div>
+  <div class="status" id="status"></div>
+  <div class="results" id="results"></div>
+
+</div>
+<script>
+let topics = [];
+
+const SYSTEM = `You write service page copy for VIO Med Spa. VIO's operating standard is "Clinical guidance to live life well." The brand is the Ralph Lauren of aesthetic wellness — timeless, precise, warm without being soft. Clinical without being cold.
+
+VOICE:
+You are a trusted clinician who is also a close friend — like a doctor who is family. You speak plainly, directly, and with full authority. You do not explain yourself defensively. You do not over-reassure. You speak to someone sitting across from you who trusts you. You name what is honestly true — including the human experience of noticing something has changed — and you meet the person there without dwelling in it. You point forward. Nobody talks like a brochure. You do not either.
+
+ABSOLUTE NOs — never use these under any circumstances:
+- "protocol" anywhere
+- "anti-aging" or "aging gracefully"
+- "younger-looking" or "look younger"
+- "longitudinal" or "longitudinally"
+- Shame or flaw language
+- Defensive copy or contrast framing ("unlike others," "finally," "not like other medspas")
+- Explaining the brand to the client
+- Clinical disclosures as hero copy
+- "care" as hospital language ("we care about you")
+- "endure"
+- "transformative" as an opening claim before credibility is established
+- "architecture" as a metaphor for the face
+- "feel your best" (too vague)
+- "rejuvenated" / "rejuvenation"
+- "confidence" as the promised outcome
+- "correction" — we are not correcting flaws
+- "without evidence of refinement" — never build the positive by protecting against the negative
+- Exclamation points
+- Adverbs modifying outcomes ("incredibly natural," "beautifully smooth")
+- Product-first openers — never lead with what the product is made of or how it was engineered
+- "perks," "protocols," "rituals," "journey" as filler words
+
+CONDITIONAL:
+- "results" acceptable in body copy; prefer "outcome" at treatment level
+- "transformative" only after mechanism and credibility are established
+
+---
+
+LOCKED CALIBRATION — Belotero Balance (approved copy, written with the VIO brand strategist. This is the exact voice, register, structure, and approach every treatment must match.)
+
+Hero subline (opening phrase):
+"The filler you reach for when the concern is subtle — fine lines, delicate zones, not volume but precision."
+
+What is Belotero Balance?:
+"Skin changes. Expression lines etch themselves in over time, particularly around the lips and eyes, in places where the skin is thinnest and moves most. Belotero Balance® is a hyaluronic acid filler formulated specifically for these zones, soft enough to integrate into the most delicate layer of the skin, precise enough to address what is there without disturbing what is not. Designed specifically for delicate areas where precision is non-negotiable."
+
+Is This For You?:
+"Maybe you have noticed a line above your lip that stays even when your face is still. A shadow beneath your eyes that a good night's sleep no longer changes. You are not looking for exaggerated features. You are looking to address yours — carefully, specifically.
+Best for: fine lines around the mouth · lip border definition · lip lines · tear trough refinement · delicate under-eye texture"
+
+What to Expect:
+"When you arrive, we will discuss what you are seeing and where. Your injector will map the specific areas and walk you through the approach before anything happens. The treatment itself is brief — most people are surprised by how quick and straightforward it is.
+Downtime: Some mild swelling or tenderness for a day or two is normal and typically unremarkable to anyone but you. Within a week it has settled.
+Results: 6–12 months and we check in from there."
+
+Closing pull quote:
+"Where structure meets subtlety.
+Your face, exactly as it should be."
+
+---
+
+WHY THIS COPY IS RIGHT — use this to guide every treatment you write:
+
+Opening phrase: It meets the person in their intent, not in the product spec. "The filler you reach for when the concern is subtle" — that is how a clinician friend would describe it to you. It orients. It does not explain the ingredient or the mechanism. It tells you when you would choose this.
+
+What is [Treatment]?: Opens with an honest human truth — skin changes — before naming the product. Earns the clinical explanation. Names specific zones so the person can place themselves in it without reading a bullet list. The last sentence is a single plain statement that lands the clinical point cleanly.
+
+Is This For You?: Names specific, recognizable moments the person is living in — a line that stays when the face is still, a shadow that sleep does not fix. Never names a demographic or a deficiency. Then a "Best for:" line that gives practical anchors in plain language.
+
+What to Expect: Written exactly as you would speak to someone sitting across from you. "When you arrive, we will discuss..." — present tense, first person plural, unhurried. Separates downtime and results as labeled anchors so the person can find what they are looking for quickly. Ends with the ongoing relationship — "we check in from there." Not a procedure description. Not a list.
+
+Closing pull quote: Two lines. Lands the whole page. Does not explain. Does not promise. Names the feeling or the truth of what the treatment is. This is the last thing they read — it should settle, not sell.
+
+---
+
+STRUCTURAL RULES:
+
+Opening phrase: One sentence. Speaks to the person's intent and the nature of this treatment from their perspective — not the product's. Never ingredient-led. Never a tagline. Written as a clinician who knows you would describe it casually but precisely.
+
+What is [Treatment]?: 2–4 sentences. Open with an honest human truth before naming the product. May acknowledge what the body does over time without shame. Name specific zones or concerns so the person can place themselves in it. End with one plain statement that lands the clinical point.
+
+Is This For You?: 2–3 sentences of specific experiential recognition — what they are noticing, not what is wrong with them. Then a "Best for:" line with specific use cases separated by · marks. Never chase the reader. Never explain why they should want this.
+
+What to Expect: Write it as you would say it to a friend. First person plural ("we will," "your injector will"). Cover: what happens when they arrive, the treatment itself, downtime (honest, not minimized or dramatized), results duration, ongoing relationship. Use "Downtime:" and "Results:" as plain labeled anchors. Never a bulleted procedure list.
+
+Closing pull quote: Exactly two lines. The feeling or truth of the treatment — not a feature, not a promise, not a platitude. No rhyme. No softness. No "you deserve." It should feel like something a wise person says quietly at the end of a real conversation.
+
+Return ONLY valid JSON with exactly these keys — no markdown, no preamble:
+{"opening_phrase":"","what_it_is":"","is_this_for_you":"","what_to_expect":"","closing_pull_quote":"line one\nline two"}`;
+
+function addTopic() {
+  const input = document.getElementById('new-topic');
+  const val = input.value.trim();
+  if (!val) return;
+  const [namePart, ...rest] = val.split(':');
+  topics.push({ name: namePart.trim(), notes: rest.join(':').trim(), selected: true });
+  input.value = '';
+  renderTopics();
+}
+
+function renderTopics() {
+  const list = document.getElementById('topic-list');
+  const actions = document.getElementById('topic-actions');
+  if (!topics.length) {
+    list.innerHTML = '<div class="empty">Add treatments below to get started</div>';
+    actions.style.display = 'none';
+    updateBtn();
+    return;
+  }
+  actions.style.display = 'flex';
+  list.innerHTML = topics.map((t, i) => `
+    <div class="topic-item ${t.selected ? 'selected' : ''}" onclick="toggleTopic(${i})">
+      <div class="topic-check">
+        <svg class="check-mark" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" stroke="#FEFFF9" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="topic-name">${t.name}</span>
+      ${t.notes ? `<span class="topic-notes">${t.notes}</span>` : ''}
+      <button style="font-size:11px;color:#ccc;background:none;border:none;cursor:pointer;padding:0 0 0 8px;flex-shrink:0" onclick="removeTopic(event,${i})">✕</button>
+    </div>
+  `).join('');
+  updateSelCount();
+  updateBtn();
+}
+
+function toggleTopic(i) { topics[i].selected = !topics[i].selected; renderTopics(); }
+function removeTopic(e, i) { e.stopPropagation(); topics.splice(i, 1); renderTopics(); }
+function selectAll() { topics.forEach(t => t.selected = true); renderTopics(); }
+function deselectAll() { topics.forEach(t => t.selected = false); renderTopics(); }
+function updateSelCount() {
+  const n = topics.filter(t => t.selected).length;
+  document.getElementById('sel-count').textContent = n ? `${n} selected` : 'None selected';
+}
+function updateBtn() {
+  const n = topics.filter(t => t.selected).length;
+  document.getElementById('gen-btn').disabled = n === 0;
+}
+
+function clearAll() {
+  topics = [];
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('status').classList.remove('on');
+  document.getElementById('prog').classList.remove('on');
+  renderTopics();
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+  });
+}
+
+function copyAll(pid) {
+  const zones = document.querySelectorAll('#card-' + pid + ' .zone');
+  let out = '';
+  zones.forEach(z => {
+    const label = z.querySelector('.zone-label').textContent;
+    const copy = z.querySelector('.zone-copy').textContent;
+    out += label + '\n' + copy + '\n\n';
+  });
+  navigator.clipboard.writeText(out.trim());
+}
+
+function zoneEl(label, content, pid, zi, cls) {
+  const zid = 'z-' + pid + '-' + zi;
+  return `<div class="zone">
+    <div class="zone-hd">
+      <span class="zone-label">${label}</span>
+      <button class="copy-btn" onclick="copyText(document.getElementById('${zid}').textContent,this)">Copy</button>
+    </div>
+    <div class="zone-copy ${cls || ''}" id="${zid}">${content || '—'}</div>
+  </div>`;
+}
+
+async function runGenerate() {
+  const apiKey = document.getElementById('api-key').value.trim();
+  if (!apiKey) { alert('Enter your API key first.'); return; }
+  const selected = topics.filter(t => t.selected);
+  if (!selected.length) return;
+
+  const statusEl = document.getElementById('status');
+  const prog = document.getElementById('prog');
+  const progFill = document.getElementById('prog-fill');
+  const resultsWrap = document.getElementById('results');
+
+  resultsWrap.innerHTML = '';
+  statusEl.textContent = `Generating ${selected.length} treatment${selected.length > 1 ? 's' : ''}...`;
+  statusEl.classList.add('on');
+  prog.classList.add('on');
+  progFill.style.width = '0%';
+  document.getElementById('gen-btn').disabled = true;
+
+  for (let i = 0; i < selected.length; i++) {
+    const t = selected[i];
+    statusEl.textContent = `Generating ${i + 1} of ${selected.length}: ${t.name}...`;
+    progFill.style.width = Math.round((i / selected.length) * 100) + '%';
+
+    let userMsg = `Treatment: ${t.name}`;
+    if (t.notes) userMsg += `\nNotes: ${t.notes}`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1400,
+          system: SYSTEM,
+          messages: [{ role: 'user', content: userMsg }]
+        })
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(`${data.error.type}: ${data.error.message}`);
+
+      const text = data.content.map(b => b.text || '').join('');
+      const start = text.indexOf('{');
+      const end = text.lastIndexOf('}');
+      if (start === -1 || end === -1) throw new Error('No JSON in response');
+      const parsed = JSON.parse(text.slice(start, end + 1));
+      renderCard(t.name, parsed, i, resultsWrap);
+
+    } catch (e) {
+      const div = document.createElement('div');
+      div.className = 'err-card';
+      div.textContent = `${t.name} — ${e.message}`;
+      resultsWrap.appendChild(div);
+    }
+  }
+
+  progFill.style.width = '100%';
+  statusEl.textContent = `${selected.length} treatment${selected.length > 1 ? 's' : ''} generated.`;
+  setTimeout(() => { prog.classList.remove('on'); }, 800);
+  document.getElementById('gen-btn').disabled = false;
+  updateBtn();
+}
+
+function renderCard(name, data, idx, wrap) {
+  const pid = 'p' + Date.now() + idx;
+  const div = document.createElement('div');
+  div.className = 'result-card';
+  div.id = 'card-' + pid;
+
+  let zh = '';
+  let zi = 0;
+  if (data.opening_phrase) zh += zoneEl('Opening Phrase', data.opening_phrase, pid, zi++);
+  if (data.what_it_is)     zh += zoneEl('What Is ' + name + '?', data.what_it_is, pid, zi++);
+  if (data.is_this_for_you) zh += zoneEl('Is This For You?', data.is_this_for_you, pid, zi++);
+  if (data.what_to_expect) zh += zoneEl('What to Expect', data.what_to_expect, pid, zi++);
+  if (data.closing_pull_quote) zh += zoneEl('Closing Pull Quote', data.closing_pull_quote, pid, zi++, 'closer');
+
+  div.innerHTML = `
+    <div class="card-head">
+      <span class="card-name">${name}</span>
+      <button class="copy-all" onclick="copyAll('${pid}')">Copy All</button>
+    </div>
+    <div>${zh}</div>
+  `;
+  wrap.appendChild(div);
+}
+
+renderTopics();
+</script>
+</body>
+</html>
