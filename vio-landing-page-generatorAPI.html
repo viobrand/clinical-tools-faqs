@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIO Med Spa — Landing Page Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #030303;
+    --lotion: #FEFFF9;
+    --greige: #E9E3DC;
+    --alabaster: #F2F0E6;
+    --mouse: #B29D92;
+    --ink-mid: #444441;
+    --ink-light: #888780;
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Nunito Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    font-weight: 300;
+    background: var(--lotion);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--ink);
+    color: var(--lotion);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+  }
+
+  .header-sub {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 6px;
+  }
+
+  .page-sub {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 32px;
+  }
+
+  .violette-card {
+    background: var(--alabaster);
+    border: 0.5px solid var(--greige);
+    border-left: 3px solid var(--mouse);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 32px;
+  }
+
+  .violette-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+  }
+
+  .violette-body {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink-mid);
+  }
+
+  .violette-rules {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--greige);
+    line-height: 1.65;
+  }
+
+  hr {
+    border: none;
+    border-top: 0.5px solid var(--greige);
+    margin: 28px 0;
+  }
+
+  .step-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+  }
+
+  .step-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+  }
+
+  .field .hint {
+    font-size: 12px;
+    color: var(--mouse);
+    line-height: 1.55;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  .vguide {
+    font-size: 12px;
+    background: var(--alabaster);
+    border-left: 2px solid var(--mouse);
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    display: none;
+  }
+
+  .vguide-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 4px;
+  }
+
+  select, input[type="text"], textarea {
+    width: 100%;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--ink);
+    background: white;
+    border: 0.5px solid var(--greige);
+    border-radius: 4px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  select:focus, input:focus, textarea:focus {
+    border-color: var(--mouse);
+  }
+
+  textarea { resize: vertical; }
+
+  .svc-brief {
+    background: white;
+    border: 0.5px solid var(--greige);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .svc-brief-head {
+    background: var(--alabaster);
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    border-bottom: 0.5px solid var(--greige);
+  }
+
+  .svc-brief-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .svc-brief-tags {
+    padding: 0 16px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border: 0.5px solid var(--greige);
+    border-radius: 20px;
+    color: var(--ink-light);
+  }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .acc-item {
+    border: 0.5px solid var(--greige);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: white;
+  }
+
+  .acc-num {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+  }
+
+  .acc-item input {
+    margin-bottom: 8px;
+  }
+
+  .card-block {
+    border: 0.5px solid var(--greige);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--alabaster);
+  }
+
+  .card-block-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rm-btn {
+    font-size: 11px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--mouse);
+    padding: 2px 6px;
+  }
+
+  .rm-btn:hover { color: var(--ink); }
+
+  .add-card-btn {
+    width: 100%;
+    background: none;
+    border: 0.5px dashed var(--greige);
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-family: var(--sans);
+    margin-top: 4px;
+    transition: all 0.15s;
+  }
+
+  .add-card-btn:hover {
+    border-color: var(--mouse);
+    color: var(--ink);
+  }
+
+  .gen-btn {
+    width: 100%;
+    background: var(--ink);
+    color: var(--lotion);
+    border: none;
+    padding: 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 28px;
+    transition: opacity 0.15s;
+  }
+
+  .gen-btn:hover { opacity: 0.88; }
+  .gen-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .lbar {
+    height: 2px;
+    background: var(--greige);
+    border-radius: 1px;
+    margin: 20px 0;
+    overflow: hidden;
+    display: none;
+  }
+
+  .lbar.on { display: block; }
+
+  .lfill {
+    height: 100%;
+    background: var(--ink);
+    animation: lp 1.8s ease-in-out infinite;
+  }
+
+  @keyframes lp {
+    0% { width: 0; opacity: 1; }
+    50% { width: 70%; opacity: 0.7; }
+    100% { width: 100%; opacity: 0; }
+  }
+
+  .output {
+    display: none;
+    margin-top: 32px;
+  }
+
+  .output.on { display: block; }
+
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .output-title {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .copy-all-btn {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: none;
+    border: 0.5px solid var(--greige);
+    border-radius: 4px;
+    padding: 6px 14px;
+    cursor: pointer;
+    color: var(--ink-light);
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+
+  .copy-all-btn:hover { color: var(--ink); border-color: var(--mouse); }
+
+  .mod {
+    border: 0.5px solid var(--greige);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    background: white;
+    overflow: hidden;
+  }
+
+  .mod-head {
+    background: var(--alabaster);
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    border-bottom: 0.5px solid var(--greige);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mod-copy {
+    font-size: 10px;
+    background: none;
+    border: 0.5px solid var(--greige);
+    border-radius: 3px;
+    padding: 3px 8px;
+    cursor: pointer;
+    color: var(--mouse);
+    font-family: var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mod-copy:hover { color: var(--ink); }
+
+  .mod-body {
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: var(--ink);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 24px; }
+    .main { padding: 32px 20px 60px; }
+    .grid2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">VIO Med Spa</div>
+    <div class="header-sub">Violette · Landing Page Generator</div>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="page-title">Landing Page Generator</div>
+  <div class="page-sub">Sales Ad Copy · Violette Voice · All 12 Services</div>
+
+  <div class="violette-card">
+    <div class="violette-label">Who is Violette?</div>
+    <div class="violette-body">Violette is VIO's brand voice — a clinician from Tennessee who knows everything about these treatments but never needs you to know that she knows it. She's warm, direct, and a little disarming. She answers your question before you finish asking it.</div>
+    <div class="violette-rules"><strong style="font-weight:600;">Her rules:</strong> Outcome first. Warm but not gushing. Contractions sparingly. No clinical descriptors leading. Short sentences with room to breathe. Never cold. Never overwrought. Never generic medspa. Never say "Claim Offer."</div>
+  </div>
+
+  <hr>
+
+  <!-- STEP 1 -->
+  <div class="step-label">Step 1</div>
+  <div class="step-title">What service is this ad for?</div>
+  <div class="step-desc">Select the service. A clinical brief appears — read it before writing anything. If you don't know this treatment well, this is your orientation.</div>
+
+  <div class="field">
+    <label>Service</label>
+    <select id="svc" onchange="loadService()">
+      <option value="">Select a service...</option>
+      <option value="hydrafacial">HydraFacial</option>
+      <option value="microneedling">Microneedling</option>
+      <option value="rf-microneedling">RF Microneedling</option>
+      <option value="dysport">Dysport®</option>
+      <option value="wrinkle-relaxer">Wrinkle Relaxers</option>
+      <option value="dermal-fillers">Dermal Fillers</option>
+      <option value="emsculpt-neo">EmSculpt NEO</option>
+      <option value="bbl-moxi">BBL + Moxi</option>
+      <option value="body-contouring">Body Contouring</option>
+      <option value="hydrafacial-dermaplane">HydraFacial + Dermaplaning</option>
+      <option value="spend-and-save">Spend + Save</option>
+      <option value="custom">Custom service...</option>
+    </select>
+  </div>
+
+  <div class="field" id="custom-wrap" style="display:none;">
+    <label>Service Name</label>
+    <input type="text" id="custom-name" placeholder="e.g. Sculptra® Collagen Stimulator">
+  </div>
+
+  <div class="svc-brief" id="svc-brief">
+    <div class="svc-brief-head" id="brief-label">Service Overview</div>
+    <div class="svc-brief-body" id="brief-body"></div>
+    <div class="svc-brief-tags" id="brief-tags"></div>
+  </div>
+
+  <hr>
+
+  <!-- STEP 2 -->
+  <div class="step-label">Step 2 — M1 Hero</div>
+  <div class="step-title">What outcome did the ad promise?</div>
+  <div class="step-desc">They already clicked. These three lines are confirmation — not introduction. Reinforce the result they came here hoping is real.</div>
+
+  <div class="vguide" id="hero-vguide"><div class="vguide-label">Violette's guidance</div><span id="hero-vtext"></span></div>
+
+  <div class="field">
+    <label>Three Hero Lines</label>
+    <div class="hint">Three short lines. Outcome-forward. No cleverness — just confirmation they're in the right place.</div>
+    <textarea id="hero" rows="3" placeholder="Line 1&#10;Line 2&#10;Line 3"></textarea>
+  </div>
+
+  <div class="field">
+    <label>Transition Overlay</label>
+    <div class="hint">One line bridging M1 to M2. Format: [Positioning phrase]: VIO [Service Name]</div>
+    <input type="text" id="overlay" placeholder="e.g. The Collagen Reset: VIO Microneedling">
+  </div>
+
+  <hr>
+
+  <!-- STEP 3 -->
+  <div class="step-label">Step 3 — M2 Selling Point + Accordion</div>
+  <div class="step-title">What's the single most compelling reason someone chooses this?</div>
+  <div class="step-desc">Left column is Violette talking to the person — warm, outcome-first. The accordion holds three selling points, not process steps.</div>
+
+  <div class="vguide" id="m2-vguide"><div class="vguide-label">Violette's guidance</div><span id="m2-vtext"></span></div>
+
+  <div class="grid2" style="margin-bottom:14px;">
+    <div class="field" style="margin-bottom:0;"><label>M2 Headline</label><input type="text" id="m2h" placeholder="e.g. RESULTS IN DAYS."></div>
+    <div class="field" style="margin-bottom:0;"><label>M2 Bold Subheadline</label><input type="text" id="m2s" placeholder="e.g. NOT WEEKS."></div>
+  </div>
+
+  <div class="field">
+    <label>M2 Paragraph</label>
+    <div class="hint">Two or three sentences. Violette talking — warm, knowing, outcome-first. Not a product description.</div>
+    <textarea id="m2p" rows="2" placeholder="Violette's voice here..."></textarea>
+  </div>
+
+  <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:10px;">Accordion — Three Selling Points</div>
+
+  <div id="acc-group">
+    <div class="acc-item">
+      <div class="acc-num">01</div>
+      <input type="text" placeholder="Selling point heading — what matters most to this client">
+      <textarea rows="2" placeholder="Expand in Violette's voice. Clinical knowing, warm delivery."></textarea>
+    </div>
+    <div class="acc-item">
+      <div class="acc-num">02</div>
+      <input type="text" placeholder="Selling point heading">
+      <textarea rows="2" placeholder="Expand in Violette's voice..."></textarea>
+    </div>
+    <div class="acc-item">
+      <div class="acc-num">03</div>
+      <input type="text" placeholder="Selling point heading">
+      <textarea rows="2" placeholder="Expand in Violette's voice..."></textarea>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- STEP 4 -->
+  <div class="step-label">Step 4 — M3 Comparison Cards</div>
+  <div class="step-title">What is this service being compared against?</div>
+  <div class="step-desc">First card is the featured service. Remaining cards are what the client is likely also considering. One neutral descriptor, one Difference line that earns the featured service without diminishing the other.</div>
+
+  <div class="vguide" id="m3-vguide"><div class="vguide-label">Violette's guidance</div><span id="m3-vtext"></span></div>
+
+  <div class="card-block">
+    <div class="card-block-title">Featured Service Card</div>
+    <div class="field" style="margin-bottom:10px;">
+      <label>One-sentence descriptor</label>
+      <div class="hint">What it is and how it works — factual. Benefit and downtime lines do the selling.</div>
+      <textarea id="hc-desc" rows="2" placeholder="e.g. Vortex-Fusion Technology. A three-step device protocol that cleanses, extracts, and infuses in one continuous treatment."></textarea>
+    </div>
+    <div class="grid2">
+      <div class="field" style="margin-bottom:0;"><label>Benefit</label><input type="text" id="hc-ben" placeholder="e.g. Deep extractions + instant hydration"></div>
+      <div class="field" style="margin-bottom:0;"><label>Downtime</label><input type="text" id="hc-down" placeholder="e.g. Zero"></div>
+    </div>
+  </div>
+
+  <div id="comp-cards"></div>
+  <button class="add-card-btn" onclick="addCard()">+ Add comparison card</button>
+
+  <hr>
+
+  <!-- STEP 5 -->
+  <div class="step-label">Step 5 — M5 Closing CTA</div>
+  <div class="step-title">Last thing they read before deciding.</div>
+  <div class="step-desc">One strong statement, one to three supporting lines, then the book button. Close on what matters most — don't introduce new information.</div>
+
+  <div class="vguide" id="m5-vguide"><div class="vguide-label">Violette's guidance</div><span id="m5-vtext"></span></div>
+
+  <div class="field"><label>M5 Headline</label><input type="text" id="m5h" placeholder="e.g. The Right Formula Makes All the Difference."></div>
+  <div class="field">
+    <label>Supporting Copy</label>
+    <div class="hint">One to three sentences in Violette's voice. Warm and direct.</div>
+    <textarea id="m5b" rows="3" placeholder="Supporting lines..."></textarea>
+  </div>
+  <div class="field"><label>CTA Button Label</label><input type="text" id="m5cta" placeholder="e.g. Book Your Dysport"></div>
+
+  <hr>
+
+  <!-- STEP 6 -->
+  <div class="step-label">Step 6 — Form</div>
+  <div class="step-title">The warm close.</div>
+  <div class="step-desc">The headline says: you're in the right place. The subline sets the expectation: a real person will reach out. Keep both personal and specific to the service.</div>
+
+  <div class="field">
+    <label>Form Headline</label>
+    <div class="hint">Format: You're asking the right questions about [Service]. So glad you're here.</div>
+    <input type="text" id="fh" placeholder="e.g. You're asking the right questions about Dysport. So glad you're here.">
+  </div>
+  <div class="field">
+    <label>Form Subline</label>
+    <textarea id="fs" rows="2" placeholder="Share your contact information, and your VIO team will reach out personally..."></textarea>
+  </div>
+
+  <button class="gen-btn" id="gbtn" onclick="generate()">Compile Page ↗</button>
+
+  <div class="lbar" id="lbar"><div class="lfill"></div></div>
+
+  <div class="output" id="output">
+    <div class="output-header">
+      <span class="output-title">Complete Landing Page</span>
+      <button class="copy-all-btn" onclick="copyAll()">Copy All</button>
+    </div>
+    <div id="mods"></div>
+  </div>
+
+</div>
+
+<script>
+const SVC = {
+  'hydrafacial': {
+    name: 'HydraFacial',
+    brief: 'A device-driven facial protocol using Vortex-Fusion technology to cleanse, extract, and infuse the skin in one continuous treatment. No downtime. Immediate visible results. The standout benefit: removes congestion at the pore level — making every treatment that follows more effective. Safe for virtually all skin types.',
+    tags: ['Facials category','Zero downtime','Immediate results','All skin types'],
+    heroV: 'They clicked because they want clearer, more radiant skin — fast, with no recovery. These three lines confirm that. Clear. Radiant. Zero downtime.',
+    m2V: 'Lead with speed and the zero-downtime benefit. That is what they came for. The accordion does the clinical explaining — up here she is just confirming they made the right call.',
+    m3V: 'Compare against other facial category services. Each Difference line should feel like Violette leaning in and saying — here is the one thing HydraFacial does that this one does not.',
+    m5V: 'Close on the medical-grade territory. This is not a spa facial. Violette says it plainly, without making the other options feel lesser.',
+    hero: 'Clear the Congestion.\nRestore the Radiance.\nZero Downtime.',
+    overlay: 'The High-Performance Glow: VIO HydraFacial',
+    m2h: 'VISIBLE CLARITY', m2s: 'IN 30 MINUTES',
+    m2p: 'Our 3-step protocol is designed for the person who demands results without the recovery time.',
+    acc: [['Deep Cleanse + Peel','Most treatments skip this part. We don\'t. The skin has to be clear before anything can reach it — this step removes what\'s sitting on the surface so the rest of the protocol actually lands.'],['Painless Extraction + Intense Hydration','We move beyond the surface to clear what\'s inside the pore. Vortex-Fusion technology extracts congestion and delivers hydration in the same continuous motion — no manual pressure, no inflammation, nothing left behind.'],['Targeted Infusion + Protection','What goes into cleared skin goes further. Antioxidants, peptides, and targeted actives are delivered directly into a receptive surface — then sealed. The skin leaves protected, not just treated.']],
+    hcDesc: 'Vortex-Fusion Technology. A three-step device protocol that cleanses, extracts, and infuses in one continuous treatment.',
+    hcBen: 'Deep extractions + instant hydration', hcDown: 'Zero',
+    m5h: 'Standard Facials Stop at the Surface. VIO Goes Deeper.',
+    m5b: 'Daily stressors and environmental buildup leave skin heavy, dull, and congested. A standard facial maintains. This one actually clears.',
+    m5cta: 'Book Your HydraFacial',
+    fh: 'You\'re asking the right questions about HydraFacial. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'microneedling': {
+    name: 'Microneedling',
+    brief: 'Mechanical collagen induction using fine oscillating needles — no heat, no chemicals. The body\'s own wound-healing response does the work. Addresses acne scars, texture, pigment, and fine lines. Safe for all skin types. Standard: SkinPen, SkinStylus. RF: Morpheus8, Pixel8. Results visible in 1–2 weeks, building over months.',
+    tags: ['All skin types','Acne scars','Texture + pigment','Standard + RF options'],
+    heroV: 'They want smoother, clearer skin. Lead with the outcome — not the mechanism. Smoother. Clearer. Refined.',
+    m2V: 'The headline territory is versatility — one treatment, multiple concerns, every skin type. The accordion can introduce Standard vs. RF softly without making it a decision they need to make right now.',
+    m3V: 'Compare against other skin treatment categories — Facials, Peels, Laser & Light. Each Difference line earns microneedling by being honest: those treat what\'s visible. This one changes what\'s underneath.',
+    m5V: 'Present Standard vs. RF as two options that both live at VIO — not a competition. Violette closes by telling them their provider will guide the decision.',
+    hero: 'Smoother Skin.\nClearer Texture.\nVisibly Refined in Weeks.',
+    overlay: 'The Collagen Reset: VIO Microneedling',
+    m2h: 'ONE TREATMENT.', m2s: 'MULTIPLE CONCERNS.',
+    m2p: 'Acne scars, uneven texture, pigment, fine lines — addressed in a single protocol. Safe for every skin type.',
+    acc: [['Works on Every Skin Type','Microneedling is one of the few clinical treatments with no meaningful skin type restriction. The mechanism is mechanical — it works with your biology, not against it. For clients where heat or light carries risk, this is often the most appropriate path forward.'],['One Treatment. Multiple Concerns.','Texture, scarring, pigment, fine lines — microneedling addresses all of them in a single protocol. When radiofrequency energy is added, the same treatment extends its reach into deeper tissue — tightening and remodeling at a structural level.'],['Results That Build Over Time','Visible improvement within one to two weeks. Collagen continues remodeling for months after — and a series of treatments produces results that last.']],
+    hcDesc: 'Controlled micro-channels triggering your body\'s own collagen and elastin response — standard or RF, depending on what your skin needs.',
+    hcBen: 'Texture refinement + acne scar improvement', hcDown: '24–48 hours',
+    m5h: 'This Is What Your Skin Has Been Waiting For.',
+    m5b: 'Microneedling addresses what other treatments work around — texture, scarring, pigment — in a single service.',
+    m5cta: 'Book Your Microneedling',
+    fh: 'You\'re asking the right questions about Microneedling. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'rf-microneedling': {
+    name: 'RF Microneedling',
+    brief: 'Combines fine needles with radiofrequency energy at the point of contact — mechanical collagen induction and thermal remodeling together. Reaches subdermal tissue. Structural tightening standard microneedling cannot achieve. VIO offers Morpheus8 (up to 8mm depth) and Pixel8 (bipolar RF, precise dermal control). Downtime: 3–7 days. Results build for 3 months.',
+    tags: ['Morpheus8 + Pixel8','Structural tightening','3–7 days downtime','Laxity + scarring'],
+    heroV: 'They already decided on RF. They want structural change. The hero confirms: tighter, firmer, rebuilt at depth.',
+    m2V: 'The selling point is depth. RF reaches where standard microneedling cannot. Violette names that plainly. The accordion carries the clinical detail.',
+    m3V: 'Compare against the other microneedling options. Each Difference line is Violette explaining — in one sentence — exactly what RF adds that the other doesn\'t.',
+    m5V: 'Morpheus8 vs. Pixel8 belongs here. Both excellent. Both FDA-cleared. Provider decides. Violette takes the pressure off the decision.',
+    hero: 'Tighter. Firmer.\nStructurally Rebuilt.\nResults That Last for Months.',
+    overlay: 'Where Precision Meets Depth: VIO RF Microneedling',
+    m2h: 'THE RESULT IS', m2s: 'DEEPER THAN THE SURFACE.',
+    m2p: 'RF Microneedling delivers radiofrequency energy directly into the tissue — triggering structural tightening that standard treatments can\'t reach.',
+    acc: [['It Reaches Where Others Don\'t','RF energy goes deeper than standard microneedling — into the tissue where laxity actually originates. Most treatments address what you see. This one addresses what\'s causing it.'],['Two Things Working at Once','The needle creates the channel. The energy heats the tissue at that depth — contracting existing collagen immediately while signaling the body to build more. The surface improves. The structure underneath improves with it.'],['A Few Days. Then Months of Results.','Three to seven days of recovery is what you\'re trading for collagen that continues remodeling for months after. Most people find that a very reasonable exchange.']],
+    hcDesc: 'Radiofrequency energy delivered through insulated microneedles into the dermis and subdermal tissue — mechanical collagen induction and thermal remodeling in a single treatment.',
+    hcBen: 'Structural tightening + texture refinement', hcDown: '3–7 days',
+    m5h: 'Morpheus8 or Pixel8 — What\'s the Difference?',
+    m5b: 'Both deliver radiofrequency energy through insulated microneedles. Both produce lasting structural improvement. The distinction is in how they\'re built and where they\'re applied.\n\nMorpheus8 reaches depths of up to 8mm — into subdermal tissue. The choice for significant laxity, facial contouring, and body applications.\n\nPixel8 delivers bipolar RF through gold-plated insulated needles. Strong safety profile across all skin types. Excellent for tightening, texture, and pore refinement.\n\nYour VIO provider will assess your skin and tell you exactly which one is yours.',
+    m5cta: 'Book Your RF Microneedling',
+    fh: 'You\'re asking the right questions about RF Microneedling. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'dysport': {
+    name: 'Dysport®',
+    brief: 'Botulinum toxin type A — smaller molecular weight than Botox, wider natural diffusion from the injection point. FDA-approved. Onset 2–5 days. Duration 3–4 months. Best for larger surface areas like the forehead where broader, more even distribution produces a better result. Never position as better or worse than Botox — just different.',
+    tags: ['Wrinkle Relaxers category','Fast onset','Forehead + glabellar','No downtime'],
+    heroV: 'They want to look like themselves — just fresher, less tired, more rested. The hero confirms that outcome.',
+    m2V: 'Lead with speed — that\'s Dysport\'s most compelling practical advantage. Short sentences. Outcome-first. The result is the most rested, natural version of yourself.',
+    m3V: 'Compare against every other wrinkle relaxer. Each Difference line earns Dysport by being honest — neutral descriptor, then one line that positions it for the right anatomy.',
+    m5V: 'Close on the clinical guidance territory. Every neuromodulator is selected for a reason. Violette reassures them: their provider will make the right call.',
+    hero: 'Softer Lines.\nNatural Movement.\nResults in Days.',
+    overlay: 'Precision Where It Shows: VIO Dysport®',
+    m2h: 'RESULTS IN DAYS.', m2s: 'NOT WEEKS.',
+    m2p: 'Dysport works fast. The lines soften, the movement stays — and you look like the most rested, natural version of yourself.',
+    acc: [['Fast. Noticeable. Natural.','Dysport works within two to five days — results that settle in before most people expect them. The lines soften. The movement stays. You\'ll look like you — just more rested, less tired. That is the outcome we are after.'],['Built for Broader Coverage','Dysport\'s molecular profile allows it to distribute naturally from the injection point — making it well-suited for areas like the forehead where coverage matters as much as precision. Fewer injection points. More even result.'],['Three to Four Months of Results.','One appointment. Results that hold for three to four months before a simple refresh. The kind of maintenance that fits into a life — not around one.']],
+    hcDesc: 'Botulinum toxin type A with a diffusion profile suited to broader treatment areas — softening expression lines while preserving natural movement.',
+    hcBen: 'Softer lines + natural expression', hcDown: 'None',
+    m5h: 'The Right Formula Makes All the Difference.',
+    m5b: 'Every neuromodulator at VIO does the same thing — relaxes the muscle behind the line. What your provider is selecting is the formulation that best serves your specific anatomy. Dysport is chosen when broader, more even coverage is what your face calls for.\n\nYour VIO provider will tell you if it\'s yours.',
+    m5cta: 'Book Your Dysport',
+    fh: 'You\'re asking the right questions about Dysport. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'wrinkle-relaxer': {
+    name: 'Wrinkle Relaxers',
+    brief: 'Five neuromodulators: Botox (precise, concentrated), Dysport (broader diffusion, forehead), Daxxify (6–9 months duration), Jeuveau (aesthetic-only, glabellar), Xeomin (double-filtered, long-term clients). All FDA-approved. All relax the muscle behind the line. Provider selects formulation based on anatomy and history.',
+    tags: ['5 formulations','No downtime','Results in days','Provider-selected'],
+    heroV: 'They want to look like themselves. Not frozen. Not overdone. Just more rested. The hero confirms that fear is unfounded.',
+    m2V: 'Sell the category outcome — softer, more natural, no downtime, a relationship that gets better over time. The five formulations belong in M5.',
+    m3V: 'Compare against the other injectable categories — Fillers, Collagen Stimulators, Lift & Contour. Each Difference line earns Wrinkle Relaxers by explaining what only a neuromodulator addresses.',
+    m5V: 'This is where the five formulations live — one neutral line each. Provider decides. Close warmly.',
+    hero: 'Softer. Smoother.\nStill Completely You.\nNo Downtime. No Guesswork.',
+    overlay: 'The Art of Looking Like Yourself: VIO Wrinkle Relaxers',
+    m2h: 'THE RIGHT FORMULA', m2s: 'FOR YOUR FACE.',
+    m2p: 'Five neuromodulators. One clinical read. Your VIO provider selects the formulation that best serves your anatomy — so the result is always natural, never overdone.',
+    acc: [['You\'ll Look Like You.','The goal is never dramatic. It\'s the version of your face that looks rested, refreshed, and at ease. Expression lines soften. Movement stays. Nobody needs to know anything changed.'],['Results in Days. No Downtime.','Most clients see results within two to five days, with full effect at two weeks. You walk out and get on with your life. Nothing to hide, nothing to recover from.'],['A Relationship, Not a One-Time Fix.','The best results come from a provider who knows your face over time — adjusting placement, dose, and formulation as your skin and goals evolve. That is what your VIO relationship is built for.']],
+    hcDesc: 'Five FDA-approved neuromodulators — each selected for a specific anatomy, treatment area, and client history. Your provider chooses the right one for you.',
+    hcBen: 'Softer expression lines + natural movement', hcDown: 'None',
+    m5h: 'Five Formulations. One Right Answer for Your Face.',
+    m5b: 'Every neuromodulator at VIO relaxes the muscle behind the line so your face looks like the most rested, natural version of itself.\n\nBotox® — A precise, concentrated delivery profile. The most widely studied aesthetic injectable in history.\nDysport® — A wider diffusion profile, well-suited for larger treatment areas like the forehead. Fast onset.\nDaxxify® — Peptide-stabilized formula with a duration of six to nine months — fewer appointments, same result.\nJeuveau® — Formulated exclusively for aesthetic use. Focused and consistent for glabellar lines.\nXeomin® — Double-filtered, no accessory proteins. The considered choice for long-term neuromodulator clients.\n\nYour VIO provider will tell you which one is yours.',
+    m5cta: 'Book a Wrinkle Relaxer Consultation',
+    fh: 'You\'re asking the right questions about Wrinkle Relaxers. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'dermal-fillers': {
+    name: 'Dermal Fillers',
+    brief: 'Four HA filler collections: RHA (dynamic zones, moves with expression), Restylane (OBT technology, lips + movement), Juvéderm (VYCROSS, cheeks + lips + folds), Belotero Balance (high cohesion, delicate zones). All reversible with hyaluronidase. Immediate results. Provider maps the face as a whole.',
+    tags: ['4 collections','Immediate results','Reversible','Provider-mapped'],
+    heroV: 'They want to look like themselves again — not different, not overdone. The hero is about restoration. Volume. Softness. Themselves.',
+    m2V: 'Sell the outcome: results you can see, not results you can spot. The filler doesn\'t show. The version of the face that was always there does.',
+    m3V: 'Compare against other injectable categories. Each Difference line earns Fillers by being honest about what only filler does — restoring what exists at rest.',
+    m5V: 'Four collections presented neutrally. Close with the reversibility reassurance — it\'s the most important thing a first-timer needs to hear.',
+    hero: 'Restore the Volume.\nSoften What\'s Settled.\nLook Like Yourself Again.',
+    overlay: 'Structure, Not Size: VIO Dermal Fillers',
+    m2h: 'THE RIGHT FILLER', m2s: 'IN THE RIGHT PLACE.',
+    m2p: 'Four collections. Dozens of formulations. Your VIO provider maps your face as a whole and places filler where it serves the balance — not where it\'s simply asked for.',
+    acc: [['Results You Can See. Not Results You Can Spot.','The right filler placed correctly should make you look like yourself — rested, defined, at ease. What you notice is not the filler. It is the version of your face that was always there.'],['Immediate. And It Moves With You.','Filler results are visible the same day. And because the collections at VIO are engineered for facial movement, your expressions remain yours — nothing stiff, nothing resistant.'],['Your Face Is the Plan.','Every face is different. Your provider assesses your facial architecture — volume, movement, structure — and builds the protocol around what yours actually needs. That is what places VIO apart.']],
+    hcDesc: 'Hyaluronic acid formulas placed with clinical precision — restoring volume, defining structure, and softening what has settled over time.',
+    hcBen: 'Immediate volume restoration + natural definition', hcDown: 'Minimal — mild swelling resolves within days',
+    m5h: 'Four Collections. One Right Answer for Your Face.',
+    m5b: 'Every filler at VIO is hyaluronic acid — a substance your skin already produces.\n\nRHA® Collection — Resilient hyaluronic acid engineered for dynamic facial zones. Moves with your expression.\nRestylane® Collection — OBT technology producing flexible gels that deform with movement. Particularly well-regarded for lips.\nJuvéderm® Collection — VYCROSS technology. Voluma for cheek structure. Volbella for fine lines and lips. Vollure for deeper folds.\nBelotero Balance® — High cohesion, low viscosity. The precise choice for delicate zones like vertical lip lines and under-eye hollows.\n\nHA fillers are reversible. If anything ever needs to be adjusted, your VIO provider has the protocol to address it.\n\nYour VIO provider will tell you which one is yours — and exactly where it belongs.',
+    m5cta: 'Book a Filler Consultation',
+    fh: 'You\'re asking the right questions about Dermal Fillers. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'emsculpt-neo': {
+    name: 'EmSculpt NEO',
+    brief: 'Combines synchronized radiofrequency heating and HIFEM+ electromagnetic energy. RF heats fat to permanent cell death (43–45°C) while HIFEM induces ~20,000 supramaximal muscle contractions. Average 30% fat reduction, 25% increase in muscle mass. Also produces skin tightening via heat response. 4 sessions. Results at 3 months. FDA-cleared for BMI up to 35.',
+    tags: ['Fat + Muscle simultaneously','30 min sessions','No downtime','BMI up to 35'],
+    heroV: 'They want a more defined, sculpted body. Not a shortcut — an upgrade to what they\'re already doing. The hero confirms both results in one session.',
+    m2V: 'The standout: it does both simultaneously. Fat reduces, muscle builds, skin tightens — in thirty minutes. Never frame as lazy. Frame as an extension of a wellness-focused life.',
+    m3V: 'Compare against other body contouring options. Each Difference line earns EmSculpt NEO by being honest about what it does that the others don\'t — the simultaneous dual action.',
+    m5V: 'What to expect and when — the timeline and clinical data belong here. Close with the maintenance note.',
+    hero: 'More Muscle.\nLess Fat.\nIn the Same Session.',
+    overlay: 'Body Architecture, Elevated: VIO EmSculpt NEO',
+    m2h: 'THE ONLY TREATMENT', m2s: 'THAT DOES BOTH.',
+    m2p: 'EmSculpt NEO combines radiofrequency heating and focused electromagnetic energy in a single 30-minute session — simultaneously reducing fat and building muscle. No surgery. No downtime. Results that show at three months.',
+    acc: [['30 Minutes. Two Things at Once.','Radiofrequency energy heats the fat tissue to the point of permanent cell death while focused electromagnetic energy induces approximately 20,000 supramaximal muscle contractions in the same session. The fat reduces. The muscle builds. Thirty minutes.'],['Three Results. One Treatment.','Most body treatments address one concern. EmSculpt NEO addresses three simultaneously — fat reduction, muscle building, and skin tightening from the heat response. Clinical studies show an average 30% reduction in fat and 25% increase in muscle mass after a standard series.'],['Built for People Who Already Do the Work.','EmSculpt NEO is for people who already take their wellness seriously and want to take their results further.']],
+    hcDesc: 'Synchronized radiofrequency heating and High-Intensity Focused Electromagnetic energy — simultaneously reducing fat, building muscle, and tightening skin in a single 30-minute session.',
+    hcBen: 'Muscle definition + fat reduction + skin tightening', hcDown: 'None',
+    m5h: 'What to Expect — and When.',
+    m5b: 'A standard series is four sessions spaced a few days apart. Most people experience muscle soreness afterward — the kind that tells you something actually happened. Visible results two to four weeks after completing the series. Full results at three months.\n\nEmSculpt NEO is FDA-cleared for a broader range of body types than the original EmSculpt — including clients with a BMI up to 35. Your VIO provider will confirm it\'s the right fit at your consultation.\n\nMaintenance every three to six months keeps the conditioning where you want it.',
+    m5cta: 'Book Your EmSculpt NEO',
+    fh: 'You\'re asking the right questions about EmSculpt NEO. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your body needs, for where you are right now.'
+  },
+  'bbl-moxi': {
+    name: 'BBL + Moxi',
+    brief: 'BBL (BroadBand Light) targets pigment, redness, and sun damage via selective photothermolysis. MOXI is a non-ablative 1927nm fractional laser creating micro-thermal zones in the upper dermis — stimulating collagen without full ablation. Together: color + structure addressed in one session. Downtime: 5–7 days combined (BBL 1–3 days redness; MOXI 3–5 days MENDS). 1–2 annual treatments for maintenance. The Forever Young BBL study showed gene expression changes associated with younger skin phenotype.',
+    tags: ['Color + structure','5–7 days downtime','Annual maintenance','Sciton'],
+    heroV: 'They want clearer, brighter, younger-looking skin. The hero confirms both dimensions — color corrected, structure renewed.',
+    m2V: 'BBL corrects color. MOXI rebuilds structure. Together they address both dimensions of how skin ages. That is the selling point — comprehensive, in a single coordinated treatment.',
+    m3V: 'Compare against other Laser & Light category services — IPL, Glacial Rx, Peels, LED. Each Difference line earns BBL + Moxi by being honest about what the combination does that single treatments cannot.',
+    m5V: 'The Forever Young BBL study belongs here — it\'s genuinely compelling evidence and Violette would cite it confidently. Close with the annual maintenance frame.',
+    hero: 'Clearer. Brighter.\nStructurally Renewed.\nOne Treatment. Two Results.',
+    overlay: 'Color and Structure, Together: VIO BBL + Moxi',
+    m2h: 'TWO DIMENSIONS', m2s: 'OF SKIN AGING. ADDRESSED AT ONCE.',
+    m2p: 'BBL corrects what you see at the surface. Moxi rebuilds what\'s underneath it. Together they address both the color and the structure of how skin changes over time.',
+    acc: [['BBL: Light That Corrects Color.','BroadBand Light targets pigment, redness, and sun damage selectively — absorbed by the color in the skin while leaving surrounding tissue undisturbed. Spots darken and shed. Redness clears. What\'s left behind is clearer, more even skin — the tone that was always underneath.'],['Moxi: A Laser That Rebuilds.','Moxi creates micro-thermal zones in the upper dermis — triggering collagen production and cellular renewal without removing the skin\'s surface. The result is improved texture, refined tone, and skin that genuinely looks and behaves younger over time.'],['A Few Days. Then Months of Improvement.','Five to seven days of visible recovery — redness from BBL, a brief coffee-grounds texture as Moxi-treated skin sheds. What follows is skin that continues improving for weeks. One annual treatment is how most clients maintain it.']],
+    hcDesc: 'BroadBand Light and fractional laser — addressing pigment, redness, texture, and collagen in a single coordinated treatment.',
+    hcBen: 'Clearer tone + structural skin renewal', hcDown: '5–7 days',
+    m5h: 'The Science Behind the Result.',
+    m5b: 'BBL has been studied longer than almost any other light-based aesthetic treatment. The Forever Young BBL study — peer-reviewed, independent — showed gene expression changes in treated skin consistent with a younger skin phenotype. That is not marketing language. That is what the research found.\n\nMoxi adds what BBL cannot do alone — collagen remodeling in the dermis, texture refinement, and cellular renewal at depth.\n\nTogether, one to two annual treatments is what most clients need to stay ahead of the changes that accumulate over time. Your VIO provider will assess your skin and tell you exactly where to begin.',
+    m5cta: 'Book Your BBL + Moxi',
+    fh: 'You\'re asking the right questions about BBL + Moxi. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'body-contouring': {
+    name: 'Body Contouring',
+    brief: 'Category parent page. Services: CoolSculpting (cryolipolysis, permanent fat elimination, 8–12 weeks results) and EmSculpt NEO (RF + HIFEM, simultaneous fat + muscle, 3 months results). Often sequenced together. No surgery, no downtime. CoolSculpting first for clients with fat to clear, then EmSculpt NEO for definition.',
+    tags: ['CoolSculpting + EmSculpt NEO','No surgery','No downtime','Category parent'],
+    heroV: 'They want a defined, sculpted body — not a dramatic change, a refined version of what\'s already there. The hero confirms: definition, less fat, no surgery.',
+    m2V: 'Sell targeted precision — not general weight loss. The right zone, the right tool, the right sequence. Violette\'s register: this is for people who already take care of themselves.',
+    m3V: 'Compare against other body treatment categories — Skin Tightening & Resurfacing, Lift & Contour, Lipotropic Injections. Each Difference line earns Body Contouring specifically.',
+    m5V: 'CoolSculpting and EmSculpt NEO explained side by side — neutral, informative, complementary. Often sequenced. Provider decides.',
+    hero: 'Define What\'s Already There.\nLess Fat. More Muscle.\nNo Surgery. No Downtime.',
+    overlay: 'Body Architecture, Considered: VIO Body Contouring',
+    m2h: 'THE BODY YOU WORK FOR', m2s: 'TAKEN FURTHER.',
+    m2p: 'Two FDA-cleared technologies. Your VIO provider selects the treatment — or the combination — that matches what your body actually needs.',
+    acc: [['Targeted. Not General.','Body contouring at VIO addresses specific zones — the abdomen, flanks, buttocks, arms, thighs. A precise response to what training and lifestyle haven\'t been able to fully reach.'],['Fat Reduction. Muscle Building. Both.','CoolSculpting permanently eliminates targeted fat cells through controlled cooling. EmSculpt NEO simultaneously builds muscle and reduces fat through synchronized radiofrequency and electromagnetic energy. The right choice depends on your body and your goal — your provider will tell you which one, or whether you need both.'],['Results That Compound.','CoolSculpting results develop over eight to twelve weeks as the body clears treated cells. EmSculpt NEO results build over three months as muscle develops and fat reduces. Maintenance every three to six months keeps everything where you want it.']],
+    hcDesc: 'FDA-cleared fat reduction and muscle building — CoolSculpting and EmSculpt NEO — selected and sequenced for your specific body composition and goals.',
+    hcBen: 'Targeted fat reduction + muscle definition', hcDown: 'None',
+    m5h: 'Two Treatments. One Considered Plan.',
+    m5b: 'CoolSculpting® — Cryolipolysis that permanently eliminates targeted fat cells. The treated cells do not return. Results develop over eight to twelve weeks. Best for discrete fat deposits resistant to exercise.\n\nEmSculpt NEO® — Synchronized radiofrequency and HIFEM energy that simultaneously reduces fat and builds muscle. Average 30% fat reduction and 25% increase in muscle mass after a standard series. Best for clients who want both outcomes in one treatment.\n\nFor clients with both goals, CoolSculpting and EmSculpt NEO are often sequenced together — your VIO provider will map the right approach at your consultation.',
+    m5cta: 'Book a Body Contouring Consultation',
+    fh: 'You\'re asking the right questions about Body Contouring. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your body needs, for where you are right now.'
+  },
+  'hydrafacial-dermaplane': {
+    name: 'HydraFacial + Dermaplaning',
+    brief: 'Dermaplaning first: sterile surgical blade removes dead skin cells and vellus hair at the surface. HydraFacial second: Vortex-Fusion clears the pore and infuses serums into freshly cleared skin. The dermaplaning makes the HydraFacial go further — cleaner surface, deeper penetration. Immediate results. Zero downtime. Note: vellus hair does not grow back coarser or darker.',
+    tags: ['Zero downtime','Immediate results','Combination protocol','Monthly maintenance'],
+    heroV: 'They want smoother, glowing skin — right now, with no recovery. The hero confirms: smoother, deeper glow, zero downtime.',
+    m2V: 'The sell is the combination logic: dermaplaning first makes HydraFacial go further. Two steps that amplify each other. Neither could achieve this result alone.',
+    m3V: 'Compare the two components against each other — HydraFacial alone and Dermaplaning alone. Show why the combination is more than the sum of its parts.',
+    m5V: 'Address the hair myth directly — vellus hair does not grow back coarser. That\'s the question everyone has. Violette answers it plainly and closes on why the pairing makes sense.',
+    hero: 'Smoother Surface.\nDeeper Glow.\nZero Downtime.',
+    overlay: 'Every Layer, Addressed: VIO HydraFacial + Dermaplaning',
+    m2h: 'TWO STEPS.', m2s: 'ONE RESULT NEITHER COULD ACHIEVE ALONE.',
+    m2p: 'Dermaplaning clears the surface. HydraFacial clears below it. Together they cover every layer — and the HydraFacial goes further because of what dermaplaning did first.',
+    acc: [['The Surface First.','Dermaplaning uses a sterile surgical blade to remove dead skin cells and vellus hair at the surface — the layer that sits between your skin and everything you put on it. What follows absorbs better because of what this step removed.'],['Then the Pore.','With the surface clear, HydraFacial\'s Vortex-Fusion technology reaches the pore itself — extracting congestion and infusing hydrating serums in one continuous motion. The result is cleaner, more hydrated skin than either treatment produces on its own.'],['Immediate. And It Lasts.','Results are visible the same day — smoother texture, cleared pores, a glow that is not manufactured. Monthly treatments keep the skin at that level. Most people find it becomes the appointment they don\'t skip.']],
+    hcDesc: 'Dermaplaning at the surface followed by Vortex-Fusion cleansing, extraction, and infusion — two steps that amplify each other.',
+    hcBen: 'Smoother texture + deeper hydration + immediate glow', hcDown: 'Zero',
+    m5h: 'One Thing Worth Knowing About Dermaplaning.',
+    m5b: 'The vellus hair does not grow back coarser or darker. It returns exactly as it was. This is one of the most common questions — and the answer is that simple.\n\nWhat does change is how your skin feels, how your makeup sits, and how much further everything you apply afterward actually goes. That is the case for adding dermaplaning to any HydraFacial. It is why we pair them.',
+    m5cta: 'Book Your HydraFacial + Dermaplaning',
+    fh: 'You\'re asking the right questions about HydraFacial + Dermaplaning. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  },
+  'spend-and-save': {
+    name: 'Spend + Save',
+    brief: 'Promotional mechanic: spend $300 or more on any treatment or combination, save $100. Applies to the full VIO menu. No restrictions on service selection. Complimentary consultation available. This is an invitation — not a discount coupon. Violette presents it the way she\'d mention it in the room: warmly, plainly, without urgency theater.',
+    tags: ['$300+ saves $100','Full menu applies','No restrictions','Complimentary consultation'],
+    heroV: 'This is an invitation, not a hard sell. The hero states the offer simply and lets the value speak for itself.',
+    m2V: 'Warm and inviting. A good reason to start something you\'ve been thinking about. Violette isn\'t pushing — she\'s opening a door.',
+    m3V: 'Not a comparison page — a treatment showcase. One neutral line per service that reminds the client what\'s available.',
+    m5V: 'Simple close. The offer is clear. The provider builds the plan. Book your appointment.',
+    hero: 'Spend $300.\nSave $100.\nOn Anything You Choose.',
+    overlay: 'Your VIO. Your Plan. Your Savings.',
+    m2h: 'THIS MIGHT BE', m2s: 'YOUR MOMENT.',
+    m2p: 'Spend $300 or more on any treatment or combination and save $100. A good reason to start something you\'ve been thinking about — or add to what you\'re already doing.',
+    acc: [['Any Treatment. Any Combination.','The full VIO menu applies. Wrinkle relaxers, fillers, facials, microneedling, body contouring — one service or several. Whatever your skin needs right now.'],['A Good Time to Begin.','If there\'s something you\'ve been considering, this is a natural moment to start. Your VIO provider will tell you honestly what makes sense for where you are — and what can wait.'],['Your Consultation Is Complimentary.','Not sure where to begin? That conversation costs you nothing. Your provider will read your skin, understand your goals, and build a plan around what actually matters.']],
+    hcDesc: 'Spend $300 or more on any treatment or combination of services and save $100. No restrictions. The full VIO menu applies.',
+    hcBen: 'Save $100 on $300+', hcDown: 'Varies by service',
+    m5h: 'The Offer Is Simple. What You Do With It Is Yours.',
+    m5b: 'Spend $300 or more on any combination of treatments and save $100. No restrictions on what you choose. Your VIO provider will help you build a plan that makes the most of it.',
+    m5cta: 'Book Your Appointment',
+    fh: 'You\'re asking the right questions. So glad you\'re here.',
+    fs: 'Share your contact information, and your VIO team will reach out personally. We will answer your questions and help you find exactly what your skin needs, for where you are right now.'
+  }
+};
+
+let cardCount = 0;
+
+function loadService() {
+  const v = document.getElementById('svc').value;
+  document.getElementById('custom-wrap').style.display = v === 'custom' ? 'block' : 'none';
+  const brief = document.getElementById('svc-brief');
+  if (!SVC[v]) { brief.style.display = 'none'; hideGuides(); return; }
+  const d = SVC[v];
+  document.getElementById('brief-label').textContent = d.name + ' — Clinical Brief';
+  document.getElementById('brief-body').textContent = d.brief;
+  const te = document.getElementById('brief-tags');
+  te.innerHTML = (d.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  brief.style.display = 'block';
+  showGuide('hero-vguide','hero-vtext', d.heroV);
+  showGuide('m2-vguide','m2-vtext', d.m2V);
+  showGuide('m3-vguide','m3-vtext', d.m3V);
+  showGuide('m5-vguide','m5-vtext', d.m5V);
+  prefill(d);
+}
+
+function showGuide(boxId, textId, text) {
+  if (!text) return;
+  document.getElementById(textId).textContent = text;
+  document.getElementById(boxId).style.display = 'block';
+}
+
+function hideGuides() {
+  ['hero-vguide','m2-vguide','m3-vguide','m5-vguide'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
+
+function prefill(d) {
+  if (d.hero) document.getElementById('hero').value = d.hero;
+  if (d.overlay) document.getElementById('overlay').value = d.overlay;
+  if (d.m2h) document.getElementById('m2h').value = d.m2h;
+  if (d.m2s) document.getElementById('m2s').value = d.m2s;
+  if (d.m2p) document.getElementById('m2p').value = d.m2p;
+  const items = document.querySelectorAll('#acc-group .acc-item');
+  (d.acc || []).forEach((a, i) => {
+    if (items[i]) {
+      items[i].querySelector('input').value = a[0] || '';
+      items[i].querySelector('textarea').value = a[1] || '';
+    }
+  });
+  if (d.hcDesc) document.getElementById('hc-desc').value = d.hcDesc;
+  if (d.hcBen) document.getElementById('hc-ben').value = d.hcBen;
+  if (d.hcDown) document.getElementById('hc-down').value = d.hcDown;
+  if (d.m5h) document.getElementById('m5h').value = d.m5h;
+  if (d.m5b) document.getElementById('m5b').value = d.m5b;
+  if (d.m5cta) document.getElementById('m5cta').value = d.m5cta;
+  if (d.fh) document.getElementById('fh').value = d.fh;
+  if (d.fs) document.getElementById('fs').value = d.fs;
+  document.getElementById('comp-cards').innerHTML = '';
+  cardCount = 0;
+}
+
+function addCard() {
+  cardCount++;
+  const id = 'cc' + cardCount;
+  const div = document.createElement('div');
+  div.className = 'card-block';
+  div.id = id;
+  div.innerHTML = `<div class="card-block-title"><span>Comparison Card ${cardCount}</span><button class="rm-btn" onclick="document.getElementById('${id}').remove()">✕ Remove</button></div>
+<div class="field" style="margin-bottom:10px;"><label>Service Name</label><input type="text" placeholder="e.g. Botox®"></div>
+<div class="field" style="margin-bottom:10px;"><label>Neutral Descriptor</label><div class="hint">One tight line. What this service is. No opinion, no sell.</div><textarea rows="1" placeholder="e.g. A neuromodulator with a precise, concentrated delivery profile."></textarea></div>
+<div class="field" style="margin-bottom:0;"><label>The Difference</label><div class="hint">One sentence. Clinical knowing. What does the featured service do that this one doesn't?</div><textarea rows="2" placeholder="e.g. Dysport distributes more naturally across larger areas — for the forehead especially, that often means a smoother, more even result."></textarea></div>`;
+  document.getElementById('comp-cards').appendChild(div);
+}
+
+function getSvcName() {
+  const v = document.getElementById('svc').value;
+  if (v === 'custom') return document.getElementById('custom-name').value || 'Service';
+  return SVC[v] ? SVC[v].name : (document.querySelector('#svc option:checked') || {}).textContent || 'Service';
+}
+
+function generate() {
+  const btn = document.getElementById('gbtn');
+  btn.disabled = true;
+  document.getElementById('lbar').classList.add('on');
+  setTimeout(() => {
+    const svc = getSvcName();
+    const hero = document.getElementById('hero').value;
+    const overlay = document.getElementById('overlay').value;
+    const m2h = document.getElementById('m2h').value;
+    const m2s = document.getElementById('m2s').value;
+    const m2p = document.getElementById('m2p').value;
+    let acc = '';
+    document.querySelectorAll('#acc-group .acc-item').forEach((item, i) => {
+      const h = item.querySelector('input').value;
+      const b = item.querySelector('textarea').value;
+      if (h || b) acc += `0${i+1} | ${h}\n${b}\n\n`;
+    });
+    const hcDesc = document.getElementById('hc-desc').value;
+    const hcBen = document.getElementById('hc-ben').value;
+    const hcDown = document.getElementById('hc-down').value;
+    let cards = `${svc} — ${hcDesc}\n\nBenefit: ${hcBen}\nDowntime: ${hcDown}\nBook Your ${svc}\n`;
+    document.querySelectorAll('#comp-cards .card-block').forEach(card => {
+      const ins = card.querySelectorAll('input, textarea');
+      const n = ins[0] ? ins[0].value : '';
+      const desc = ins[1] ? ins[1].value : '';
+      const diff = ins[2] ? ins[2].value : '';
+      if (n) cards += `\n---\n${n} — ${desc}\n\nThe Difference: ${diff}\n`;
+    });
+    const m5h = document.getElementById('m5h').value;
+    const m5b = document.getElementById('m5b').value;
+    const m5cta = document.getElementById('m5cta').value;
+    const fh = document.getElementById('fh').value;
+    const fs = document.getElementById('fs').value;
+    const modules = [
+      { label: 'M1 — Hero', body: `${hero}\n\nTRANSITION OVERLAY\n${overlay}` },
+      { label: 'M2 — Selling Point + Accordion', body: `${m2h}\n${m2s}\n\n${m2p}\n\nBook Your ${svc}\n\n${acc.trim()}` },
+      { label: 'M3 — Comparison Cards', body: cards.trim() },
+      { label: 'M4 — Google Reviews', body: '[Pulled automatically — no copy required]' },
+      { label: 'M5 — Closing CTA', body: `${m5h}\n\n${m5b}\n\n${m5cta}` },
+      { label: 'Form', body: `${fh}\n\n${fs}\n\nFirst name · Email address · Phone number\nPreferred contact: Call me · Text me · Either\nAnything you want us to know? (Questions, concerns, where you're starting from…)\n\nSEND MY NOTE` },
+      { label: 'Footer Bar', body: 'FIND YOUR VIO  ·  CURIOUS ABOUT YOUR WELLNESS?  ·  JOIN THE CLUB' }
+    ];
+    const mods = document.getElementById('mods');
+    mods.innerHTML = '';
+    modules.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'mod';
+      div.innerHTML = `<div class="mod-head"><span>${m.label}</span><button class="mod-copy" onclick="cpMod(this)">Copy</button></div><div class="mod-body">${m.body}</div>`;
+      mods.appendChild(div);
+    });
+    document.getElementById('lbar').classList.remove('on');
+    document.getElementById('output').classList.add('on');
+    btn.disabled = false;
+    document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 800);
+}
+
+function cpMod(btn) {
+  const txt = btn.closest('.mod').querySelector('.mod-body').textContent;
+  navigator.clipboard.writeText(txt.trim()).then(() => {
+    const o = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = o, 1400);
+  });
+}
+
+function copyAll() {
+  const all = Array.from(document.querySelectorAll('.mod-body')).map(e => e.textContent.trim()).join('\n\n---\n\n');
+  navigator.clipboard.writeText(all).then(() => {
+    const btn = document.querySelector('.copy-all-btn');
+    const o = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = o, 1400);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIO Clinical Library</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Nunito+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ink: #030303;
+    --lotion: #FEFFF9;
+    --greige: #E9E3DC;
+    --alabaster: #F2F0E6;
+    --mouse: #B29D92;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Nunito Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--lotion);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .hdr {
+    background: var(--ink);
+    padding: 0 32px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .hdr-left { display: flex; align-items: center; gap: 16px; }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--lotion);
+    text-transform: uppercase;
+  }
+  .hdr-divider {
+    width: 1px; height: 18px;
+    background: rgba(254,255,249,0.2);
+  }
+  .hdr-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    font-weight: 400;
+  }
+  .hdr-count {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--mouse);
+    background: rgba(254,255,249,0.07);
+    border: 0.5px solid rgba(254,255,249,0.12);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  /* ── NAV TABS ── */
+  .nav {
+    background: var(--alabaster);
+    border-bottom: 0.5px solid rgba(3,3,3,0.1);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+  }
+  .nav-tab {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1.5px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .nav-tab:hover { color: var(--ink); }
+  .nav-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 980px; margin: 0 auto; padding: 40px 32px; }
+
+  /* ── SECTION ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: var(--mouse);
+    letter-spacing: 0.06em;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  /* ── FORM FIELDS ── */
+  .field-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .row { margin-bottom: 20px; }
+
+  input[type="text"], input[type="url"], textarea, select {
+    width: 100%;
+    background: var(--lotion);
+    border: 0.5px solid rgba(3,3,3,0.18);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--ink);
+  }
+  textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
+  select { cursor: pointer; }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: var(--ink);
+    color: var(--lotion);
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.82; }
+  .btn-primary:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-ghost {
+    background: none;
+    color: var(--mouse);
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 12px 20px;
+    border: 0.5px solid rgba(3,3,3,0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+
+  .btn-sm {
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 0.5px solid rgba(3,3,3,0.18);
+    background: none;
+    color: var(--mouse);
+    transition: all 0.15s;
+  }
+  .btn-sm:hover { color: var(--ink); border-color: var(--ink); }
+  .btn-sm.danger:hover { color: #c0392b; border-color: #c0392b; }
+
+  .btn-row { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+
+  /* ── API KEY ── */
+  .key-bar {
+    background: var(--greige);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .key-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #c0392b;
+    flex-shrink: 0;
+  }
+  .key-dot.on { background: #27ae60; }
+  .key-bar-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    flex: 1;
+  }
+  .key-input {
+    width: 260px !important;
+    font-size: 12px !important;
+    padding: 7px 12px !important;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PROGRESS / STATUS ── */
+  .progress-wrap { margin: 20px 0 0; display: none; }
+  .progress-wrap.on { display: block; }
+  .progress-bar {
+    height: 2px;
+    background: var(--greige);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--ink);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .status-msg {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--mouse);
+    min-height: 18px;
+  }
+
+  /* ── LIBRARY GRID ── */
+  .lib-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .lib-controls input {
+    flex: 1;
+    max-width: 320px;
+  }
+  .lib-filter {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 4px;
+    border: 0.5px solid rgba(3,3,3,0.15);
+    background: none;
+    color: var(--mouse);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .lib-filter.active,
+  .lib-filter:hover { background: var(--ink); color: var(--lotion); border-color: var(--ink); }
+
+  .lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .lib-empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--mouse);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .lib-empty span {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--greige);
+  }
+
+  /* ── ENTRY CARD ── */
+  .entry-card {
+    background: var(--lotion);
+    border: 0.5px solid rgba(3,3,3,0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .entry-card:hover {
+    border-color: rgba(3,3,3,0.35);
+    box-shadow: 0 4px 16px rgba(3,3,3,0.06);
+  }
+  .entry-card-head {
+    background: var(--alabaster);
+    padding: 12px 14px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .entry-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+  .entry-type {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    background: var(--greige);
+    border-radius: 20px;
+    padding: 3px 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .entry-body { padding: 12px 14px; }
+  .entry-brand {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 6px;
+  }
+  .entry-summary {
+    font-size: 12px;
+    line-height: 1.65;
+    color: rgba(3,3,3,0.7);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .entry-footer {
+    padding: 10px 14px;
+    border-top: 0.5px solid rgba(3,3,3,0.07);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    border: 0.5px solid rgba(3,3,3,0.12);
+    border-radius: 20px;
+    padding: 2px 8px;
+  }
+
+  /* ── DETAIL MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,3,3,0.45);
+    z-index: 200;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--lotion);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 740px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(3,3,3,0.18);
+  }
+  .modal-hdr {
+    background: var(--ink);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--lotion);
+    letter-spacing: 0.04em;
+  }
+  .modal-type {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .modal-close {
+    background: none;
+    border: 0.5px solid rgba(254,255,249,0.2);
+    color: var(--mouse);
+    font-size: 18px;
+    width: 30px; height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { color: var(--lotion); border-color: var(--lotion); }
+  .modal-body { padding: 24px; }
+  .modal-section { margin-bottom: 20px; }
+  .modal-section-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .modal-text {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .modal-list {
+    list-style: none;
+    padding: 0;
+  }
+  .modal-list li {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink);
+    padding: 5px 0;
+    border-bottom: 0.5px solid rgba(3,3,3,0.06);
+    display: flex;
+    gap: 8px;
+  }
+  .modal-list li::before {
+    content: '—';
+    color: var(--mouse);
+    flex-shrink: 0;
+  }
+  .modal-list li:last-child { border-bottom: none; }
+  .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .modal-actions {
+    padding: 16px 24px;
+    background: var(--alabaster);
+    border-top: 0.5px solid rgba(3,3,3,0.08);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .modal-actions-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-right: 4px;
+  }
+
+  /* ── GENERATE SECTION ── */
+  .gen-entry-selector {
+    background: var(--alabaster);
+    border-radius: 8px;
+    border: 0.5px solid rgba(3,3,3,0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .gen-entry-hdr {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gen-entry-list {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .gen-entry-item {
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-bottom: 0.5px solid rgba(3,3,3,0.06);
+    transition: background 0.15s;
+  }
+  .gen-entry-item:last-child { border-bottom: none; }
+  .gen-entry-item:hover { background: var(--greige); }
+  .gen-entry-item.selected { background: var(--ink); }
+  .gen-entry-item.selected .gen-entry-name { color: var(--lotion); }
+  .gen-entry-item.selected .gen-entry-cat { color: var(--mouse); }
+  .gen-entry-name { font-size: 13px; flex: 1; }
+  .gen-entry-cat {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+
+  .output-area {
+    background: var(--lotion);
+    border: 0.5px solid rgba(3,3,3,0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 24px;
+    display: none;
+  }
+  .output-area.visible { display: block; }
+  .output-hdr {
+    background: var(--alabaster);
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .output-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .output-content { padding: 20px; }
+
+  /* ── REFERENCE CARD ── */
+  .ref-card {
+    border: 0.5px solid rgba(3,3,3,0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .ref-card-hdr {
+    background: var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .ref-card-name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lotion);
+  }
+  .ref-card-brand {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .ref-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 0.5px solid rgba(3,3,3,0.1);
+  }
+  .ref-card-field {
+    padding: 14px 18px;
+    border-right: 0.5px solid rgba(3,3,3,0.08);
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+  }
+  .ref-card-field:nth-child(even) { border-right: none; }
+  .ref-card-field-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 5px;
+  }
+  .ref-card-field-val { font-size: 12px; line-height: 1.65; }
+  .ref-card-full {
+    padding: 14px 18px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+  }
+  .ref-card-full:last-child { border-bottom: none; }
+  .ref-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+
+  /* ── COPY BLOCK ── */
+  .copy-block {
+    background: var(--alabaster);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .copy-block-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .copy-block-text {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .copy-btn {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    background: none;
+    border: 0.5px solid rgba(3,3,3,0.15);
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { color: var(--ink); }
+
+  /* ── INGEST TABS ── */
+  .ingest-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 0.5px solid rgba(3,3,3,0.1); }
+  .ingest-tab {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 1.5px solid transparent;
+    margin-bottom: -0.5px;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .ingest-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .ingest-panel { display: none; }
+  .ingest-panel.active { display: block; }
+
+  .spin { font-size: 11px; letter-spacing: 0.08em; color: var(--mouse); display: none; }
+  .spin.on { display: block; }
+
+  .notice {
+    background: var(--greige);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--mouse);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  /* ── FAQ STYLES ── */
+  .faq-layout { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: start; }
+  .faq-sidebar {
+    background: var(--alabaster);
+    border-radius: 8px;
+    border: 0.5px solid rgba(3,3,3,0.1);
+    overflow: hidden;
+    position: sticky;
+    top: 72px;
+  }
+  .faq-sidebar-hdr {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.08);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    font-weight: 600;
+  }
+  .faq-filter-group { border-bottom: 0.5px solid rgba(3,3,3,0.06); }
+  .faq-filter-group:last-child { border-bottom: none; }
+  .faq-filter-group-label {
+    padding: 10px 16px 5px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    font-weight: 600;
+  }
+  .faq-filter-item {
+    padding: 7px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: rgba(3,3,3,0.6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .faq-filter-item:hover { color: var(--ink); background: var(--greige); }
+  .faq-filter-item.active { color: var(--ink); font-weight: 600; border-left-color: var(--ink); background: var(--greige); }
+  .faq-filter-count {
+    font-size: 10px;
+    color: var(--mouse);
+    background: rgba(3,3,3,0.07);
+    border-radius: 20px;
+    padding: 1px 7px;
+    font-weight: 400;
+  }
+
+  .faq-main { min-width: 0; }
+  .faq-search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .faq-search-row input { flex: 1; }
+  .faq-add-btn {
+    background: var(--ink);
+    color: var(--lotion);
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .faq-add-btn:hover { opacity: 0.82; }
+
+  .faq-results-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 12px;
+  }
+
+  .faq-group { margin-bottom: 28px; }
+  .faq-group-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-group-badge {
+    font-family: var(--font-body);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    background: var(--greige);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  .faq-item {
+    border: 0.5px solid rgba(3,3,3,0.1);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: rgba(3,3,3,0.22); }
+  .faq-item.open { border-color: rgba(3,3,3,0.2); }
+
+  .faq-q {
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+    gap: 12px;
+    background: var(--lotion);
+    transition: background 0.15s;
+  }
+  .faq-item.open .faq-q { background: var(--alabaster); }
+  .faq-q-text {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .faq-q-meta {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+  }
+  .faq-tag-pill {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    border: 0.5px solid rgba(3,3,3,0.12);
+    border-radius: 20px;
+    padding: 2px 7px;
+  }
+  .faq-chevron {
+    font-size: 11px;
+    color: var(--mouse);
+    flex-shrink: 0;
+    margin-top: 3px;
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+  .faq-a {
+    display: none;
+    padding: 0 18px 16px;
+    background: var(--alabaster);
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a-text {
+    font-size: 13px;
+    line-height: 1.78;
+    color: rgba(3,3,3,0.82);
+    font-family: var(--font-body);
+  }
+  .faq-a-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+  }
+
+  /* FAQ Add/Edit Modal */
+  .faq-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,3,3,0.45);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .faq-modal-overlay.open { display: flex; }
+  .faq-modal {
+    background: var(--lotion);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 620px;
+    box-shadow: 0 20px 60px rgba(3,3,3,0.18);
+    overflow: hidden;
+  }
+  .faq-modal-hdr {
+    background: var(--alabaster);
+    padding: 16px 20px;
+    border-bottom: 0.5px solid rgba(3,3,3,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-modal-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .faq-modal-body { padding: 20px; }
+  .faq-modal-body .row { margin-bottom: 16px; }
+  .tag-input-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .tag-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--greige);
+    border: 0.5px solid rgba(3,3,3,0.12);
+    cursor: pointer;
+    transition: all 0.15s;
+    color: rgba(3,3,3,0.7);
+  }
+  .tag-chip.selected { background: var(--ink); color: var(--lotion); border-color: var(--ink); }
+  .faq-modal-foot {
+    padding: 14px 20px;
+    background: var(--alabaster);
+    border-top: 0.5px solid rgba(3,3,3,0.08);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .faq-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--mouse);
+    font-size: 13px;
+  }
+  .faq-empty span {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--greige);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <span class="brand">VIO</span>
+    <div class="hdr-divider"></div>
+    <span class="hdr-label">Clinical Library</span>
+  </div>
+  <span class="hdr-count" id="lib-count">0 entries</span>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-tab active" onclick="showTab('add', this)">Add Entry</button>
+  <button class="nav-tab" onclick="showTab('library', this)">Library</button>
+  <button class="nav-tab" onclick="showTab('generate', this)">Generate</button>
+  <button class="nav-tab" onclick="showTab('faq', this)">FAQ Library</button>
+</div>
+
+<div class="main">
+
+  <!-- ── ADD ENTRY ── -->
+  <div class="section active" id="s-add">
+    <div class="section-title">Add Clinical Entry</div>
+    <div class="section-sub">Paste a URL or raw clinical data. The library will extract, structure, and store it — ready to inform service pages, reference cards, and campaign material.</div>
+
+    <!-- API KEY -->
+    <div class="key-bar">
+      <div class="key-dot" id="key-dot"></div>
+      <span class="key-bar-label" id="key-label">API key required</span>
+      <input type="text" class="key-input" id="api-key-input" placeholder="sk-ant-..." onchange="saveKey()" oninput="saveKey()">
+    </div>
+
+    <!-- INGEST MODE TABS -->
+    <div class="ingest-tabs">
+      <button class="ingest-tab active" onclick="switchIngest('url', this)">From URL</button>
+      <button class="ingest-tab" onclick="switchIngest('paste', this)">Paste Raw Data</button>
+      <button class="ingest-tab" onclick="switchIngest('manual', this)">Manual Entry</button>
+    </div>
+
+    <!-- URL MODE -->
+    <div class="ingest-panel active" id="panel-url">
+      <div class="row">
+        <div class="field-label">Source URL</div>
+        <input type="url" id="url-input" placeholder="https://www.belotero.com/filler-treatments/">
+      </div>
+      <div class="row">
+        <div class="field-label">Paste Page Content (from the URL)</div>
+        <textarea id="url-content" rows="8" placeholder="Paste the full text content from the page here. Clinical data, mechanism of action, treatment areas, contraindications, clinical trial results — all of it."></textarea>
+        <div style="font-size:11px;color:var(--mouse);margin-top:5px;">Paste the full page text. Claude will extract what matters.</div>
+      </div>
+    </div>
+
+    <!-- PASTE MODE -->
+    <div class="ingest-panel" id="panel-paste">
+      <div class="row">
+        <div class="field-label">Raw Clinical Data</div>
+        <textarea id="paste-input" rows="12" placeholder="Paste any clinical content — product info, study results, ingredient data, mechanism notes, treatment protocols, contraindications. Unstructured is fine."></textarea>
+      </div>
+    </div>
+
+    <!-- MANUAL MODE -->
+    <div class="ingest-panel" id="panel-manual">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="row">
+          <div class="field-label">Product / Ingredient Name</div>
+          <input type="text" id="m-name" placeholder="e.g. Belotero Balance (+)">
+        </div>
+        <div class="row">
+          <div class="field-label">Brand / Manufacturer</div>
+          <input type="text" id="m-brand" placeholder="e.g. Merz Aesthetics">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="row">
+          <div class="field-label">Entry Type</div>
+          <select id="m-type">
+            <option value="Filler">Filler</option>
+            <option value="Neuromodulator">Neuromodulator</option>
+            <option value="Laser / Device">Laser / Device</option>
+            <option value="Skincare Ingredient">Skincare Ingredient</option>
+            <option value="Skincare Product">Skincare Product</option>
+            <option value="Body Treatment">Body Treatment</option>
+            <option value="Wellness / Metabolic">Wellness / Metabolic</option>
+            <option value="Peptide">Peptide</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="field-label">VIO Service Category</div>
+          <select id="m-category">
+            <option value="">Select...</option>
+            <option value="Your Face — Dermal Fillers">Your Face — Dermal Fillers</option>
+            <option value="Your Face — Wrinkle Relaxers">Your Face — Wrinkle Relaxers</option>
+            <option value="Your Face — Collagen Production">Your Face — Collagen Production</option>
+            <option value="Your Face — Lift & Contour">Your Face — Lift & Contour</option>
+            <option value="Your Skin — Facials">Your Skin — Facials</option>
+            <option value="Your Skin — Microneedling">Your Skin — Microneedling</option>
+            <option value="Your Skin — Laser & Light Therapy">Your Skin — Laser & Light Therapy</option>
+            <option value="Your Skin — Peels">Your Skin — Peels</option>
+            <option value="Your Body — Body Contouring">Your Body — Body Contouring</option>
+            <option value="Your Body — Skin Tightening">Your Body — Skin Tightening</option>
+            <option value="Your Body — Hair & Scalp">Your Body — Hair & Scalp</option>
+            <option value="Your Wellness — Metabolic Health">Your Wellness — Metabolic Health</option>
+            <option value="Your Wellness — Hormone Support">Your Wellness — Hormone Support</option>
+            <option value="Your Wellness — Peptide Therapy">Your Wellness — Peptide Therapy</option>
+            <option value="Your Wellness — Nutrient Therapy">Your Wellness — Nutrient Therapy</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-label">Mechanism / How It Works</div>
+        <textarea id="m-mechanism" rows="3" placeholder="The clinical mechanism — how it actually works in the body/skin."></textarea>
+      </div>
+      <div class="row">
+        <div class="field-label">Treatment Areas / Indications</div>
+        <textarea id="m-areas" rows="3" placeholder="Where it's used and what it addresses."></textarea>
+      </div>
+      <div class="row">
+        <div class="field-label">Key Clinical Facts</div>
+        <textarea id="m-facts" rows="3" placeholder="Duration, onset, clinical trial outcomes, differentiating properties."></textarea>
+      </div>
+      <div class="row">
+        <div class="field-label">Contraindications / Safety</div>
+        <textarea id="m-contra" rows="3" placeholder="Who should not receive it, known risks, post-care notes."></textarea>
+      </div>
+    </div>
+
+    <!-- CONTEXT -->
+    <div class="row" id="context-row">
+      <div class="field-label">Additional Notes (optional)</div>
+      <input type="text" id="extra-context" placeholder="e.g. This is a product VIO stocks. Position as a first-timer-friendly option.">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="ingest-btn" onclick="runIngest()">Process & Add to Library ↗</button>
+    </div>
+
+    <div class="progress-wrap" id="ingest-prog">
+      <div class="progress-bar"><div class="progress-fill" id="ingest-fill"></div></div>
+      <div class="status-msg" id="ingest-status"></div>
+    </div>
+  </div>
+
+  <!-- ── LIBRARY ── -->
+  <div class="section" id="s-library">
+    <div class="section-title">Clinical Library</div>
+    <div class="section-sub">Every product, ingredient, and treatment modality. Select any entry to view full data or send to Generate.</div>
+
+    <div class="lib-controls">
+      <input type="text" id="lib-search" placeholder="Search entries..." oninput="renderLibrary()">
+      <button class="lib-filter active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="lib-filter" data-filter="Filler" onclick="setFilter('Filler', this)">Fillers</button>
+      <button class="lib-filter" data-filter="Neuromodulator" onclick="setFilter('Neuromodulator', this)">Neuromodulators</button>
+      <button class="lib-filter" data-filter="Skincare" onclick="setFilter('Skincare', this)">Skincare</button>
+      <button class="lib-filter" data-filter="Wellness" onclick="setFilter('Wellness', this)">Wellness</button>
+    </div>
+
+    <div class="lib-grid" id="lib-grid">
+      <div class="lib-empty"><span>The library is empty.</span>Add your first clinical entry to get started.</div>
+    </div>
+  </div>
+
+  <!-- ── GENERATE ── -->
+  <div class="section" id="s-generate">
+    <div class="section-title">Generate</div>
+    <div class="section-sub">Select an entry. Choose what you need. The library data informs it — the brand system shapes it.</div>
+
+    <div class="row">
+      <div class="field-label">Select Library Entry</div>
+      <div class="gen-entry-selector">
+        <div class="gen-entry-hdr">
+          <span>Available entries</span>
+          <span id="gen-sel-label" style="font-size:11px;">None selected</span>
+        </div>
+        <div class="gen-entry-list" id="gen-entry-list">
+          <div style="padding:20px;font-size:12px;color:var(--mouse);text-align:center;">Add entries to the library first.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field-label">Output Type</div>
+      <select id="gen-type">
+        <option value="reference_card">Clinical Reference Card — structured fact sheet for internal use</option>
+        <option value="service_page_brief">Service Page Brief — copy framework for the website service page</option>
+        <option value="campaign_social">Campaign Copy — social (Instagram / long-form caption)</option>
+        <option value="campaign_email">Campaign Copy — email / ClubVIO</option>
+        <option value="what_it_is">Single Zone: What It Is — website accordion copy</option>
+        <option value="is_this_for_you">Single Zone: Is This For You — identity-led, never demographic</option>
+        <option value="what_to_expect">Single Zone: What to Expect — experience arc copy</option>
+        <option value="education_blurb">Education Page Blurb — client-facing plain language</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field-label">Audience Context (optional)</div>
+      <input type="text" id="gen-audience" placeholder="e.g. First-time filler client. 30s. Already considering it, just needs the right language.">
+    </div>
+
+    <div class="row">
+      <div class="field-label">Additional Direction (optional)</div>
+      <textarea id="gen-direction" rows="3" placeholder="Any specific angle, copy adjacent to this, or campaign territory to work within."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="gen-btn" onclick="runGenerate()">Generate ↗</button>
+    </div>
+
+    <div class="progress-wrap" id="gen-prog">
+      <div class="progress-bar"><div class="progress-fill" id="gen-fill"></div></div>
+      <div class="status-msg" id="gen-status"></div>
+    </div>
+
+    <div class="output-area" id="gen-output">
+      <div class="output-hdr">
+        <span class="output-label" id="out-label">Output</span>
+        <button class="btn-sm" onclick="copyOutput()">Copy All</button>
+      </div>
+      <div class="output-content" id="out-content"></div>
+    </div>
+  </div>
+
+
+
+  <!-- ── FAQ LIBRARY ── -->
+  <div class="section" id="s-faq">
+    <div class="section-title">FAQ Library</div>
+    <div class="section-sub">General VIO FAQs plus treatment-specific questions — filterable by concern, service, category, and keyword. Every answer written in VIO voice.</div>
+
+    <div class="faq-layout">
+      <!-- SIDEBAR FILTERS -->
+      <div class="faq-sidebar">
+        <div class="faq-sidebar-hdr">Filter</div>
+
+        <div class="faq-filter-group">
+          <div class="faq-filter-group-label">View</div>
+          <div class="faq-filter-item active" onclick="faqFilter('all','view',this)" data-key="view" data-val="all">
+            All FAQs <span class="faq-filter-count" id="fc-all">0</span>
+          </div>
+          <div class="faq-filter-item" onclick="faqFilter('vio-general','view',this)" data-key="view" data-val="vio-general">
+            VIO General <span class="faq-filter-count" id="fc-general">0</span>
+          </div>
+          <div class="faq-filter-item" onclick="faqFilter('treatment','view',this)" data-key="view" data-val="treatment">
+            Treatment FAQs <span class="faq-filter-count" id="fc-treatment">0</span>
+          </div>
+        </div>
+
+        <div class="faq-filter-group">
+          <div class="faq-filter-group-label">Service Category</div>
+          <div class="faq-filter-item" onclick="faqFilter('Your Face','category',this)">Your Face <span class="faq-filter-count" id="fc-face">0</span></div>
+          <div class="faq-filter-item" onclick="faqFilter('Your Skin','category',this)">Your Skin <span class="faq-filter-count" id="fc-skin">0</span></div>
+          <div class="faq-filter-item" onclick="faqFilter('Your Body','category',this)">Your Body <span class="faq-filter-count" id="fc-body">0</span></div>
+          <div class="faq-filter-item" onclick="faqFilter('Your Wellness','category',this)">Your Wellness <span class="faq-filter-count" id="fc-wellness">0</span></div>
+        </div>
+
+        <div class="faq-filter-group">
+          <div class="faq-filter-group-label">Concern</div>
+          <div id="concern-filters"></div>
+        </div>
+
+        <div class="faq-filter-group">
+          <div class="faq-filter-group-label">Treatment</div>
+          <div id="treatment-filters"></div>
+        </div>
+
+        <div class="faq-filter-group" style="padding:10px 16px;">
+          <button class="btn-ghost" style="width:100%;font-size:10px;" onclick="clearFaqFilters()">Clear Filters</button>
+        </div>
+      </div>
+
+      <!-- FAQ MAIN -->
+      <div class="faq-main">
+        <div class="faq-search-row">
+          <input type="text" id="faq-search" placeholder="Search questions and answers..." oninput="renderFAQs()">
+          <button class="faq-add-btn" onclick="openFaqModal()">+ Add FAQ</button>
+        </div>
+        <div class="faq-results-label" id="faq-results-label">Loading...</div>
+        <div id="faq-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- FAQ ADD/EDIT MODAL -->
+<div class="faq-modal-overlay" id="faq-modal-overlay" onclick="closeFaqModalOutside(event)">
+  <div class="faq-modal">
+    <div class="faq-modal-hdr">
+      <span class="faq-modal-title" id="faq-modal-title">Add FAQ</span>
+      <button class="modal-close" onclick="closeFaqModal()">✕</button>
+    </div>
+    <div class="faq-modal-body">
+      <input type="hidden" id="faq-edit-id">
+      <div class="row">
+        <div class="field-label">Question</div>
+        <input type="text" id="faq-q-input" placeholder="What is...">
+      </div>
+      <div class="row">
+        <div class="field-label">Answer — VIO Voice</div>
+        <textarea id="faq-a-input" rows="5" placeholder="Write the answer in VIO brand language. Clinical without being cold. Never defensive. Never name the problem they've been living in."></textarea>
+      </div>
+      <div class="row">
+        <div class="field-label">FAQ Type</div>
+        <select id="faq-type-input">
+          <option value="vio-general">VIO General</option>
+          <option value="treatment">Treatment-Specific</option>
+        </select>
+      </div>
+      <div class="row" id="faq-treatment-row">
+        <div class="field-label">Treatment / Product</div>
+        <input type="text" id="faq-treatment-input" placeholder="e.g. Belotero Balance (+), Dermal Fillers">
+      </div>
+      <div class="row">
+        <div class="field-label">Service Category</div>
+        <div class="tag-input-row" id="faq-cat-chips">
+          <span class="tag-chip" onclick="toggleChip(this,'cat')" data-val="Your Face">Your Face</span>
+          <span class="tag-chip" onclick="toggleChip(this,'cat')" data-val="Your Skin">Your Skin</span>
+          <span class="tag-chip" onclick="toggleChip(this,'cat')" data-val="Your Body">Your Body</span>
+          <span class="tag-chip" onclick="toggleChip(this,'cat')" data-val="Your Wellness">Your Wellness</span>
+          <span class="tag-chip" onclick="toggleChip(this,'cat')" data-val="VIO General">VIO General</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-label">Concerns (select all that apply)</div>
+        <div class="tag-input-row" id="faq-concern-chips">
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Volume Loss">Volume Loss</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Fine Lines">Fine Lines</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Under-Eye">Under-Eye</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Lip Lines">Lip Lines</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Smile Lines">Smile Lines</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Skin Texture">Skin Texture</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Skin Tone">Skin Tone</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Body Contouring">Body Contouring</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Hair Loss">Hair Loss</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Weight / Metabolic">Weight / Metabolic</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="First Timer">First Timer</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Maintenance">Maintenance</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Safety">Safety</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Downtime">Downtime</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Cost">Cost</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="ClubVIO">ClubVIO</span>
+          <span class="tag-chip" onclick="toggleChip(this,'concern')" data-val="Membership">Membership</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-label">Keywords (comma-separated)</div>
+        <input type="text" id="faq-keywords-input" placeholder="e.g. filler, hyaluronic acid, injection, natural results">
+      </div>
+    </div>
+    <div class="faq-modal-foot">
+      <button class="btn-ghost" onclick="closeFaqModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveFaq()">Save FAQ</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title" id="m-title">—</div>
+        <div class="modal-type" id="m-type-label">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-actions">
+      <span class="modal-actions-label">Generate →</span>
+      <button class="btn-sm" onclick="sendToGenerate('reference_card')">Reference Card</button>
+      <button class="btn-sm" onclick="sendToGenerate('service_page_brief')">Service Page Brief</button>
+      <button class="btn-sm" onclick="sendToGenerate('campaign_social')">Campaign Copy</button>
+      <button class="btn-sm danger" onclick="deleteCurrentEntry()">Delete Entry</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let library = JSON.parse(localStorage.getItem('vio_clinical_library') || '[]');
+let currentFilter = 'all';
+let selectedEntry = null;
+let currentModalId = null;
+let ingestMode = 'url';
+
+function saveLib() {
+  localStorage.setItem('vio_clinical_library', JSON.stringify(library));
+  updateCount();
+}
+
+function updateCount() {
+  document.getElementById('lib-count').textContent = library.length + ' entr' + (library.length === 1 ? 'y' : 'ies');
+}
+
+// ── API KEY ──
+function saveKey() {
+  const k = document.getElementById('api-key-input').value.trim();
+  if (k) {
+    sessionStorage.setItem('vio_api_key', k);
+    document.getElementById('key-dot').classList.add('on');
+    document.getElementById('key-label').textContent = 'API key saved for this session';
+  }
+}
+
+function getKey() {
+  return sessionStorage.getItem('vio_api_key') || document.getElementById('api-key-input').value.trim();
+}
+
+window.addEventListener('load', () => {
+  const k = sessionStorage.getItem('vio_api_key');
+  if (k) {
+    document.getElementById('api-key-input').value = k;
+    document.getElementById('key-dot').classList.add('on');
+    document.getElementById('key-label').textContent = 'API key saved for this session';
+  }
+  updateCount();
+  renderLibrary();
+  renderGenEntryList();
+});
+
+// ── TABS ──
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'library') renderLibrary();
+  if (id === 'generate') renderGenEntryList();
+  if (id === 'faq') { initFAQs(); renderFAQs(); }
+}
+
+function switchIngest(mode, btn) {
+  document.querySelectorAll('.ingest-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ingest-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + mode).classList.add('active');
+  ingestMode = mode;
+}
+
+// ── INGEST ──
+async function runIngest() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  let rawContent = '';
+  let entryName = '';
+  let sourceUrl = '';
+
+  if (ingestMode === 'url') {
+    sourceUrl = document.getElementById('url-input').value.trim();
+    rawContent = document.getElementById('url-content').value.trim();
+    if (!rawContent) { alert('Paste the page content to process.'); return; }
+  } else if (ingestMode === 'paste') {
+    rawContent = document.getElementById('paste-input').value.trim();
+    if (!rawContent) { alert('Paste your clinical data.'); return; }
+  } else {
+    // Manual — construct raw content from fields
+    entryName = document.getElementById('m-name').value.trim();
+    if (!entryName) { alert('Enter a product or ingredient name.'); return; }
+    rawContent = [
+      'Name: ' + entryName,
+      'Brand: ' + document.getElementById('m-brand').value,
+      'Type: ' + document.getElementById('m-type').value,
+      'Category: ' + document.getElementById('m-category').value,
+      'Mechanism: ' + document.getElementById('m-mechanism').value,
+      'Treatment Areas: ' + document.getElementById('m-areas').value,
+      'Clinical Facts: ' + document.getElementById('m-facts').value,
+      'Contraindications: ' + document.getElementById('m-contra').value,
+    ].join('\n');
+  }
+
+  const extraContext = document.getElementById('extra-context').value.trim();
+
+  const prog = document.getElementById('ingest-prog');
+  const fill = document.getElementById('ingest-fill');
+  const status = document.getElementById('ingest-status');
+  prog.classList.add('on');
+  fill.style.width = '15%';
+  status.textContent = 'Extracting clinical data...';
+  document.getElementById('ingest-btn').disabled = true;
+
+  const systemPrompt = `You are the clinical data intake system for VIO Med Spa — an Aesthetic Wellness brand with the operating standard "Clinical guidance to live life well." 
+
+Your job is to extract structured clinical intelligence from raw content and return it as a clean JSON object.
+
+VIO's brand context:
+- Category: Aesthetic Wellness (always capitalized)
+- Voice: clinical without being cold, personal without being soft
+- The brand draws on timeless quality (Ralph Lauren register) — never spa language, never hospital language
+- VIO is building clinical relationships over time — not selling one-off treatments
+
+Extract and return ONLY a valid JSON object with these exact keys:
+{
+  "name": "Product/ingredient name — proper noun",
+  "brand": "Manufacturer or brand name",
+  "type": "One of: Filler | Neuromodulator | Laser / Device | Skincare Ingredient | Skincare Product | Body Treatment | Wellness / Metabolic | Peptide | Other",
+  "vio_category": "Which VIO service category this belongs to — e.g. Your Face — Dermal Fillers",
+  "mechanism": "How it works clinically — 2-4 sentences, factual and precise",
+  "treatment_areas": ["array", "of", "treatment", "areas"],
+  "key_differentiator": "What makes this distinct from category competitors — 1-2 sentences",
+  "onset": "When effects are typically seen",
+  "duration": "How long results typically last",
+  "ideal_candidate": "Who is the right candidate — clinical profile, NOT demographic assumptions",
+  "contraindications": ["array", "of", "key", "contraindications"],
+  "safety_notes": "Key safety considerations in plain language",
+  "clinical_evidence": "Any cited clinical trial data or outcomes — be specific if data is present, omit if not",
+  "plain_language_summary": "2-3 sentence plain English summary written as a knowledgeable friend would explain it — warm, clear, zero jargon",
+  "vio_copy_notes": "How this should and should not be talked about in VIO brand language — what language works, what to avoid",
+  "source_url": "${sourceUrl}",
+  "tags": ["array", "of", "3-6", "relevant", "tags"]
+}
+
+${extraContext ? 'Additional context from the brand team: ' + extraContext : ''}
+
+Return ONLY valid JSON. No markdown. No preamble.`;
+
+  try {
+    fill.style.width = '40%';
+    status.textContent = 'Processing with Claude...';
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: rawContent }],
+        system: systemPrompt
+      })
+    });
+
+    fill.style.width = '75%';
+    status.textContent = 'Structuring entry...';
+
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const entry = JSON.parse(clean);
+    entry.id = Date.now().toString();
+    entry.added = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    library.unshift(entry);
+    saveLib();
+    renderLibrary();
+    renderGenEntryList();
+
+    fill.style.width = '100%';
+    status.textContent = '✓ ' + entry.name + ' added to library.';
+    document.getElementById('ingest-btn').disabled = false;
+
+    // Clear inputs
+    document.getElementById('url-input').value = '';
+    document.getElementById('url-content').value = '';
+    document.getElementById('paste-input').value = '';
+    document.getElementById('extra-context').value = '';
+
+  } catch (err) {
+    fill.style.width = '100%';
+    status.textContent = 'Error: ' + err.message;
+    document.getElementById('ingest-btn').disabled = false;
+  }
+}
+
+// ── LIBRARY RENDER ──
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.lib-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLibrary();
+}
+
+function renderLibrary() {
+  const q = (document.getElementById('lib-search')?.value || '').toLowerCase();
+  const grid = document.getElementById('lib-grid');
+  let entries = library.filter(e => {
+    const matchFilter = currentFilter === 'all' || 
+      (e.type || '').includes(currentFilter) || 
+      (e.vio_category || '').toLowerCase().includes(currentFilter.toLowerCase());
+    const matchSearch = !q || (e.name || '').toLowerCase().includes(q) || (e.brand || '').toLowerCase().includes(q) || (e.vio_category || '').toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
+
+  if (!entries.length) {
+    grid.innerHTML = '<div class="lib-empty"><span>' + (library.length ? 'No matches.' : 'The library is empty.') + '</span>' + (library.length ? 'Try a different search or filter.' : 'Add your first clinical entry to get started.') + '</div>';
+    return;
+  }
+
+  grid.innerHTML = entries.map(e => `
+    <div class="entry-card" onclick="openModal('${e.id}')">
+      <div class="entry-card-head">
+        <div class="entry-name">${e.name || '—'}</div>
+        <div class="entry-type">${e.type || '—'}</div>
+      </div>
+      <div class="entry-body">
+        <div class="entry-brand">${e.brand || ''}</div>
+        <div class="entry-summary">${e.plain_language_summary || e.mechanism || ''}</div>
+      </div>
+      <div class="entry-footer">
+        ${(e.tags || []).slice(0, 4).map(t => `<span class="tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── MODAL ──
+function openModal(id) {
+  const e = library.find(x => x.id === id);
+  if (!e) return;
+  currentModalId = id;
+  selectedEntry = e;
+
+  document.getElementById('m-title').textContent = e.name || '—';
+  document.getElementById('m-type-label').textContent = (e.type || '') + (e.vio_category ? ' · ' + e.vio_category : '');
+
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    ${field('Plain Language Summary', e.plain_language_summary)}
+    ${field('Mechanism', e.mechanism)}
+    ${listField('Treatment Areas', e.treatment_areas)}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>${field('Onset', e.onset)}</div>
+      <div>${field('Duration', e.duration)}</div>
+    </div>
+    ${field('Key Differentiator', e.key_differentiator)}
+    ${field('Ideal Candidate', e.ideal_candidate)}
+    ${listField('Contraindications', e.contraindications)}
+    ${field('Safety Notes', e.safety_notes)}
+    ${e.clinical_evidence ? field('Clinical Evidence', e.clinical_evidence) : ''}
+    ${field('VIO Copy Notes', e.vio_copy_notes)}
+    <div class="modal-section">
+      <div class="modal-section-label">Tags</div>
+      <div class="modal-tags">${(e.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    </div>
+    ${e.source_url ? `<div class="modal-section"><div class="modal-section-label">Source</div><div class="modal-text" style="font-size:11px;color:var(--mouse)">${e.source_url}</div></div>` : ''}
+    <div class="modal-section"><div class="modal-section-label">Added</div><div class="modal-text" style="font-size:11px;color:var(--mouse)">${e.added || ''}</div></div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function field(label, val) {
+  if (!val) return '';
+  return `<div class="modal-section"><div class="modal-section-label">${label}</div><div class="modal-text">${val}</div></div>`;
+}
+
+function listField(label, arr) {
+  if (!arr || !arr.length) return '';
+  return `<div class="modal-section"><div class="modal-section-label">${label}</div><ul class="modal-list">${arr.map(i => `<li>${i}</li>`).join('')}</ul></div>`;
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function deleteCurrentEntry() {
+  if (!currentModalId) return;
+  if (!confirm('Remove this entry from the library?')) return;
+  library = library.filter(e => e.id !== currentModalId);
+  saveLib();
+  renderLibrary();
+  renderGenEntryList();
+  closeModal();
+}
+
+function sendToGenerate(type) {
+  closeModal();
+  showTab('generate', document.querySelectorAll('.nav-tab')[2]);
+  if (selectedEntry) {
+    renderGenEntryList(selectedEntry.id);
+    document.getElementById('gen-type').value = type;
+  }
+}
+
+// ── GENERATE ──
+function renderGenEntryList(selectId) {
+  const list = document.getElementById('gen-entry-list');
+  if (!library.length) {
+    list.innerHTML = '<div style="padding:20px;font-size:12px;color:var(--mouse);text-align:center;">Add entries to the library first.</div>';
+    return;
+  }
+  list.innerHTML = library.map(e => `
+    <div class="gen-entry-item ${selectId === e.id ? 'selected' : ''}" onclick="selectGenEntry('${e.id}', this)">
+      <span class="gen-entry-name">${e.name}</span>
+      <span class="gen-entry-cat">${e.type || ''}</span>
+    </div>
+  `).join('');
+  if (selectId) {
+    selectedEntry = library.find(e => e.id === selectId);
+    document.getElementById('gen-sel-label').textContent = selectedEntry?.name || 'None selected';
+  }
+}
+
+function selectGenEntry(id, el) {
+  document.querySelectorAll('.gen-entry-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedEntry = library.find(e => e.id === id);
+  document.getElementById('gen-sel-label').textContent = selectedEntry?.name || 'None selected';
+}
+
+async function runGenerate() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  if (!selectedEntry) { alert('Select a library entry.'); return; }
+
+  const genType = document.getElementById('gen-type').value;
+  const audience = document.getElementById('gen-audience').value.trim();
+  const direction = document.getElementById('gen-direction').value.trim();
+
+  const prog = document.getElementById('gen-prog');
+  const fill = document.getElementById('gen-fill');
+  const status = document.getElementById('gen-status');
+  const output = document.getElementById('gen-output');
+  prog.classList.add('on');
+  fill.style.width = '15%';
+  status.textContent = 'Generating...';
+  document.getElementById('gen-btn').disabled = true;
+  output.classList.remove('visible');
+
+  const entryData = JSON.stringify(selectedEntry, null, 2);
+
+  const outputInstructions = {
+    reference_card: `Generate a clinical reference card as a JSON object with keys: name, brand, type, vio_category, mechanism_plain (plain language, 2-3 sentences), mechanism_clinical (precise clinical language, 2-3 sentences), treatment_areas (array), onset, duration, ideal_candidate, key_differentiator, contraindications (array), safety_notes_plain, clinical_evidence_summary, vio_copy_notes, avoid_language (array of words/phrases never to use for this treatment in VIO copy), approved_language (array of preferred terms and phrases for VIO context). Return ONLY valid JSON.`,
+    
+    service_page_brief: `Generate a service page copy brief as JSON with keys: hero_subline (1 sentence — clinical philosophy, not benefit statement), what_it_is (3 sentences — clinical foundation in VIO voice), is_this_for_you (3 sentences — identity-led, never demographic, never names deficiency, speaks to the life being built), what_to_expect (4-5 sentences — full experience arc from consultation through outcome, close with ongoing relationship), focus_areas (array of 4 objects: number 01-04, name ALL CAPS, description 1 sentence), closing_pull_quote (exactly 2 lines — personal and intentional, no rhyme, no softness). Return ONLY valid JSON.`,
+    
+    campaign_social: `Generate Instagram campaign copy as JSON with keys: caption_long (full editorial caption 120-180 words — VIO voice, desire-forward, opens with a line that earns attention without explaining itself, no hashtags, closes with "Find your VIO."), caption_short (40-60 word version), hook_line (first line only — the stop-scroll line), visual_direction (brief art direction note), cta ("Find your VIO." or "Join the Club." — never anything else). Return ONLY valid JSON.`,
+    
+    campaign_email: `Generate email / ClubVIO copy as JSON with keys: subject_line, preview_text, hero_headline, hero_subline, body_paragraph_1, body_paragraph_2, cta_text, cta_note (brief line under button). Voice: more intimate than social. Still clinical authority. For ClubVIO members specifically unless directed otherwise. Return ONLY valid JSON.`,
+    
+    what_it_is: `Generate the "What It Is" accordion copy zone as JSON with keys: heading (always "What is [Treatment Name]?"), body (3-4 sentences — clinical foundation, what it does, why VIO offers it, what distinguishes it — VIO voice, not a clinical document, not a sales pitch). Return ONLY valid JSON.`,
+    
+    is_this_for_you: `Generate the "Is This For You?" accordion copy zone as JSON with keys: heading (always "Is This For You?"), body (3-4 sentences — speaks entirely to identity and the life being built, NEVER names a deficiency, NEVER references demographics, NEVER uses age — names the life, shows where the treatment belongs inside it). Return ONLY valid JSON.`,
+    
+    what_to_expect: `Generate the "What to Expect" accordion copy zone as JSON with keys: heading (always "What to Expect"), steps (array of 4 objects: step 01-04 title and body — short declarative sentences, VIO experience arc from arrival through ongoing relationship), closing (1 sentence — the relationship that continues after). Return ONLY valid JSON.`,
+    
+    education_blurb: `Generate a client education page blurb as JSON with keys: treatment_name, blurb (3-4 sentences in plain accessible language — knowledgeable friend register, no jargon, never talks down, written for someone who is curious but not yet decided), plain_language_mechanism (1 sentence — how it works in plain English), good_to_know (2-3 short facts a curious person would want to know). Return ONLY valid JSON.`
+  };
+
+  const systemPrompt = `You are the brand copy and clinical intelligence system for VIO Med Spa.
+
+BRAND FOUNDATION:
+Operating standard: "Clinical guidance to live life well."
+Category: Aesthetic Wellness (always capitalized, always a proper noun).
+Brand analog: Ralph Lauren — timeless, ease, standard, quality. IRL references from other industries when the medspa space lacks precedent.
+Voice: Clinical without being cold. Personal without being soft. Unhurried. The guide, not the salesperson.
+
+COPY PRINCIPLES:
+— VIO does not explain itself. No defensive copy.
+— Never name the problem the person has been living in. Name the life they are already building and show them where the treatment belongs inside it.
+— Never contrast against what competitors do wrong. Never use "finally," "unlike others," "not like other medspas."
+— Never anti-aging framing. Use: ages and stages philosophy. Being in love with who you are now.
+— Never shame or flaw language.
+— Game Day points backward at the problem. Ralph Lauren points forward at the standard. VIO is Ralph Lauren register.
+
+ABSOLUTE LANGUAGE PROHIBITIONS (any context):
+protocol · endure · longitudinal/longitudinally · "practice" as ritual · "what your skin tells us" · anti-aging · "feel your best" (vague) · "pampering" · "indulge" · "perks" · "care" (reads hospital) · "transformative" as opening claim
+
+CONDITIONAL LANGUAGE (earned, not automatic):
+"transformative" — earned after mechanism + credibility established, never as opening claim
+"results" — acceptable in browse context, prefer "outcome" at treatment level
+"precision" — do not overuse
+
+APPROVED PLAIN LANGUAGE:
+skin architecture → how your skin works
+dermal level → beneath the surface
+tissue response → how your skin responds
+barrier integrity → without irritating the skin
+
+${audience ? 'AUDIENCE CONTEXT: ' + audience : ''}
+${direction ? 'BRAND DIRECTION: ' + direction : ''}
+
+${outputInstructions[genType]}`;
+
+  try {
+    fill.style.width = '40%';
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: 'Clinical library entry:\n\n' + entryData }]
+      })
+    });
+
+    fill.style.width = '80%';
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+
+    fill.style.width = '100%';
+    status.textContent = '✓ Generated.';
+    document.getElementById('gen-btn').disabled = false;
+
+    renderOutput(genType, result, selectedEntry.name);
+    output.classList.add('visible');
+    document.getElementById('out-label').textContent = getOutputLabel(genType) + ' — ' + selectedEntry.name;
+
+  } catch (err) {
+    fill.style.width = '100%';
+    status.textContent = 'Error: ' + err.message;
+    document.getElementById('gen-btn').disabled = false;
+  }
+}
+
+function getOutputLabel(type) {
+  const labels = {
+    reference_card: 'Clinical Reference Card',
+    service_page_brief: 'Service Page Brief',
+    campaign_social: 'Campaign — Social',
+    campaign_email: 'Campaign — Email',
+    what_it_is: 'What It Is',
+    is_this_for_you: 'Is This For You?',
+    what_to_expect: 'What to Expect',
+    education_blurb: 'Education Page Blurb'
+  };
+  return labels[type] || type;
+}
+
+function renderOutput(type, data, entryName) {
+  const content = document.getElementById('out-content');
+
+  if (type === 'reference_card') {
+    content.innerHTML = `
+      <div class="ref-card">
+        <div class="ref-card-hdr">
+          <div class="ref-card-name">${entryName}</div>
+          <div class="ref-card-brand">${data.brand || ''} · ${data.type || ''}</div>
+        </div>
+        <div class="ref-card-grid">
+          ${refField('VIO Category', data.vio_category)}
+          ${refField('Onset', data.onset)}
+          ${refField('Duration', data.duration)}
+          ${refField('Key Differentiator', data.key_differentiator)}
+        </div>
+        ${refFull('Plain Language Summary', data.mechanism_plain)}
+        ${refFull('Clinical Mechanism', data.mechanism_clinical)}
+        ${refFull('Ideal Candidate', data.ideal_candidate)}
+        ${data.treatment_areas ? refFull('Treatment Areas', data.treatment_areas.join(' · ')) : ''}
+        ${refFull('Safety Notes', data.safety_notes_plain)}
+        ${data.clinical_evidence_summary ? refFull('Clinical Evidence', data.clinical_evidence_summary) : ''}
+        ${refFull('VIO Copy Notes', data.vio_copy_notes)}
+        ${data.avoid_language ? refFull('Language to Avoid', data.avoid_language.join(' · ')) : ''}
+        ${data.approved_language ? refFull('Approved Language', data.approved_language.join(' · ')) : ''}
+        ${data.contraindications ? refFull('Contraindications', data.contraindications.join(' · ')) : ''}
+      </div>`;
+  } else if (type === 'service_page_brief') {
+    content.innerHTML = `
+      ${copyBlock('Hero Subline', data.hero_subline)}
+      ${copyBlock('What It Is', data.what_it_is)}
+      ${copyBlock('Is This For You?', data.is_this_for_you)}
+      ${copyBlock('What to Expect', data.what_to_expect)}
+      ${data.focus_areas ? copyBlock('Focus Areas', data.focus_areas.map(f => f.number + '  ' + f.name + '\n' + f.description).join('\n\n')) : ''}
+      ${copyBlock('Closing Pull Quote', data.closing_pull_quote)}`;
+  } else if (type === 'campaign_social') {
+    content.innerHTML = `
+      ${copyBlock('Hook Line', data.hook_line)}
+      ${copyBlock('Long Caption', data.caption_long)}
+      ${copyBlock('Short Caption', data.caption_short)}
+      ${copyBlock('Visual Direction', data.visual_direction)}
+      ${copyBlock('CTA', data.cta)}`;
+  } else if (type === 'campaign_email') {
+    content.innerHTML = `
+      ${copyBlock('Subject Line', data.subject_line)}
+      ${copyBlock('Preview Text', data.preview_text)}
+      ${copyBlock('Hero Headline', data.hero_headline)}
+      ${copyBlock('Hero Subline', data.hero_subline)}
+      ${copyBlock('Body — P1', data.body_paragraph_1)}
+      ${copyBlock('Body — P2', data.body_paragraph_2)}
+      ${copyBlock('CTA Text', data.cta_text)}
+      ${copyBlock('CTA Note', data.cta_note)}`;
+  } else if (type === 'what_it_is') {
+    content.innerHTML = `
+      ${copyBlock('Heading', data.heading)}
+      ${copyBlock('Body', data.body)}`;
+  } else if (type === 'is_this_for_you') {
+    content.innerHTML = `
+      ${copyBlock('Heading', data.heading)}
+      ${copyBlock('Body', data.body)}`;
+  } else if (type === 'what_to_expect') {
+    content.innerHTML = `
+      ${copyBlock('Heading', data.heading)}
+      ${data.steps ? data.steps.map(s => copyBlock('Step ' + s.step + ' — ' + s.title, s.body)).join('') : ''}
+      ${copyBlock('Closing', data.closing)}`;
+  } else if (type === 'education_blurb') {
+    content.innerHTML = `
+      ${copyBlock('Blurb', data.blurb)}
+      ${copyBlock('Plain Language Mechanism', data.plain_language_mechanism)}
+      ${copyBlock('Good to Know', Array.isArray(data.good_to_know) ? data.good_to_know.join('\n') : data.good_to_know)}`;
+  } else {
+    content.innerHTML = `<pre style="font-size:12px;line-height:1.7;white-space:pre-wrap">${JSON.stringify(data, null, 2)}</pre>`;
+  }
+}
+
+function refField(label, val) {
+  if (!val) return '';
+  return `<div class="ref-card-field"><div class="ref-card-field-label">${label}</div><div class="ref-card-field-val">${val}</div></div>`;
+}
+
+function refFull(label, val) {
+  if (!val) return '';
+  return `<div class="ref-card-full"><div class="ref-card-field-label">${label}</div><div class="ref-card-field-val">${val}</div></div>`;
+}
+
+function copyBlock(label, val) {
+  if (!val) return '';
+  const id = 'cb-' + Math.random().toString(36).slice(2);
+  return `
+    <div class="copy-block">
+      <div class="copy-block-label">
+        <span>${label}</span>
+        <button class="copy-btn" onclick="copyText('${id}')">Copy</button>
+      </div>
+      <div class="copy-block-text" id="${id}">${val}</div>
+    </div>`;
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim());
+}
+
+function copyOutput() {
+  const el = document.getElementById('out-content');
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText.trim());
+}
+
+// ── FAQ SYSTEM ──
+let faqDB = JSON.parse(localStorage.getItem('vio_faq_library') || 'null');
+let faqFilters = { view: 'all', category: null, concern: null, treatment: null };
+let faqEditId = null;
+
+// ── DEFAULT FAQs (pre-seeded) ──
+const DEFAULT_FAQS = [
+
+  // ── VIO GENERAL ──
+  { id:'vg1', type:'vio-general', question:'What is VIO Med Spa?', answer:'VIO is an Aesthetic Wellness medspa — a place built on the standard that clinical expertise and genuine warmth belong in the same room. We offer a full menu of aesthetic and wellness services across injectable treatments, skin health, body, and metabolic wellness. Every touchpoint — from your first consultation to your ongoing relationship with your provider — is guided by one operating standard: clinical guidance to live life well.', categories:['VIO General'], concerns:['First Timer'], treatment:'', keywords:'vio, about, medspa, aesthetic wellness, what is vio' },
+
+  { id:'vg2', type:'vio-general', question:'What makes VIO different from other medspas?', answer:'VIO is building the category of Aesthetic Wellness — not just offering services, but offering a relationship with your body that compounds over time. The clinical standard is the same across every location. Your provider knows your history, your goals, and the version of yourself you are becoming. That is not common. It is the standard we hold ourselves to.', categories:['VIO General'], concerns:['First Timer'], treatment:'', keywords:'vio, different, unique, standard, medspa, aesthetic wellness' },
+
+  { id:'vg3', type:'vio-general', question:'What is ClubVIO?', answer:'ClubVIO is VIO\'s membership program — designed for people who approach their body the way VIO does: intentionally, consistently, over time. Members draw upon a monthly balance of VIO credit, access preferred rates across the full service menu, and build a relationship with the practice that deepens with every visit. There are two tiers — Signature and Elite — and a limited Founding Member designation at select locations. Membership is not a discount program. It is the architecture for a long-term wellness relationship.', categories:['VIO General'], concerns:['ClubVIO','Membership'], treatment:'', keywords:'clubvio, membership, club, founding member, signature, elite, monthly' },
+
+  { id:'vg4', type:'vio-general', question:'How do I become a Founding Member of ClubVIO?', answer:'Founding Member status is available at select VIO locations and is limited to 150 members per location. Founding Members lock in the Signature membership rate permanently and are first to be considered for new services, events, and experiences at their location. A select number of Founding Member spots remain. The conversation starts at your VIO.', categories:['VIO General'], concerns:['ClubVIO','Membership','First Timer'], treatment:'', keywords:'founding member, clubvio, limited, join, membership' },
+
+  { id:'vg5', type:'vio-general', question:'Do I need a consultation before my first treatment?', answer:'Yes — and it matters. Your first visit at VIO is a clinical conversation, not a transaction. We discuss your history, your goals, and the pathway that makes sense for where you are and where you are headed. There is no obligation to book after a consultation. What there is, is clarity.', categories:['VIO General'], concerns:['First Timer'], treatment:'', keywords:'consultation, first visit, first time, appointment, booking' },
+
+  { id:'vg6', type:'vio-general', question:'Are VIO providers qualified to perform these treatments?', answer:'Every VIO provider is a licensed and trained clinical professional — nurse practitioners, registered nurses, and physician assistants with specialized training in aesthetic medicine. VIO holds an annual clinical training event, maintains an advisory board, and operates a 300-person clinical collective that informs standards across all locations. Clinical credibility is not a marketing line at VIO. It is the operating standard.', categories:['VIO General'], concerns:['Safety','First Timer'], treatment:'', keywords:'providers, qualifications, licensed, trained, clinical, safety, nurses, injectors' },
+
+  { id:'vg7', type:'vio-general', question:'How do I find my nearest VIO location?', answer:'VIO has locations across Ohio, Boston, New York, Texas, Florida, and Tennessee — with more on the way. Use Find Your VIO at viomedspa.com to locate the nearest location and connect with your team.', categories:['VIO General'], concerns:['First Timer'], treatment:'', keywords:'location, near me, find vio, where, states, ohio, boston, new york, texas, florida, tennessee' },
+
+  // ── DERMAL FILLERS — GENERAL ──
+  { id:'df1', type:'treatment', question:'What are dermal fillers?', answer:'Dermal fillers are injectable treatments that restore volume, smooth lines, and refine facial contours. Most are made of hyaluronic acid — a substance that occurs naturally in the skin — and are absorbed by the body over time. At VIO, fillers are part of a considered aesthetic plan, not a standalone procedure. Your provider maps your facial structure, discusses your goals, and places filler with the precision of someone who understands both the science and the artistry of the face.', categories:['Your Face'], concerns:['Volume Loss','Fine Lines','First Timer'], treatment:'Dermal Fillers', keywords:'filler, dermal filler, hyaluronic acid, injectable, volume, what is filler' },
+
+  { id:'df2', type:'treatment', question:'How long do dermal fillers last?', answer:'Most hyaluronic acid fillers last between six months and two years, depending on the product, the area treated, and how your body metabolizes the filler. Areas with more movement — like lips and perioral lines — tend to metabolize filler more quickly. Your VIO provider will give you a realistic timeline and a plan for maintaining your outcome over time.', categories:['Your Face'], concerns:['Volume Loss','Fine Lines','Maintenance'], treatment:'Dermal Fillers', keywords:'how long, duration, filler last, longevity, results, outcome, months' },
+
+  { id:'df3', type:'treatment', question:'Will filler make me look different — or unnatural?', answer:'The right filler, placed correctly, should make you look like yourself — rested, defined, and at ease. What you notice when filler is done well is not the filler. It is the version of your face that was always there. At VIO, the conversation about natural-looking outcomes begins at your consultation and is part of every decision we make together.', categories:['Your Face'], concerns:['Volume Loss','First Timer','Fine Lines'], treatment:'Dermal Fillers', keywords:'natural, fake, duck, unnatural, look different, obvious, filler gone wrong' },
+
+  { id:'df4', type:'treatment', question:'Is there downtime after dermal fillers?', answer:'Most people return to their regular day immediately after filler treatment. You may notice some swelling, redness, or bruising at the injection sites for a few days — this is normal and typically resolves within a week. For the first 24 hours, we ask that you avoid strenuous activity, prolonged sun or heat exposure, aspirin or NSAIDs, and alcohol. Your provider will walk you through everything before you leave.', categories:['Your Face'], concerns:['Downtime','Safety'], treatment:'Dermal Fillers', keywords:'downtime, recovery, bruising, swelling, after filler, post treatment, aftercare' },
+
+  { id:'df5', type:'treatment', question:'Do dermal fillers hurt?', answer:'Most people describe the sensation as mild pressure — not pain. Your VIO provider applies topical numbing prior to treatment, and many filler formulations contain lidocaine, which further reduces discomfort during the injection. The experience is brief. Most treatments are complete in under thirty minutes.', categories:['Your Face'], concerns:['First Timer','Safety'], treatment:'Dermal Fillers', keywords:'pain, hurt, uncomfortable, numbing, lidocaine, needle, injection pain' },
+
+  { id:'df6', type:'treatment', question:'How are dermal fillers different from Botox or neuromodulators?', answer:'Fillers and neuromodulators do different things, and at VIO, they are often part of the same considered plan. Fillers restore volume and smooth lines that exist at rest — structural work. Neuromodulators like Botox® and Dysport® address dynamic movement — softening the expression lines that appear when you animate. Your provider will explain where each plays a role in your specific facial architecture.', categories:['Your Face'], concerns:['First Timer','Fine Lines'], treatment:'Dermal Fillers', keywords:'botox, neuromodulator, difference, filler vs botox, wrinkle relaxer, dysport' },
+
+  { id:'df7', type:'treatment', question:'What areas can dermal fillers treat?', answer:'At VIO, fillers are placed with intention across a range of areas: smile lines, under-eye hollows, lip lines and volume, chin definition, cheek structure, and perioral lines. Each area has its own clinical considerations. Your provider maps the face as a whole — not as isolated problems — and places filler where it serves the overall balance.', categories:['Your Face'], concerns:['Volume Loss','Under-Eye','Lip Lines','Smile Lines'], treatment:'Dermal Fillers', keywords:'areas, treat, where, lips, cheeks, under eye, nasolabial, smile lines, chin, perioral' },
+
+  // ── BELOTERO BALANCE ──
+  { id:'bb1', type:'treatment', question:'What is Belotero Balance (+)?', answer:'Belotero Balance (+) is a hyaluronic acid filler manufactured by Merz Aesthetics — formulated with a distinctive cohesion profile that allows it to integrate directly into skin tissue rather than sitting beneath it. This makes it particularly well-suited for delicate areas where other fillers can look or feel heavy: vertical lip lines, under-eye hollows, and fine surface lines. At VIO, it is selected when the precision of the placement demands a product with high cohesion and natural flex.', categories:['Your Face'], concerns:['Fine Lines','Under-Eye','Lip Lines','Volume Loss'], treatment:'Belotero Balance (+)', keywords:'belotero, belotero balance, merz, filler, hyaluronic acid, what is belotero' },
+
+  { id:'bb2', type:'treatment', question:'What makes Belotero different from other HA fillers?', answer:'Belotero Balance (+) is manufactured for high cohesion, low viscosity, and low elasticity — which means it spreads more softly and integrates more seamlessly into skin tissue than thicker fillers. In areas of significant facial movement, or in the delicate under-eye and perioral zones, this translates to outcomes that look and feel natural without compromising your expression. It is a precision tool for specific anatomical situations.', categories:['Your Face'], concerns:['Fine Lines','Under-Eye','Lip Lines'], treatment:'Belotero Balance (+)', keywords:'belotero vs other fillers, difference, unique, cohesion, viscosity, soft, integrate' },
+
+  { id:'bb3', type:'treatment', question:'How soon do Belotero results appear?', answer:'Belotero Balance (+) smooths lines and hollows immediately upon injection. The full outcome settles as any minor swelling resolves — typically within a few days. Results in the treated areas last six months or more, depending on the area and individual factors.', categories:['Your Face'], concerns:['Fine Lines','Under-Eye','Lip Lines'], treatment:'Belotero Balance (+)', keywords:'belotero results, how soon, immediately, timeline, when will I see, onset' },
+
+  { id:'bb4', type:'treatment', question:'Is Belotero a good option for first-time filler clients?', answer:'It can be. Belotero Balance (+)\'s soft, integrating formula makes it well-suited for first-time clients who want a subtle, natural outcome — particularly in fine-line or under-eye areas where a heavier product would be inappropriate. Your VIO consultation is where that determination is made. We consider your anatomy, your goals, and the right product for the right area — not the other way around.', categories:['Your Face'], concerns:['First Timer','Fine Lines','Under-Eye'], treatment:'Belotero Balance (+)', keywords:'belotero first time, beginner, new to filler, first filler, starting filler, natural' },
+
+  { id:'bb5', type:'treatment', question:'What are the potential side effects of Belotero Balance (+)?', answer:'Common side effects include temporary swelling, redness, bruising, tenderness, or itching at the injection site. These typically resolve within seven days. Belotero Balance (+) is FDA-approved and has been evaluated in clinical studies for safety. As with all injectable treatments, there are rare but serious risks associated with vascular injection — which is why provider selection and clinical training matter. Your VIO provider will review all considerations with you at your consultation.', categories:['Your Face'], concerns:['Safety','Downtime'], treatment:'Belotero Balance (+)', keywords:'belotero side effects, risks, bruising, swelling, safe, fda approved, safety' },
+
+  { id:'bb6', type:'treatment', question:'Can Belotero be combined with other treatments?', answer:'Yes. Belotero Balance (+) is frequently used alongside other filler products or neuromodulators as part of a broader facial plan. It complements collagen-stimulating fillers well — addressing surface lines while a regenerative product addresses deeper structural volume. Your VIO provider will design a plan that considers each product\'s role in the overall outcome, not just the single area being treated.', categories:['Your Face'], concerns:['Maintenance','Volume Loss'], treatment:'Belotero Balance (+)', keywords:'belotero combination, combine, multiple treatments, botox and filler, radiesse, combination treatment' },
+
+  { id:'bb7', type:'treatment', question:'How many syringes of Belotero will I need?', answer:'That depends entirely on your facial anatomy, the areas being addressed, and the degree of correction you are looking for. There is no standard answer — and at VIO, we do not start from a quantity. We start from your face. Your provider will give you a realistic recommendation during your consultation, and you will understand exactly what is being placed, where, and why.', categories:['Your Face'], concerns:['Cost','First Timer','Volume Loss'], treatment:'Belotero Balance (+)', keywords:'how many syringes, amount, how much filler, cost, price, quantity, units' }
+];
+
+function initFAQs() {
+  if (!faqDB) {
+    faqDB = JSON.parse(JSON.stringify(DEFAULT_FAQS));
+    saveFAQs();
+  }
+}
+
+function saveFAQs() {
+  localStorage.setItem('vio_faq_library', JSON.stringify(faqDB));
+}
+
+// ── FILTER STATE ──
+function faqFilter(val, key, el) {
+  if (key === 'view') {
+    faqFilters.view = val;
+    faqFilters.category = null;
+    faqFilters.concern = null;
+    faqFilters.treatment = null;
+    document.querySelectorAll('.faq-filter-item').forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
+  } else if (key === 'category') {
+    faqFilters.category = faqFilters.category === val ? null : val;
+    faqFilters.view = 'all';
+    document.querySelectorAll('.faq-filter-item').forEach(i => i.classList.remove('active'));
+    if (faqFilters.category && el) el.classList.add('active');
+  } else if (key === 'concern') {
+    faqFilters.concern = faqFilters.concern === val ? null : val;
+    document.querySelectorAll('#concern-filters .faq-filter-item').forEach(i => i.classList.remove('active'));
+    if (faqFilters.concern && el) el.classList.add('active');
+  } else if (key === 'treatment') {
+    faqFilters.treatment = faqFilters.treatment === val ? null : val;
+    document.querySelectorAll('#treatment-filters .faq-filter-item').forEach(i => i.classList.remove('active'));
+    if (faqFilters.treatment && el) el.classList.add('active');
+  }
+  renderFAQs();
+}
+
+function clearFaqFilters() {
+  faqFilters = { view: 'all', category: null, concern: null, treatment: null };
+  document.querySelectorAll('.faq-filter-item').forEach(i => i.classList.remove('active'));
+  document.querySelector('.faq-filter-item[data-val="all"]')?.classList.add('active');
+  document.getElementById('faq-search').value = '';
+  renderFAQs();
+}
+
+function getFilteredFAQs() {
+  const q = (document.getElementById('faq-search')?.value || '').toLowerCase();
+  return faqDB.filter(f => {
+    if (faqFilters.view === 'vio-general' && f.type !== 'vio-general') return false;
+    if (faqFilters.view === 'treatment' && f.type !== 'treatment') return false;
+    if (faqFilters.category && !(f.categories || []).includes(faqFilters.category)) return false;
+    if (faqFilters.concern && !(f.concerns || []).includes(faqFilters.concern)) return false;
+    if (faqFilters.treatment && (f.treatment || '').toLowerCase() !== faqFilters.treatment.toLowerCase()) return false;
+    if (q) {
+      const searchable = (f.question + ' ' + f.answer + ' ' + (f.keywords || '') + ' ' + (f.treatment || '')).toLowerCase();
+      if (!searchable.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function renderFAQs() {
+  if (!faqDB) { initFAQs(); return; }
+  updateFaqCounts();
+  buildDynamicFilters();
+
+  const filtered = getFilteredFAQs();
+  const list = document.getElementById('faq-list');
+  const label = document.getElementById('faq-results-label');
+  label.textContent = filtered.length + ' question' + (filtered.length !== 1 ? 's' : '');
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="faq-empty"><span>No results.</span>Try a different filter or keyword.</div>';
+    return;
+  }
+
+  // Group by type+treatment
+  const groups = {};
+  filtered.forEach(f => {
+    const key = f.type === 'vio-general' ? '__vio_general__' : (f.treatment || 'General Treatment FAQs');
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(f);
+  });
+
+  // VIO General first
+  const orderedKeys = [];
+  if (groups['__vio_general__']) orderedKeys.push('__vio_general__');
+  Object.keys(groups).filter(k => k !== '__vio_general__').sort().forEach(k => orderedKeys.push(k));
+
+  list.innerHTML = orderedKeys.map(key => {
+    const items = groups[key];
+    const groupLabel = key === '__vio_general__' ? 'VIO General' : key;
+    const badge = key === '__vio_general__' ? 'General' : 'Treatment';
+    return `
+      <div class="faq-group">
+        <div class="faq-group-title">
+          ${groupLabel}
+          <span class="faq-group-badge">${badge}</span>
+        </div>
+        ${items.map(f => faqItemHTML(f)).join('')}
+      </div>`;
+  }).join('');
+}
+
+function faqItemHTML(f) {
+  const cats = (f.categories || []).map(c => `<span class="faq-tag-pill">${c}</span>`).join('');
+  const concerns = (f.concerns || []).map(c => `<span class="faq-tag-pill">${c}</span>`).join('');
+  return `
+    <div class="faq-item" id="faq-${f.id}">
+      <div class="faq-q" onclick="toggleFaq('${f.id}')">
+        <div>
+          <div class="faq-q-text">${f.question}</div>
+          <div class="faq-q-meta">${cats}${concerns}</div>
+        </div>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-text">${f.answer}</div>
+        <div class="faq-a-actions">
+          <button class="btn-sm" onclick="editFaq('${f.id}')">Edit</button>
+          <button class="btn-sm" onclick="copyFaqAnswer('${f.id}')">Copy Answer</button>
+          <button class="btn-sm danger" onclick="deleteFaq('${f.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleFaq(id) {
+  const el = document.getElementById('faq-' + id);
+  if (el) el.classList.toggle('open');
+}
+
+function copyFaqAnswer(id) {
+  const f = faqDB.find(x => x.id === id);
+  if (f) navigator.clipboard.writeText(f.answer);
+}
+
+function deleteFaq(id) {
+  if (!confirm('Remove this FAQ?')) return;
+  faqDB = faqDB.filter(f => f.id !== id);
+  saveFAQs();
+  renderFAQs();
+}
+
+function updateFaqCounts() {
+  document.getElementById('fc-all').textContent = faqDB.length;
+  document.getElementById('fc-general').textContent = faqDB.filter(f => f.type === 'vio-general').length;
+  document.getElementById('fc-treatment').textContent = faqDB.filter(f => f.type === 'treatment').length;
+  document.getElementById('fc-face').textContent = faqDB.filter(f => (f.categories||[]).includes('Your Face')).length;
+  document.getElementById('fc-skin').textContent = faqDB.filter(f => (f.categories||[]).includes('Your Skin')).length;
+  document.getElementById('fc-body').textContent = faqDB.filter(f => (f.categories||[]).includes('Your Body')).length;
+  document.getElementById('fc-wellness').textContent = faqDB.filter(f => (f.categories||[]).includes('Your Wellness')).length;
+}
+
+function buildDynamicFilters() {
+  // Concerns
+  const allConcerns = [...new Set(faqDB.flatMap(f => f.concerns || []))].sort();
+  const concernDiv = document.getElementById('concern-filters');
+  if (concernDiv) {
+    concernDiv.innerHTML = allConcerns.map(c => {
+      const count = faqDB.filter(f => (f.concerns||[]).includes(c)).length;
+      const active = faqFilters.concern === c ? 'active' : '';
+      return `<div class="faq-filter-item ${active}" onclick="faqFilter('${c}','concern',this)">${c} <span class="faq-filter-count">${count}</span></div>`;
+    }).join('');
+  }
+
+  // Treatments
+  const allTreatments = [...new Set(faqDB.filter(f => f.treatment).map(f => f.treatment))].sort();
+  const treatDiv = document.getElementById('treatment-filters');
+  if (treatDiv) {
+    treatDiv.innerHTML = allTreatments.map(t => {
+      const count = faqDB.filter(f => f.treatment === t).length;
+      const active = faqFilters.treatment === t ? 'active' : '';
+      return `<div class="faq-filter-item ${active}" onclick="faqFilter('${t}','treatment',this)">${t} <span class="faq-filter-count">${count}</span></div>`;
+    }).join('');
+  }
+}
+
+// ── FAQ MODAL ──
+function openFaqModal(id) {
+  faqEditId = id || null;
+  document.getElementById('faq-modal-title').textContent = id ? 'Edit FAQ' : 'Add FAQ';
+  document.getElementById('faq-edit-id').value = id || '';
+
+  if (id) {
+    const f = faqDB.find(x => x.id === id);
+    if (!f) return;
+    document.getElementById('faq-q-input').value = f.question;
+    document.getElementById('faq-a-input').value = f.answer;
+    document.getElementById('faq-type-input').value = f.type;
+    document.getElementById('faq-treatment-input').value = f.treatment || '';
+    document.getElementById('faq-keywords-input').value = f.keywords || '';
+    // Reset chips
+    document.querySelectorAll('#faq-cat-chips .tag-chip').forEach(c => {
+      c.classList.toggle('selected', (f.categories||[]).includes(c.dataset.val));
+    });
+    document.querySelectorAll('#faq-concern-chips .tag-chip').forEach(c => {
+      c.classList.toggle('selected', (f.concerns||[]).includes(c.dataset.val));
+    });
+  } else {
+    document.getElementById('faq-q-input').value = '';
+    document.getElementById('faq-a-input').value = '';
+    document.getElementById('faq-type-input').value = 'vio-general';
+    document.getElementById('faq-treatment-input').value = '';
+    document.getElementById('faq-keywords-input').value = '';
+    document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('selected'));
+  }
+
+  toggleTreatmentRow();
+  document.getElementById('faq-modal-overlay').classList.add('open');
+}
+
+function editFaq(id) { openFaqModal(id); }
+
+function toggleTreatmentRow() {
+  const type = document.getElementById('faq-type-input').value;
+  document.getElementById('faq-treatment-row').style.display = type === 'treatment' ? 'block' : 'none';
+}
+document.addEventListener('change', e => { if (e.target.id === 'faq-type-input') toggleTreatmentRow(); });
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+}
+
+function closeFaqModal() {
+  document.getElementById('faq-modal-overlay').classList.remove('open');
+}
+
+function closeFaqModalOutside(e) {
+  if (e.target === document.getElementById('faq-modal-overlay')) closeFaqModal();
+}
+
+function saveFaq() {
+  const q = document.getElementById('faq-q-input').value.trim();
+  const a = document.getElementById('faq-a-input').value.trim();
+  if (!q || !a) { alert('Question and answer are required.'); return; }
+
+  const cats = [...document.querySelectorAll('#faq-cat-chips .tag-chip.selected')].map(c => c.dataset.val);
+  const concerns = [...document.querySelectorAll('#faq-concern-chips .tag-chip.selected')].map(c => c.dataset.val);
+
+  const entry = {
+    id: faqEditId || ('faq-' + Date.now()),
+    type: document.getElementById('faq-type-input').value,
+    question: q,
+    answer: a,
+    treatment: document.getElementById('faq-treatment-input').value.trim(),
+    categories: cats,
+    concerns: concerns,
+    keywords: document.getElementById('faq-keywords-input').value.trim()
+  };
+
+  if (faqEditId) {
+    const idx = faqDB.findIndex(f => f.id === faqEditId);
+    if (idx > -1) faqDB[idx] = entry;
+  } else {
+    faqDB.unshift(entry);
+  }
+
+  saveFAQs();
+  closeFaqModal();
+  renderFAQs();
+}
+
+// Init FAQ on load
+window.addEventListener('load', () => {
+  initFAQs();
+});
+
+updateCount();
+</body>
+</html>

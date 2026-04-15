@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIO — 360° Control Tower 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* V6 Brand Palette — exact values, do not substitute */
+    --ink: #030303;
+    --lotion: #FEFFF9;
+    --greige: #E9E3DC;
+    --alabaster: #F2F0E6;
+    --mouse: #B29D92;
+    /* ClubVIO only */
+    --bronze: #8B6914;
+    /* Functional — internal document use */
+    --ink-mid: #3A3830;
+    --ink-light: #6B6860;
+    --greige-mid: #D0C8B8;
+    --danger: #7A3028;
+    --danger-bg: #FAF0EE;
+    --warn-bg: #FBF5EB;
+    --warn: #6B6860;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--lotion);
+    color: var(--ink);
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 60px;
+    background: var(--lotion);
+    border-bottom: 1px solid var(--greige);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(139,110,58,0.04) 100%);
+    pointer-events: none;
+  }
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .wordmark {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  .doc-tag {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .cover-body {
+    max-width: 700px;
+  }
+  .cover-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 24px;
+  }
+  .cover-headline {
+    font-family: var(--serif);
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--ink);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+  .cover-sub {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.9;
+    max-width: 520px;
+    border-left: 1px solid var(--bronze);
+    padding-left: 20px;
+  }
+  .cover-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 40px;
+    border-top: 1px solid var(--greige);
+  }
+  .cover-tagline {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--mouse);
+  }
+  .cover-std {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+
+  /* ── NAV ── */
+  .nav-shell {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--alabaster);
+    border-bottom: 1px solid var(--greige);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 60px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-brand {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    padding: 18px 28px 18px 0;
+    margin-right: 24px;
+    border-right: 1px solid var(--greige);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tab-btn {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    padding: 18px 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+    flex-shrink: 0;
+  }
+  .tab-btn:hover { color: var(--ink-mid); }
+  .tab-btn.active {
+    color: var(--ink);
+    border-bottom-color: var(--bronze);
+  }
+
+  /* ── PANELS ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── BAND ── */
+  .band {
+    padding: 56px 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    border-bottom: 1px solid var(--greige);
+    background: var(--alabaster);
+  }
+  .band-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 16px;
+  }
+  .band h2 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .band p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink-light);
+    max-width: 540px;
+    line-height: 1.85;
+  }
+  .band-meta { text-align: right; }
+  .band-meta .meta-lbl {
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 6px;
+  }
+  .band-meta .meta-val {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--mouse);
+  }
+
+  /* ── WRAP ── */
+  .wrap { padding: 48px 60px; background: var(--lotion); }
+  .wrap-dark { padding: 48px 60px; background: var(--lotion); }
+
+  /* ── SECTION LABEL ── */
+  .sl {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 20px;
+  }
+
+  /* ── ARC TABLE ── */
+  .arc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--greige);
+    border: 1px solid var(--greige);
+    margin-bottom: 40px;
+  }
+  .arc-cell {
+    background: var(--lotion);
+    padding: 24px 20px;
+  }
+  .arc-month {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+  }
+  .arc-theme {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .arc-note {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+  .arc-cell.active-now {
+    background: var(--ink);
+  }
+  .arc-cell.active-now .arc-month { color: var(--mouse); }
+  .arc-cell.active-now .arc-theme { color: var(--lotion); }
+  .arc-cell.active-now .arc-note { color: rgba(254,255,249,0.5); }
+
+  /* ── MASTER TABLE ── */
+  .master-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+  .master-table thead th {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--greige);
+    background: var(--alabaster);
+  }
+  .master-table tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--greige);
+    vertical-align: top;
+    color: var(--ink-mid);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+  .master-table tbody tr:hover td { background: var(--alabaster); }
+  .master-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ── PILLS ── */
+  .pill {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+  }
+  .pill-brand { background: var(--greige); color: var(--ink-mid); border: 1px solid var(--greige-mid); }
+  .pill-social { background: var(--alabaster); color: var(--ink-mid); }
+  .pill-pr { background: var(--alabaster); color: var(--ink-light); }
+  .pill-digital { background: var(--greige); color: var(--ink-mid); }
+  .pill-ops { background: var(--danger-bg); color: var(--danger); }
+  .pill-flag { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(122,48,40,0.2); }
+  .pill-ok { background: rgba(58,110,58,0.1); color: #2A5A2A; }
+  .pill-warn { background: var(--warn-bg); color: var(--warn); }
+
+  /* ── FLAG NOTICE ── */
+  .flag-notice {
+    background: var(--danger-bg);
+    border: 1px solid rgba(122,48,40,0.2);
+    border-left: 3px solid var(--danger);
+    padding: 14px 18px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--danger);
+    line-height: 1.7;
+  }
+  .flag-notice strong { font-weight: 500; }
+
+  /* ── OK NOTICE ── */
+  .ok-notice {
+    background: rgba(40,80,40,0.05);
+    border-left: 3px solid #2A5A2A;
+    padding: 12px 18px;
+    font-size: 12px;
+    font-weight: 300;
+    color: #2A5A2A;
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  /* ── SWIMLANE ── */
+  .swimlane {
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr;
+    border: 1px solid var(--greige);
+    margin-bottom: 2px;
+  }
+  .sl-label {
+    padding: 16px;
+    border-right: 1px solid var(--greige);
+    display: flex;
+    align-items: center;
+    background: var(--alabaster);
+  }
+  .sl-label-text {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .sl-col {
+    padding: 18px 20px;
+    border-right: 1px solid var(--greige);
+  }
+  .sl-col:last-child { border-right: none; }
+  .sl-col-head {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 10px;
+  }
+  .sl-item {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(228,221,208,0.5);
+  }
+  .sl-item:last-child { border-bottom: none; }
+
+  /* ── MILESTONE TIMELINE ── */
+  .tline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--greige-mid); margin-bottom: 40px; }
+  .tblock {
+    background: var(--lotion);
+    padding: 24px 22px;
+  }
+  .tblock.dark { background: var(--ink); }
+  .tblock-month {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 6px;
+  }
+  .tblock.dark .tblock-month { color: var(--mouse); }
+  .tblock-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .tblock.dark .tblock-title { color: var(--lotion); }
+  .tblock ul { list-style: none; padding: 0; }
+  .tblock ul li {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-light);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--greige);
+    line-height: 1.6;
+  }
+  .tblock.dark ul li { color: rgba(254,255,249,0.5); border-bottom-color: rgba(255,255,255,0.06); }
+  .tblock ul li:last-child { border-bottom: none; }
+
+  /* ── GUARDRAIL BOX ── */
+  .guardrail {
+    background: var(--ink-mid);
+    padding: 32px 36px;
+    border-left: 3px solid var(--mouse);
+    margin-bottom: 32px;
+  }
+  .guardrail-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 14px;
+  }
+  .guardrail-body {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--lotion);
+    line-height: 1.6;
+  }
+
+  /* ── DIVIDER ── */
+  .div-rule {
+    border: none;
+    border-top: 1px solid var(--greige);
+    margin: 36px 0;
+  }
+  .div-rule-dark {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin: 36px 0;
+  }
+
+  /* ── OVERVIEW PILLARS ── */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--greige);
+    border: 1px solid var(--greige);
+    margin-bottom: 40px;
+  }
+  .pillar-cell {
+    background: var(--lotion);
+    padding: 22px 18px;
+  }
+  .pillar-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: rgba(185,157,146,0.3);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .pillar-name {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+  }
+  .pillar-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+
+  /* ── CONFLICT CARD ── */
+  .conflict-card {
+    border: 1px solid rgba(122,48,40,0.2);
+    background: var(--danger-bg);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+  .conflict-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .conflict-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--danger);
+    letter-spacing: 0.1em;
+  }
+  .conflict-body {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+  .conflict-fix {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2A5A2A;
+  }
+
+  /* ── DEADLINE TABLE ── */
+  .deadline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 36px;
+  }
+  .deadline-table thead th {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    background: var(--greige);
+    color: var(--ink-mid);
+    border-bottom: 1px solid var(--greige-mid);
+  }
+  .deadline-table tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--greige);
+    color: var(--ink-mid);
+    font-weight: 300;
+    vertical-align: top;
+    line-height: 1.65;
+    background: var(--lotion);
+  }
+  .deadline-table tbody tr:hover td { background: var(--alabaster); }
+  .vio-dl { color: var(--bronze) !important; font-weight: 500 !important; }
+  .agency-dl { color: var(--mouse) !important; }
+
+  /* ── DOWNLOAD BTN ── */
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lotion);
+    background: var(--ink);
+    border: none;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .dl-btn:hover { opacity: 0.75; }
+
+  /* ── POST CARD ── */
+  .post-card {
+    background: var(--lotion);
+    border: 1px solid var(--greige);
+    margin-bottom: 12px;
+  }
+  .post-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--greige);
+    background: var(--alabaster);
+  }
+  .post-card-date {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .post-card-type {
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mouse);
+  }
+  .post-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .post-card-col {
+    padding: 18px 20px;
+    border-right: 1px solid var(--greige);
+  }
+  .post-card-col:last-child { border-right: none; }
+  .post-card-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 8px;
+  }
+  .post-card-overlay {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .post-card-caption {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+  .post-card-tags {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--mouse);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .post-card-note {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+
+  /* ── RETAIL KIT ── */
+  .kit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--greige);
+    border: 1px solid var(--greige);
+    margin-bottom: 36px;
+  }
+  .kit-cell {
+    background: var(--lotion);
+    padding: 22px 18px;
+  }
+  .kit-num {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(185,157,146,0.25);
+    margin-bottom: 8px;
+  }
+  .kit-name {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 6px;
+  }
+  .kit-product {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .kit-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+
+  /* ── LAYERS TAB ── */
+  .layer-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 20px 60px;
+    background: var(--alabaster);
+    border-bottom: 1px solid var(--greige);
+    align-items: center;
+  }
+  .layer-controls-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  .layer-toggle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border: 1px solid var(--greige-mid);
+    background: var(--lotion);
+    color: var(--mouse);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .layer-toggle .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .layer-toggle.on { color: var(--ink); border-color: currentColor; }
+  .layer-toggle.on.l-clinical { border-color: var(--bronze); color: var(--bronze); background: rgba(139,110,58,0.06); }
+  .layer-toggle.on.l-lifestyle { border-color: #7A8A6A; color: #5A6A4A; background: rgba(90,106,74,0.06); }
+  .layer-toggle.on.l-pr { border-color: #6A7A8A; color: #4A5A6A; background: rgba(74,90,106,0.06); }
+  .layer-toggle.on.l-retail { border-color: #8A7A6A; color: #6A5A4A; background: rgba(106,90,74,0.06); }
+
+  .dot-clinical { background: var(--bronze); }
+  .dot-lifestyle { background: #7A8A6A; }
+  .dot-pr { background: #6A7A8A; }
+  .dot-retail { background: #8A7A6A; }
+
+  .layers-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(12, 1fr);
+    gap: 1px;
+    background: var(--greige);
+    border: 1px solid var(--greige);
+    margin-bottom: 32px;
+  }
+  .lg-head {
+    background: var(--alabaster);
+    padding: 8px 6px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    text-align: center;
+  }
+  .lg-head.now-col {
+    background: var(--ink);
+    color: var(--gold);
+  }
+  .lg-row-label {
+    background: var(--lotion);
+    padding: 14px 10px;
+    display: flex;
+    align-items: center;
+  }
+  .lg-row-label-text {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+  }
+  .lg-cell {
+    background: var(--lotion);
+    padding: 10px 10px;
+    vertical-align: top;
+    min-height: 80px;
+  }
+  .lg-cell.now-col { background: rgba(28,26,21,0.03); }
+  .lg-item {
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding: 3px 6px;
+    margin-bottom: 3px;
+    border-left: 2px solid transparent;
+  }
+  .lg-item.clinical { border-left-color: var(--bronze); background: rgba(139,110,58,0.05); }
+  .lg-item.lifestyle { border-left-color: #7A8A6A; background: rgba(122,138,106,0.05); }
+  .lg-item.pr { border-left-color: #6A7A8A; background: rgba(106,122,138,0.05); }
+  .lg-item.retail { border-left-color: #8A7A6A; background: rgba(138,122,106,0.05); }
+  .lg-item .item-tag {
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+    opacity: 0.7;
+  }
+  .layer-row { display: contents; }
+  .layer-row.hidden .lg-cell,
+  .layer-row.hidden .lg-row-label { display: none; }
+
+  .pr-runway {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--greige);
+    border: 1px solid var(--greige);
+    margin-bottom: 36px;
+  }
+  .pr-runway-cell {
+    background: var(--lotion);
+    padding: 22px 18px;
+  }
+  .pr-runway-cell.active-phase {
+    background: var(--alabaster);
+    border-top: 2px solid var(--bronze);
+  }
+  .pr-runway-phase {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mouse);
+    margin-bottom: 6px;
+  }
+  .pr-runway-title {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .pr-runway-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-light);
+    line-height: 1.75;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 28px 60px;
+    background: var(--greige);
+    border-top: 1px solid var(--greige-mid);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-note {
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--ink-light);
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+  }
+  .footer-std {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--mouse);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .cover, .band, .wrap, .wrap-dark, .nav-inner, .footer { padding-left: 28px; padding-right: 28px; }
+    .arc-grid { grid-template-columns: repeat(2,1fr); }
+    .pillars { grid-template-columns: repeat(2,1fr); }
+    .tline { grid-template-columns: 1fr; }
+    .swimlane { grid-template-columns: 1fr; }
+    .band { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top">
+    <span class="wordmark">VIO — Aesthetic Wellness</span>
+    <span class="doc-tag">360° Control Tower · 2026 · Internal Use Only</span>
+  </div>
+  <div class="cover-body">
+    <div class="cover-label">Brand-Led Operations</div>
+    <h1 class="cover-headline">The Control<br>Tower.</h1>
+    <p class="cover-sub">Brand Marketing leads. Everything else follows. This system is the single source of truth for 2026 — where the established brand beats, agency execution, franchise readiness, and operational arcs live in one view. If it is not in here, it has not been approved.</p>
+  </div>
+  <div class="cover-foot">
+    <span class="cover-tagline">"Beyond Aesthetics. Becoming Starts Here."</span>
+    <span class="cover-std">Clinical guidance to live life well.</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-shell">
+  <div class="nav-inner">
+    <span class="nav-brand">VIO 2026</span>
+    <button class="tab-btn active" data-tab="brand">Brand Arc</button>
+    <button class="tab-btn" data-tab="layers">Campaign Layers</button>
+    <button class="tab-btn" data-tab="agency">Agency Layers</button>
+    <button class="tab-btn" data-tab="franchise">Franchisee View</button>
+    <button class="tab-btn" data-tab="ops">Corporate Ops</button>
+    <button class="tab-btn" data-tab="pr">PR Layer</button>
+    <button class="tab-btn" data-tab="guardrails">Brand Guardrails</button>
+    <button class="tab-btn" data-tab="deadlines">Deadline Tracker</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ BRAND ARC ═══════════════════════════════════ -->
+<div class="tab-panel active" id="tab-brand">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Brand Marketing View</div>
+        <h2>The 360° Arc.</h2>
+        <p>The established, non-negotiable brand beats for 2026. These are set. Agencies, operations, and franchisees orient around this architecture — not the reverse.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">Year Theme</div>
+        <div class="meta-val">Becoming</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sl">The Brand Arc — Quarterly Themes</div>
+    <div class="arc-grid">
+      <div class="arc-cell">
+        <div class="arc-month">Jan – Mar · Q1</div>
+        <div class="arc-theme">Biological Reset</div>
+        <div class="arc-note">The season of going inward. Rich treatments, deep hydration, collagen support that builds slowly and holds. Invite the work that cannot yet be seen.</div>
+      </div>
+      <div class="arc-cell active-now">
+        <div class="arc-month">Apr – Jun · Q2 · Now</div>
+        <div class="arc-theme">Restoration</div>
+        <div class="arc-note">Surface work and cellular repair. DNA Repair, Polynucleotides, Stress Literacy. Graduation milestone (May). The body returns to itself.</div>
+      </div>
+      <div class="arc-cell">
+        <div class="arc-month">Jul – Sep · Q3</div>
+        <div class="arc-theme">Reconstruction</div>
+        <div class="arc-note">Structural. Collagen architecture, volume, definition. Back-to-College & Parental Reset (Aug). Metabolic Beauty enters. Building what lasts.</div>
+      </div>
+      <div class="arc-cell">
+        <div class="arc-month">Oct – Dec · Q4</div>
+        <div class="arc-theme">Investment Protection</div>
+        <div class="arc-note">Protecting the year's work. Maintenance and membership. Aesthetic Wellness Index. The long view — what becoming looks like held.</div>
+      </div>
+    </div>
+
+    <div class="sl">Clinical & Wellness Pillars — 2026</div>
+    <div class="pillars">
+      <div class="pillar-cell">
+        <div class="pillar-num">01</div>
+        <div class="pillar-name">Polynucleotides</div>
+        <div class="pillar-desc">Tissue regeneration at the cellular level. The science of becoming. Staff trained Q1.</div>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">02</div>
+        <div class="pillar-name">DNA Repair</div>
+        <div class="pillar-desc">Precision correction for accumulated damage. Peaks in Restoration (Q2) and Investment Protection (Q4).</div>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">03</div>
+        <div class="pillar-name">Stress Literacy</div>
+        <div class="pillar-desc">The body reads stress before the mind does. VIO translates it. Integrated across all seasons.</div>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">04</div>
+        <div class="pillar-name">Metabolic Beauty</div>
+        <div class="pillar-desc">Launches Q3 — Reconstruction. Internal-external convergence. Weight, energy, skin in one lens.</div>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">05</div>
+        <div class="pillar-name">Aesthetic Wellness Index</div>
+        <div class="pillar-desc">Q4 launch. VIO's proprietary wellness benchmark. Positions VIO as category creator.</div>
+      </div>
+    </div>
+
+    <div class="sl">Seasonal Milestones — Key Activation Dates</div>
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Milestone</th>
+          <th>Month</th>
+          <th>Brand Theme</th>
+          <th>Campaign Lead Time Required</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Graduation Season</strong></td>
+          <td>May 2026</td>
+          <td><span class="pill pill-brand">Restoration</span></td>
+          <td>8 weeks — March 15 brief lock</td>
+          <td>Gifting angle. Family-driven. Memberships as gift of becoming.</td>
+        </tr>
+        <tr>
+          <td><strong>Back-to-College & Parental Reset</strong></td>
+          <td>Aug 2026</td>
+          <td><span class="pill pill-brand">Reconstruction</span></td>
+          <td>10 weeks — June 1 brief lock</td>
+          <td>Dual audience: departing student + parent reclaiming self. Two-track campaign.</td>
+        </tr>
+        <tr>
+          <td><strong>Metabolic Beauty Launch</strong></td>
+          <td>Jul 2026</td>
+          <td><span class="pill pill-brand">Reconstruction</span></td>
+          <td>VIO University training complete by June 1</td>
+          <td>Staff trained before any public messaging. Non-negotiable sequence.</td>
+        </tr>
+        <tr>
+          <td><strong>Aesthetic Wellness Index Launch</strong></td>
+          <td>Oct 2026</td>
+          <td><span class="pill pill-brand">Investment Protection</span></td>
+          <td>Full asset suite by Sept 1</td>
+          <td>VIO's proprietary category marker. Requires PR and Digital lead-time in tandem.</td>
+        </tr>
+        <tr>
+          <td><strong>Holiday / ClubVIO Enrollment</strong></td>
+          <td>Nov – Dec 2026</td>
+          <td><span class="pill pill-brand">Investment Protection</span></td>
+          <td>Brief lock Oct 1</td>
+          <td>Founding Member close. ClubVIO preferred rates — never discount language.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sl">Physical Arc — In-Clinic & NCO Thread</div>
+    <div class="tline">
+      <div class="tblock">
+        <div class="tblock-month">Q1 — Q2</div>
+        <div class="tblock-title">In-Clinic Construction & Design</div>
+        <ul>
+          <li>V6 Brand standards installed before any NCO goes live</li>
+          <li>Collateral audit — off-brand items removed</li>
+          <li>Physical arc must precede digital campaign spend at each location</li>
+        </ul>
+      </div>
+      <div class="tblock dark">
+        <div class="tblock-month">Q2 — Q3</div>
+        <div class="tblock-title">New Clinic Openings</div>
+        <ul>
+          <li>NCO checklist: V6 physical branding confirmed</li>
+          <li>Social Agency does not activate paid spend until physical standard is verified</li>
+          <li>Founding Registry open 30 days before opening</li>
+        </ul>
+      </div>
+      <div class="tblock">
+        <div class="tblock-month">Q3 — Q4</div>
+        <div class="tblock-title">Branding Transitions</div>
+        <ul>
+          <li>Any legacy location transitioning to V6 completes physical update before campaign relaunch</li>
+          <li>No transitional or "coming soon" language in brand copy</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ AGENCY LAYERS ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-agency">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Agency View — Swim Lanes</div>
+        <h2>The Agency<br>Architecture.</h2>
+        <p>Brand delivers the arc. Agencies deliver the execution. Every agency plan must map to a VIO brand beat — not the reverse. Two-quarter asset handover is standard. No exceptions.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">Agencies Active</div>
+        <div class="meta-val">PR · Social · Digital · Local</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sl">Conflict Mapping — Known Misalignment Flags</div>
+    <div class="conflict-card">
+      <div class="conflict-head">
+        <span class="conflict-title">⚑ Timeline Conflict — Social / Reconstruction</span>
+        <span class="pill pill-flag">Needs Resolution</span>
+      </div>
+      <div class="conflict-body">If Social Agency proposes a "Sun Repair" or summer skin story in July, this precedes the Reconstruction theme activation (Q3 — Sept). Summer treatment messaging misaligns with the architectural depth of Reconstruction. Social summer content must stay surface — lifestyle, warmth, maintenance — until Sept when Reconstruction opens.</div>
+      <div class="conflict-fix">✓ Redirect: Summer content = Restoration maintenance. Reconstruction activates September 1.</div>
+    </div>
+    <div class="conflict-card">
+      <div class="conflict-head">
+        <span class="conflict-title">⚑ Physical / Digital Sync — NCO Risk</span>
+        <span class="pill pill-flag">Watch</span>
+      </div>
+      <div class="conflict-body">Any New Clinic Opening where Digital Agency activates paid spend before V6 physical branding is confirmed on-site is a brand standards violation. The clinic the guest walks into must match the campaign they responded to.</div>
+      <div class="conflict-fix">✓ Rule: Digital "go-live" date is locked only after NCO physical checklist is signed off. Marketing Director holds both gates.</div>
+    </div>
+    <div class="conflict-card">
+      <div class="conflict-head">
+        <span class="conflict-title">⚑ Clinical Pillar Launch — Staff Training Precedes All Public Messaging</span>
+        <span class="pill pill-flag">Non-Negotiable Sequence</span>
+      </div>
+      <div class="conflict-body">Metabolic Beauty (Q3 launch) and Aesthetic Wellness Index (Q4 launch) cannot be previewed, teased, or messaged externally until VIO University has completed staff training at operating locations. Marketing does not move ahead of operations.</div>
+      <div class="conflict-fix">✓ Rule: VIO University sign-off is the gate. Marketing Director and Ops Lead co-own the release date.</div>
+    </div>
+    <hr class="div-rule">
+
+    <div class="sl">Agency Swim Lanes — Q2 · Q3 Activation (Current + Upcoming)</div>
+    <!-- SWIMLANE HEADER -->
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:1px;background:var(--greige);border:1px solid var(--greige);margin-bottom:2px;">
+      <div style="background:var(--greige);padding:12px 16px;"></div>
+      <div style="background:var(--greige);padding:12px 16px;"><span style="font-size:9px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--mouse);">VIO Delivers to Agency</span></div>
+      <div style="background:var(--greige);padding:12px 16px;"><span style="font-size:9px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--mouse);">Agency Delivers Back</span></div>
+    </div>
+
+    <div class="swimlane">
+      <div class="sl-label"><span class="sl-label-text">PR Agency</span></div>
+      <div class="sl-col">
+        <div class="sl-col-head">Brand delivers (2 quarters ahead)</div>
+        <div class="sl-item">Seasonal brand brief with theme, tone, and approved clinical claims</div>
+        <div class="sl-item">Approved pillar copy: Polynucleotides, DNA Repair, Metabolic Beauty (with launch gate)</div>
+        <div class="sl-item">Milestone dates: Graduation (May), Back-to-College (Aug), AWI Launch (Oct)</div>
+        <div class="sl-item">CMO availability windows for media appearances</div>
+      </div>
+      <div class="sl-col">
+        <div class="sl-col-head">PR agency delivers back</div>
+        <div class="sl-item">12-month pitch calendar mapped to VIO brand beats — not trending news cycles</div>
+        <div class="sl-item">Media targets pre-approved against brand register (no filler coverage)</div>
+        <div class="sl-item">Pitches cleared through VIO brand voice before submission — no clinical language outside approved claims</div>
+        <div class="sl-item">Coverage report referencing VIO arc themes, not generic beauty metrics</div>
+      </div>
+    </div>
+
+    <div class="swimlane">
+      <div class="sl-label"><span class="sl-label-text">Social Agency</span></div>
+      <div class="sl-col">
+        <div class="sl-col-head">Brand delivers (2 quarters ahead)</div>
+        <div class="sl-item">Content brief per seasonal arc — theme, visual direction, approved copy blocks</div>
+        <div class="sl-item">V6 image filter standard (20% #3A331A overlay) and typography spec</div>
+        <div class="sl-item">Approved campaign hooks — overlay text, caption, hashtag guidance</div>
+        <div class="sl-item">ClubVIO content calendar — member voice, separate from brand voice</div>
+      </div>
+      <div class="sl-col">
+        <div class="sl-col-head">Social agency delivers back</div>
+        <div class="sl-item">Monthly content calendar — all copy approved by Brand before scheduling</div>
+        <div class="sl-item">No post goes live without Copywriter sign-off on brand register</div>
+        <div class="sl-item">UGC curation — share, never adopt. Client language stays client language.</div>
+        <div class="sl-item">Performance reports: engagement mapped to arc themes, not vanity metrics</div>
+      </div>
+    </div>
+
+    <div class="swimlane">
+      <div class="sl-label"><span class="sl-label-text">Digital Agency</span></div>
+      <div class="sl-col">
+        <div class="sl-col-head">Brand delivers (2 quarters ahead)</div>
+        <div class="sl-item">Paid campaign creative — approved copy and imagery, no deviations in media</div>
+        <div class="sl-item">NCO go-live confirmation (physical standard met before paid activates)</div>
+        <div class="sl-item">Landing page copy — reviewed by Brand before dev handover</div>
+        <div class="sl-item">Audience segmentation brief: ClubVIO warm audience vs. cold acquisition</div>
+      </div>
+      <div class="sl-col">
+        <div class="sl-col-head">Digital agency delivers back</div>
+        <div class="sl-item">Media plan showing alignment to seasonal arc — not generic category targeting</div>
+        <div class="sl-item">No "limited time" or urgency language in ad copy. Cleared against Never List.</div>
+        <div class="sl-item">Monthly performance summary: cost per consultation, not cost per click</div>
+        <div class="sl-item">Back-end deadline tracking shared with Brand Marketing 30 days out</div>
+      </div>
+    </div>
+
+    <div class="swimlane">
+      <div class="sl-label"><span class="sl-label-text">Local Agency</span></div>
+      <div class="sl-col">
+        <div class="sl-col-head">Brand delivers (2 quarters ahead)</div>
+        <div class="sl-item">Market-specific campaign materials — copy locked, visual locked</div>
+        <div class="sl-item">Franchise-approved language guide — what is customizable vs. fixed</div>
+        <div class="sl-item">Local event framework for milestone moments (Graduation, NCO, etc.)</div>
+      </div>
+      <div class="sl-col">
+        <div class="sl-col-head">Local agency delivers back</div>
+        <div class="sl-item">Localization layer only — market name, address, local event details</div>
+        <div class="sl-item">Zero copy deviation from approved brand templates without Marketing Director approval</div>
+        <div class="sl-item">In-market performance report per brand milestone</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ FRANCHISEE VIEW ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-franchise">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Franchisee View</div>
+        <h2>What You Need.<br>When You Need It.</h2>
+        <p>Brand trains before campaigns roll. Your role is execution within the standard — not interpretation of it. Everything you need arrives before you need it. The only variable is your readiness.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">Active Markets</div>
+        <div class="meta-val">OH · MA · NY<br>TX · FL · TN</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sl">Franchisee Readiness Timeline — 2026</div>
+    <div class="tline">
+      <div class="tblock">
+        <div class="tblock-month">Q1 — February</div>
+        <div class="tblock-title">Annual Orientation</div>
+        <ul>
+          <li>2026 brand arc delivered to all franchisees</li>
+          <li>V6 physical standards checklist distributed</li>
+          <li>ClubVIO enrollment targets set per market</li>
+          <li>VIO University Q1 training schedule confirmed</li>
+        </ul>
+      </div>
+      <div class="tblock">
+        <div class="tblock-month">Q2 — April</div>
+        <div class="tblock-title">Restoration Campaign Prep</div>
+        <ul>
+          <li>In-spa language guide for Restoration arc</li>
+          <li>Collateral audit — off-brand items removed from all surfaces</li>
+          <li>Graduation campaign materials received and installed</li>
+          <li>Pricing format confirmed: "Starting at $XX"</li>
+        </ul>
+      </div>
+      <div class="tblock dark">
+        <div class="tblock-month">Q2 — May</div>
+        <div class="tblock-title">Campaign Live</div>
+        <ul>
+          <li>Graduation campaign active in all markets</li>
+          <li>Team trained on Restoration arc language</li>
+          <li>ClubVIO gifting collateral at reception</li>
+          <li>Local social content live — approved copy only</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sl">What the Franchisee Controls vs. What Is Fixed</div>
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Franchisee Role</th>
+          <th>Fixed by Brand</th>
+          <th>Where to Escalate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Campaign Copy</strong></td>
+          <td>None. Receive and install as delivered.</td>
+          <td>All campaign copy. Locked by Brand before distribution.</td>
+          <td>FBC for market-specific notes</td>
+        </tr>
+        <tr>
+          <td><strong>In-Spa Language</strong></td>
+          <td>Team training execution. Local verbal delivery.</td>
+          <td>Language guide, approved phrases, Never List.</td>
+          <td>VIO University or FBC</td>
+        </tr>
+        <tr>
+          <td><strong>Local Social</strong></td>
+          <td>Post approved content. Share UGC. Tag location.</td>
+          <td>All copy. Image filter. Brand typography.</td>
+          <td>Social Agency via FBC</td>
+        </tr>
+        <tr>
+          <td><strong>Pricing Display</strong></td>
+          <td>Set and display prices in approved format.</td>
+          <td>"Starting at $XX" format. No discount language.</td>
+          <td>Marketing Director</td>
+        </tr>
+        <tr>
+          <td><strong>ClubVIO Enrollment</strong></td>
+          <td>Present membership at checkout. Know the language.</td>
+          <td>All ClubVIO copy, rate language, sign-off.</td>
+          <td>FBC</td>
+        </tr>
+        <tr>
+          <td><strong>NCO Preparation</strong></td>
+          <td>Physical V6 installation. Staff hiring and training.</td>
+          <td>Brand standards checklist. No paid media until physical confirmed.</td>
+          <td>Marketing Director + Ops Lead</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="guardrail">
+      <div class="guardrail-label">The Franchisee Standard</div>
+      <div class="guardrail-body">"The standard has to be understood before it can be executed. Brand training before campaign rollout — always. No market is an exception."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CORPORATE OPS ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-ops">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Corporate / Ops View</div>
+        <h2>The Operational<br>Thread.</h2>
+        <p>Operations is the infrastructure Marketing runs on. When a clinical pillar launches publicly, operations has already completed the training arc — two months prior. This is the rule, not the goal.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">Departments</div>
+        <div class="meta-val">Ops · Franchise<br>University · HR</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sl">VIO University — Training Arc 2026</div>
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Training Module</th>
+          <th>Must Complete By</th>
+          <th>Before This Goes Public</th>
+          <th>Owner</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Polynucleotides — Clinical Standard</strong></td>
+          <td>Feb 1, 2026</td>
+          <td>Any Restoration arc messaging (Q2)</td>
+          <td><span class="pill pill-ops">Univ. Team</span></td>
+          <td><span class="pill pill-ok">Complete — Q1</span></td>
+        </tr>
+        <tr>
+          <td><strong>V6 Brand & Language Standards</strong></td>
+          <td>Mar 1, 2026</td>
+          <td>Graduation campaign rollout (May)</td>
+          <td><span class="pill pill-ops">FBC + Univ.</span></td>
+          <td><span class="pill pill-warn">In Progress</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stress Literacy — Client Consultation Guide</strong></td>
+          <td>Apr 1, 2026</td>
+          <td>Restoration arc client communications</td>
+          <td><span class="pill pill-ops">Univ. Team</span></td>
+          <td><span class="pill pill-warn">In Progress</span></td>
+        </tr>
+        <tr>
+          <td><strong>Metabolic Beauty — Clinical + Service Guide</strong></td>
+          <td>Jun 1, 2026</td>
+          <td>Any public Metabolic Beauty messaging (Q3)</td>
+          <td><span class="pill pill-ops">CMO + Univ.</span></td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td><strong>Aesthetic Wellness Index — Staff Explainer</strong></td>
+          <td>Sept 1, 2026</td>
+          <td>AWI public launch (Oct)</td>
+          <td><span class="pill pill-ops">Univ. + Marketing</span></td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td><strong>ClubVIO Founding Member Language</strong></td>
+          <td>Oct 1, 2026</td>
+          <td>Holiday enrollment campaign (Nov)</td>
+          <td><span class="pill pill-ops">FBC + Univ.</span></td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sl">NCO — New Clinic Opening Checklist Gates</div>
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Gate</th>
+          <th>Requirement</th>
+          <th>Owns Sign-Off</th>
+          <th>Unlocks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gate 1 — Physical</strong></td>
+          <td>V6 brand standards installed. Collateral clean. Signage correct.</td>
+          <td>Marketing Director</td>
+          <td>Gate 2</td>
+        </tr>
+        <tr>
+          <td><strong>Gate 2 — Training</strong></td>
+          <td>All staff complete VIO University brand + service module. Language guide tested.</td>
+          <td>FBC + Univ. Team</td>
+          <td>Gate 3</td>
+        </tr>
+        <tr>
+          <td><strong>Gate 3 — Digital</strong></td>
+          <td>Digital Agency confirms paid campaign assets approved and geo-targeted.</td>
+          <td>Digital Agency + Marketing Dir.</td>
+          <td>Founding Registry open</td>
+        </tr>
+        <tr>
+          <td><strong>Gate 4 — Go Live</strong></td>
+          <td>All three gates confirmed. Founding Registry at 150 invitation limit. Social Agency activates.</td>
+          <td>Marketing Director</td>
+          <td>Grand opening communications</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sl">Internal Communications Arc — Franchisee Touchpoints</div>
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Communication</th>
+          <th>Frequency</th>
+          <th>Sent By</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Seasonal Brand Brief</td>
+          <td>Quarterly (2 quarters ahead)</td>
+          <td>Marketing Director</td>
+          <td>Franchisee readiness for upcoming arc</td>
+        </tr>
+        <tr>
+          <td>FBC Weekly Call</td>
+          <td>Weekly (open locations)</td>
+          <td>FBC</td>
+          <td>KPI review, language coaching, campaign execution</td>
+        </tr>
+        <tr>
+          <td>NSO Weekly Call</td>
+          <td>Weekly (pre-open locations)</td>
+          <td>FBC</td>
+          <td>Milestone tracking, opening readiness</td>
+        </tr>
+        <tr>
+          <td>Campaign Asset Drop</td>
+          <td>Per milestone (8–10 weeks ahead)</td>
+          <td>Marketing Director</td>
+          <td>Approved materials for local deployment</td>
+        </tr>
+        <tr>
+          <td>Brand Standards Audit</td>
+          <td>Bi-annual</td>
+          <td>Marketing Director + FBC</td>
+          <td>Physical and language compliance check per location</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ GUARDRAILS ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-guardrails">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">V6 Brand Guardrails — Active in Every Entry</div>
+        <h2>The Standard.<br>Non-Negotiable.</h2>
+        <p>Every deliverable in this system is cross-referenced here. A Never List flag requires revision before any asset moves forward. This is not a checklist — it is the brand operating as intended.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sl">Category Violations — Highest Severity</div>
+    <div class="flag-notice"><strong>⚑ Anti-Aging Language</strong> — Hard no. No context makes it acceptable. The replacement is the philosophy: ages and stages, being in love with who you are now, always becoming. It is not a phrase swap. It is a way of thinking.</div>
+    <div class="flag-notice"><strong>⚑ Defining VIO by what it is not</strong> — No contrast framing. No "finally." No "unlike other med spas." VIO is already the thing. State what it is.</div>
+    <div class="flag-notice"><strong>⚑ "Protocol" in any context</strong> — Absolute no. Always a more specific, human word. "Your plan." "How to maintain between visits." Never "protocol."</div>
+    <div class="flag-notice"><strong>⚑ Treatment packages / deals</strong> — A plan is built for someone. A package is sold to anyone. ClubVIO gives preferred rates — never discounts.</div>
+    <div class="flag-notice"><strong>⚑ "Quiet luxury" to or for clients</strong> — Ralph Lauren does not explain its aesthetic. Create the standard. Do not name it.</div>
+    <div class="flag-notice"><strong>⚑ Before-and-after as primary brand narrative</strong> — VIO uses before-and-afters. UGC can lead with the reveal. VIO campaigns do not. The story is ongoing becoming.</div>
+    <hr class="div-rule">
+
+    <div class="sl">Language Violations — High Severity</div>
+    <div class="flag-notice" style="border-left-color: var(--warn); background: var(--warn-bg); color: var(--warn);"><strong>⚑ Exclamation points</strong> — Never in editorial, website, or consultation copy. Exception: ClubVIO membership confirmation only.</div>
+    <div class="flag-notice" style="border-left-color: var(--warn); background: var(--warn-bg); color: var(--warn);"><strong>⚑ "Practice" to mean ritual or routine</strong> — VIO does not offer "wellness practices." Absolute no in all contexts.</div>
+    <div class="flag-notice" style="border-left-color: var(--warn); background: var(--warn-bg); color: var(--warn);"><strong>⚑ "VIO Med Spa" in copy</strong> — "VIO Med Spa" lives in the logo and materials only. In writing and speech: VIO.</div>
+    <div class="flag-notice" style="border-left-color: var(--warn); background: var(--warn-bg); color: var(--warn);"><strong>⚑ Urgency / scarcity as default tactic</strong> — "Hurry, filling up fast." "Limited spots." "Book now." These are wrong-register. Scarcity is real and stated as fact (150 Founding Members — real). Never as a tactic.</div>
+    <div class="flag-notice" style="border-left-color: var(--warn); background: var(--warn-bg); color: var(--warn);"><strong>⚑ Patient or customer</strong> — Client. Member. Guest. Never patient (wrong clinical distance). Never customer (transaction language).</div>
+    <hr class="div-rule">
+
+    <div class="sl">Approved Language — The Replacements</div>
+    <table class="master-table">
+      <thead>
+        <tr><th style="width:30%">Use This</th><th style="width:30%">Not This</th><th>Because</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Client / Member / Guest</strong></td><td>Patient / Customer</td><td>Signals a relationship, not a transaction.</td></tr>
+        <tr><td><strong>Personal plan</strong></td><td>Treatment packages / deals</td><td>A plan is built for someone. A package is sold to anyone.</td></tr>
+        <tr><td><strong>Ages and stages · evolving · becoming</strong></td><td>Anti-aging / aging gracefully</td><td>Philosophy, not a phrase swap. Being in love with who you are now.</td></tr>
+        <tr><td><strong>Your plan / how to maintain</strong></td><td>Protocol</td><td>Protocol is procedural and cold. Always a more specific, human word.</td></tr>
+        <tr><td><strong>ClubVIO preferred rates</strong></td><td>Discounts / deals / savings</td><td>Preferred rates signal belonging. Discounts signal devaluation.</td></tr>
+        <tr><td><strong>We welcome you to secure your time.</strong></td><td>Book now / hurry</td><td>Authority over urgency. Every word.</td></tr>
+        <tr><td><strong>VIO</strong></td><td>VIO Med Spa (in copy)</td><td>"VIO Med Spa" lives in the logo. In copy: VIO only.</td></tr>
+        <tr><td><strong>Outcome / evolution / becoming</strong></td><td>Results (as headline word)</td><td>Results is allowed contextually — never the lead word.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="guardrail">
+      <div class="guardrail-label">The Single Test</div>
+      <div class="guardrail-body">"Would this live in the Ralph Lauren world? Timeless. Ease. Standard. Quality. Ralph Lauren does not explain its aesthetic — the garment explains it. VIO does not explain its standard — the experience explains it."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ DEADLINE TRACKER ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-deadlines">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Deadline Tracker — Back-End View</div>
+        <h2>Internal Deadlines<br>vs. Agency Go-Lives.</h2>
+        <p>VIO deadlines are in gold. Agency go-live dates are in white. The gap between them is where brand integrity either holds or breaks. VIO always moves first.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap-dark">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div class="sl" style="margin-bottom:0;">Q2 — Q3 2026 Deadlines</div>
+    </div>
+    <table class="deadline-table">
+      <thead>
+        <tr>
+          <th>Milestone / Deliverable</th>
+          <th>VIO Internal Deadline</th>
+          <th>Agency Go-Live</th>
+          <th>Owner</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Graduation Campaign — Brief Lock</td>
+          <td class="vio-dl">Mar 15</td>
+          <td class="agency-dl">May 1 (Social + Digital)</td>
+          <td>Marketing Director</td>
+          <td><span class="pill pill-warn">Upcoming</span></td>
+        </tr>
+        <tr>
+          <td>V6 Language Standards Training — All Markets</td>
+          <td class="vio-dl">Mar 1</td>
+          <td class="agency-dl">Before May campaign</td>
+          <td>FBC + Univ.</td>
+          <td><span class="pill pill-warn">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>Stress Literacy Consultation Guide — Complete</td>
+          <td class="vio-dl">Apr 1</td>
+          <td class="agency-dl">Q2 client comms begin</td>
+          <td>Univ. Team</td>
+          <td><span class="pill pill-warn">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>Back-to-College Campaign — Brief Lock</td>
+          <td class="vio-dl">Jun 1</td>
+          <td class="agency-dl">Aug 1 (All agencies)</td>
+          <td>Marketing Director</td>
+          <td><span class="pill pill-flag">Pending</span></td>
+        </tr>
+        <tr>
+          <td>Metabolic Beauty — VIO University Training Complete</td>
+          <td class="vio-dl">Jun 1</td>
+          <td class="agency-dl">Jul 1 (any public messaging)</td>
+          <td>CMO + Univ.</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>Metabolic Beauty — Campaign Asset Suite</td>
+          <td class="vio-dl">Jun 15</td>
+          <td class="agency-dl">Jul 1 (Social + PR)</td>
+          <td>Copywriter + Creative Dir.</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>Reconstruction Arc — Full Content Brief</td>
+          <td class="vio-dl">Jul 1</td>
+          <td class="agency-dl">Sept 1 (Campaign Live)</td>
+          <td>Marketing Director</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>AWI (Aesthetic Wellness Index) — Asset Suite</td>
+          <td class="vio-dl">Sept 1</td>
+          <td class="agency-dl">Oct 1 (Launch)</td>
+          <td>Marketing Director</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>AWI — VIO University Staff Explainer</td>
+          <td class="vio-dl">Sept 1</td>
+          <td class="agency-dl">Before Oct 1 public launch</td>
+          <td>Univ. + Marketing</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>Holiday Campaign — Brief Lock</td>
+          <td class="vio-dl">Oct 1</td>
+          <td class="agency-dl">Nov 1 (All channels)</td>
+          <td>Marketing Director</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+        <tr>
+          <td>ClubVIO Founding Member Language — Staff Training</td>
+          <td class="vio-dl">Oct 1</td>
+          <td class="agency-dl">Nov enrollment campaign</td>
+          <td>FBC + Univ.</td>
+          <td><span class="pill pill-flag">Not Started</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="padding:28px 0 0 0;">
+      <div class="sl">Agency Submission Template</div>
+      <div style="background:var(--alabaster);border:1px solid var(--greige);padding:28px 32px;">
+        <p style="font-size:13px;font-weight:300;color:var(--ink-light);line-height:1.9;margin-bottom:20px;">All agencies submit their 12-month plans in this format. Each item must reference a VIO Brand Arc theme by name. Items that do not map to the arc are returned for revision before review.</p>
+        <table style="width:100%;border-collapse:collapse;font-size:12px;font-weight:300;">
+          <thead>
+            <tr>
+              <th style="font-size:9px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:8px 12px;text-align:left;border-bottom:1px solid var(--greige);background:var(--greige);">Proposed Activity</th>
+              <th style="font-size:9px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:8px 12px;text-align:left;border-bottom:1px solid var(--greige);background:var(--greige);">VIO Brand Arc Alignment</th>
+              <th style="font-size:9px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:8px 12px;text-align:left;border-bottom:1px solid var(--greige);background:var(--greige);">Proposed Go-Live</th>
+              <th style="font-size:9px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:8px 12px;text-align:left;border-bottom:1px solid var(--greige);background:var(--greige);">Assets Needed From VIO</th>
+              <th style="font-size:9px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:8px 12px;text-align:left;border-bottom:1px solid var(--greige);background:var(--greige);">Conflict Flags</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:10px 12px;border-bottom:1px solid var(--greige);color:var(--mouse);font-style:italic;background:var(--lotion);">Agency enters activity description</td>
+              <td style="padding:10px 12px;border-bottom:1px solid var(--greige);color:var(--mouse);font-style:italic;background:var(--lotion);">Name the exact arc theme (e.g., Restoration Q2)</td>
+              <td style="padding:10px 12px;border-bottom:1px solid var(--greige);color:var(--mouse);font-style:italic;background:var(--lotion);">MM/DD/YYYY</td>
+              <td style="padding:10px 12px;border-bottom:1px solid var(--greige);color:var(--mouse);font-style:italic;background:var(--lotion);">List assets required and by when</td>
+              <td style="padding:10px 12px;border-bottom:1px solid var(--greige);color:var(--mouse);font-style:italic;background:var(--lotion);">Flag any date or standard conflicts</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CAMPAIGN LAYERS ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-layers">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">Campaign Layers — All Four Tracks</div>
+        <h2>The Integrated<br>View.</h2>
+        <p>Toggle any layer on or off. All four tracks mapped across every month — clinical, lifestyle, PR moments, and retail. See the full picture or isolate a single thread.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">Current</div>
+        <div class="meta-val">Q2 · Apr–Jun</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-controls">
+    <span class="layer-controls-label">Show layers:</span>
+    <button class="layer-toggle on l-clinical" data-layer="clinical">
+      <span class="dot dot-clinical"></span>Clinical &amp; Wellness
+    </button>
+    <button class="layer-toggle on l-lifestyle" data-layer="lifestyle">
+      <span class="dot dot-lifestyle"></span>Lifestyle &amp; Beauty
+    </button>
+    <button class="layer-toggle on l-pr" data-layer="pr">
+      <span class="dot dot-pr"></span>PR &amp; Conferences
+    </button>
+    <button class="layer-toggle on l-retail" data-layer="retail">
+      <span class="dot dot-retail"></span>Retail
+    </button>
+  </div>
+
+  <div class="wrap">
+    <div class="sl" style="margin-bottom:20px;">2026 Monthly Campaign Calendar</div>
+
+    <div class="layers-grid" id="layersGrid">
+      <!-- MONTH HEADERS -->
+      <div class="lg-head">Layer</div>
+      <div class="lg-head">Jan</div>
+      <div class="lg-head">Feb</div>
+      <div class="lg-head">Mar</div>
+      <div class="lg-head now-col">Apr ▾</div>
+      <div class="lg-head now-col">May</div>
+      <div class="lg-head now-col">Jun</div>
+      <div class="lg-head">Jul</div>
+      <div class="lg-head">Aug</div>
+      <div class="lg-head">Sep</div>
+      <div class="lg-head">Oct</div>
+      <div class="lg-head">Nov</div>
+      <div class="lg-head">Dec</div>
+
+      <!-- ── CLINICAL ROW ── -->
+      <div class="layer-row" id="row-clinical">
+        <div class="lg-row-label"><span class="lg-row-label-text" style="color:var(--bronze);">Clinical</span></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Biological Reset · Diagnostic baselines · Collagen foundation</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Circulatory health · Lymphatic support · Metabolic foundations</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Biostimulatory foundations · Sleep recovery · Long-term skin health</div></div>
+        <div class="lg-cell now-col"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Skin-brain axis · Stress Literacy · Neuro-cosmetics</div></div>
+        <div class="lg-cell now-col"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Matrescence · Biological transition support · Polynucleotides</div></div>
+        <div class="lg-cell now-col"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Men's Aesthetic Wellness · Optimized vitality · Low-downtime</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Environmental resilience · UV defense · Atmospheric protection</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Post-summer biological reset · Stress recovery · Baseline restoration</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>DNA repair · Polynucleotides · Cellular reconstruction</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical · AWI Live</span>Cellular ATP · Post-treatment longevity · AWI launch</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Deep nourishment · Structural support · Ongoing becoming</div></div>
+        <div class="lg-cell"><div class="lg-item clinical"><span class="item-tag">Clinical</span>Stewardship audit · 2027 longevity planning · Membership</div></div>
+      </div>
+
+      <!-- ── LIFESTYLE ROW ── -->
+      <div class="layer-row" id="row-lifestyle">
+        <div class="lg-row-label"><span class="lg-row-label-text" style="color:#5A6A4A;">Lifestyle</span></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Winter Skin Reset — resetting the canvas after the holiday season</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Date-Night Radiance — heart-centered vitality for Valentine's and Galentine's moments</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>The Beauty of Sleep — skin health tied to Sleep Awareness Week. Recovery as ritual.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Stress-Proof Skin — skin architecture through high-stress seasons. Tax season, life season.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>The Next Chapter — Graduation and Mother's Day. High-visibility beauty for the moments that matter.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Modern Masculine &amp; Father's Day — men's skin as optimized vitality. Simple, high-impact, personal.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Summer-Smart Beauty — UV Safety as atmospheric defense. Protection as the intelligent choice.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>The Parental Reset — reclaiming yourself after the school drop-off. And the student entering what's next.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>The Post-Summer Edit — National Skin Care Awareness. What summer asked of your skin, and what it needs now.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Community &amp; Restoration — Breast Cancer Awareness. Gentle, restorative beauty in community.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>Visibility &amp; Confidence — holiday event prep. Showing up as yourself, fully.</div></div>
+        <div class="lg-cell"><div class="lg-item lifestyle"><span class="item-tag">Lifestyle</span>The Gift of Longevity — gifting as care. Personal plans and ClubVIO memberships over trinkets.</div></div>
+      </div>
+
+      <!-- ── PR ROW ── -->
+      <div class="layer-row" id="row-pr">
+        <div class="lg-row-label"><span class="lg-row-label-text" style="color:#4A5A6A;">PR</span></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Foundation</span>Pitching "The Evolution of Aesthetic Wellness" to business journals. Nashville HQ as center of excellence.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Foundation</span>AMWC Americas — industry moment for integrative Aesthetic Wellness pitching. Attendance TBD.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Authority</span>VIO as leading med spa franchise — three consecutive years. Trade press positioning.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item pr"><span class="item-tag">PR · Authority · Now</span>AmSpa Show — clinical leadership positioning. CMO faculty angle. Attendance TBD.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item pr"><span class="item-tag">PR · Authority</span>The Aesthetic Society — CMO as teaching faculty on facial architecture. KOL positioning.</div></div>
+        <div class="lg-cell now-col"><div class="lg-item pr"><span class="item-tag">PR · Authority</span>New market entries — California and Northeast. Franchise momentum story.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Innovation</span>Monarch Summit — regenerative tools context for pitching. Attendance TBD.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Innovation</span>Franchisee leadership profiles — multi-unit growth and the VIO standard at scale.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Innovation · AWI</span>Aesthetic Next — AWI launch timing alignment. National pitch: first clinical standard for Aesthetic Wellness. Attendance TBD.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Innovation</span>AWI live across all locations. Advisory Board expansion announced. National press outreach.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Legacy</span>GAC Miami — year-end commercial momentum context. Attendance TBD.</div></div>
+        <div class="lg-cell"><div class="lg-item pr"><span class="item-tag">PR · Legacy</span>Freeman Spogli partnership and 2027 development targets. Year-end financial narrative.</div></div>
+      </div>
+
+      <!-- ── RETAIL ROW ── -->
+      <div class="layer-row" id="row-retail">
+        <div class="lg-row-label"><span class="lg-row-label-text" style="color:#6A5A4A;">Retail</span></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Medical-grade cleansers · Lymphatic drainage tools</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Vitamin C serums · Caffeine-infused eye serums · Circulation support</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Night recovery creams · Lipid-replenishing balms</div></div>
+        <div class="lg-cell now-col"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Niacinamide hydrators · De-stress skin support kit</div></div>
+        <div class="lg-cell now-col"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>High-potency antioxidants · Event-readiness support · ClubVIO gifting</div></div>
+        <div class="lg-cell now-col"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Oil-free SPF · Simple 3-step men's routine · Modern Masculine kit</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Broad-spectrum SPF 50+ · Antioxidant mists · Summer defense pairing</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Confirmed</span>Semester Skin Resilience Kit — Cleanser · SPF · Niacinamide Hydrator · Spot Treatment</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>DNA repair topicals · Post-summer cellular support · Polynucleotide adjuncts</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Clarifying masks · Barrier-repair topicals · Gentle recovery kit</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Exfoliants · Instant-radiance support · Holiday visibility pairing</div></div>
+        <div class="lg-cell"><div class="lg-item retail"><span class="item-tag">Retail · Directional</span>Curated longevity kits — personal plan-matched retail for gifting. ClubVIO integration.</div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:40px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--ink-light);"><span style="display:inline-block;width:10px;height:10px;background:rgba(139,110,58,0.12);border:1px solid var(--bronze);border-radius:1px;"></span>Clinical confirmed</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--ink-light);"><span style="display:inline-block;width:10px;height:10px;background:rgba(122,138,106,0.12);border:1px solid #7A8A6A;border-radius:1px;"></span>Lifestyle</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--ink-light);"><span style="display:inline-block;width:10px;height:10px;background:rgba(106,122,138,0.12);border:1px solid #6A7A8A;border-radius:1px;"></span>PR moment</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--ink-light);"><span style="display:inline-block;width:10px;height(10px;background:rgba(138,122,106,0.12);border:1px solid #8A7A6A;border-radius:1px;"></span>Retail · Confirmed = locked · Directional = pending</div>
+    </div>
+
+    <hr class="div-rule">
+
+    <div class="sl">18-Month PR Runway</div>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-light);max-width:580px;line-height:1.85;margin-bottom:28px;">The four phases of VIO's PR architecture — from foundation through category authority. We are currently in the Authority phase.</p>
+
+    <div class="pr-runway">
+      <div class="pr-runway-cell">
+        <div class="pr-runway-phase">Q3/Q4 2025 → Q1 2026 · Foundation</div>
+        <div class="pr-runway-title">The Evolution of Aesthetic Wellness</div>
+        <div class="pr-runway-desc">Pitching VIO's shift to business journals. Positioning the brand as the architect of a new category — not a better med spa. Nashville HQ established as center of clinical excellence.</div>
+      </div>
+      <div class="pr-runway-cell active-phase">
+        <div class="pr-runway-phase">Q2 2026 · Authority · Now</div>
+        <div class="pr-runway-title">The Trusted Steward</div>
+        <div class="pr-runway-desc">CMO and clinical leads as national voices in trade press. The Aesthetic Society, AmSpa, and relevant conferences as PR timing anchors. Franchise momentum story building.</div>
+      </div>
+      <div class="pr-runway-cell">
+        <div class="pr-runway-phase">Q3/Q4 2026 · Innovation</div>
+        <div class="pr-runway-title">The Aesthetic Wellness Index</div>
+        <div class="pr-runway-desc">National PR push for AWI as the first clinical standard for biological skin health. Announcement of Advisory Board. VIO as category creator, not category participant.</div>
+      </div>
+      <div class="pr-runway-cell">
+        <div class="pr-runway-phase">Q1 2027 · Legacy</div>
+        <div class="pr-runway-title">The Standard Is Set</div>
+        <div class="pr-runway-desc">2027 development targets announced. Freeman Spogli partnership narrative. Nashville HQ as proof of the model. VIO as the only name in Aesthetic Wellness.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PR LAYER ═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-pr">
+  <div style="background:var(--alabaster);border-bottom:1px solid var(--greige)">
+    <div class="band">
+      <div>
+        <div class="band-label">PR Agency Layer — V6 Corrected</div>
+        <h2>The PR<br>Architecture.</h2>
+        <p>The 12-month PR narrative calendar, corrected to V6 brand standards. All Never List violations have been resolved. Language has been brought fully into register. The strategic arc is preserved. Download the agency brief from this tab when ready to send.</p>
+      </div>
+      <div class="band-meta">
+        <div class="meta-lbl">AWI Launch</div>
+        <div class="meta-val">Q4 2026<br>Oct Locked</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div class="sl" style="margin-bottom:0">2026 PR Narrative Calendar — V6 Corrected</div>
+      <button class="dl-btn" onclick="downloadPRBrief()">↓ Download PR Agency Brief</button>
+    </div>
+
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>VIO Narrative</th>
+          <th>Clinical / Wellness Focus</th>
+          <th>PR / News Hook</th>
+          <th>Brand Arc</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Jan</strong></td>
+          <td>Biological Reset. Diagnostic skin fitness and cellular support at the start of the year.</td>
+          <td>Inner architecture — establishing baselines before any intervention. The work you do now belongs to the whole year ahead.</td>
+          <td>Industry: Nashville HQ positioned as VIO's center of clinical excellence.</td>
+          <td><span class="pill pill-brand">Biological Reset</span></td>
+        </tr>
+        <tr>
+          <td><strong>Feb</strong></td>
+          <td>Heart-Centered Vitality. Circulation, lymphatic support, and the metabolic foundations of Aesthetic Wellness.</td>
+          <td>Metabolic beauty through internal support — what the body needs to sustain what we build externally.</td>
+          <td>Industry moment: AMWC Americas — relevant for PR pitching on integrative Aesthetic Wellness. Attendance TBD.</td>
+          <td><span class="pill pill-brand">Biological Reset</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mar</strong></td>
+          <td>Intentional Evolution. Sleep, recovery, and the biostimulatory foundations that carry the year.</td>
+          <td>Aesthetic equity — building the biological groundwork for long-term skin health. What is invested now compounds.</td>
+          <td>Franchise: VIO's standing as the leading med spa franchise in the country — three consecutive years.</td>
+          <td><span class="pill pill-brand">Biological Reset</span></td>
+        </tr>
+        <tr>
+          <td><strong>Apr</strong></td>
+          <td>Psychological Literacy. The skin-stress relationship — what the body holds and how VIO addresses it.</td>
+          <td>Neuro-cosmetics and the skin-brain axis. Stress is biological. VIO reads it and responds.</td>
+          <td>Industry moment: AmSpa Show — PR opportunity for VIO's clinical leadership positioning. Attendance TBD.</td>
+          <td><span class="pill pill-brand">Restoration</span></td>
+        </tr>
+        <tr>
+          <td><strong>May</strong></td>
+          <td>Restorative Milestones. Graduation and Mother's Day — two moments of becoming, each deserving its own kind of care.</td>
+          <td>Matrescence and biological transition. Proactive support for the body during significant life shifts.</td>
+          <td>KOL: The Aesthetic Society — CMO as teaching faculty on facial architecture and the VIO clinical standard.</td>
+          <td><span class="pill pill-brand">Restoration</span></td>
+        </tr>
+        <tr>
+          <td><strong>Jun</strong></td>
+          <td>Modern Masculine. Men's Aesthetic Wellness — low-downtime, high-performance, deeply personal.</td>
+          <td>Optimized vitality for men who operate at a high level. Refinement in the register of a performance standard, not a beauty counter.</td>
+          <td>Launch: New market entries — California and the Northeast.</td>
+          <td><span class="pill pill-brand">Restoration</span></td>
+        </tr>
+        <tr>
+          <td><strong>Jul</strong></td>
+          <td>Atmospheric Defense. Summer as a test of the investment — protecting what has been built.</td>
+          <td>Environmental resilience. Protecting the aesthetic foundation through UV exposure, heat, and dehydration.</td>
+          <td>Industry moment: Monarch Summit — regenerative tools context for PR. Attendance TBD.</td>
+          <td><span class="pill pill-brand">Reconstruction</span></td>
+        </tr>
+        <tr>
+          <td><strong>Aug</strong></td>
+          <td>Resilient Routines. Back-to-College and the Parental Reset — two audiences, one moment of reclaiming.</td>
+          <td>Re-establishing biological baselines post-summer. The body after a season of disruption — and what it takes to return to yourself.</td>
+          <td>Leadership: Franchisee profiles — multi-unit growth and the VIO standard at scale.</td>
+          <td><span class="pill pill-brand">Reconstruction</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sep</strong></td>
+          <td>Regenerative Reconstruction. Skin Awareness Month — cellular repair and the science of ongoing becoming.</td>
+          <td>DNA repair and Polynucleotides — addressing accumulated cellular damage at the structural level.</td>
+          <td>Industry moment: Aesthetic Next — potential PR timing alignment with AWI launch. Attendance TBD.</td>
+          <td><span class="pill pill-brand">Reconstruction</span></td>
+        </tr>
+        <tr>
+          <td><strong>Oct</strong></td>
+          <td>Self-Repair and Community. Breast Cancer Awareness — post-treatment skin support and long-term cellular restoration.</td>
+          <td>Cellular ATP activation and the body's internal healing capacity. VIO as a clinical partner in post-treatment longevity.</td>
+          <td>AWI Live: Aesthetic Wellness Index launched across all VIO locations. Advisory Board expansion announced.</td>
+          <td><span class="pill pill-brand">Investment Protection</span></td>
+        </tr>
+        <tr>
+          <td><strong>Nov</strong></td>
+          <td>Reflective Visibility. Healthy Skin Month and the holiday season — care that prepares, not just performs.</td>
+          <td>Ongoing becoming — deep nourishment and structural support ahead of the most visible season of the year.</td>
+          <td>Industry moment: GAC Miami — commercial momentum context for year-end PR. Attendance TBD.</td>
+          <td><span class="pill pill-brand">Investment Protection</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dec</strong></td>
+          <td>The Personal Treasury. End-of-year gifting, ClubVIO, and the 2027 longevity roadmap for every member.</td>
+          <td>Stewardship audit — planning the year ahead with intention. Membership as the structure that holds the work.</td>
+          <td>Finance: Freeman Spogli partnership and 2027 development targets.</td>
+          <td><span class="pill pill-brand">Investment Protection</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="div-rule">
+
+    <!-- AWI SOCIAL POSTS -->
+    <div class="sl">Aesthetic Wellness Index — Social Launch Sequence · September 2026</div>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-light);max-width:600px;line-height:1.85;margin-bottom:28px;">Three posts. One arc. Client-facing copy — warmer register, social pacing, brand voice held throughout. No trend language. No urgency tactics. The Index speaks for itself.</p>
+
+    <div class="post-card">
+      <div class="post-card-head">
+        <span class="post-card-date">September 1 · Post 01</span>
+        <span class="post-card-type">The Why · Editorial</span>
+      </div>
+      <div class="post-card-body">
+        <div class="post-card-col">
+          <div class="post-card-label">Overlay Text</div>
+          <div class="post-card-overlay">Beyond the surface.<br>Into the architecture.</div>
+          <div class="post-card-note" style="margin-top:10px;">Visual direction: High-resolution clinical graphic — skin structure, cellular depth, or a data-informed wellness diagram. Dark ink filter at 20% opacity. No face. No before-and-after.</div>
+        </div>
+        <div class="post-card-col">
+          <div class="post-card-label">Caption</div>
+          <div class="post-card-caption">Your skin has a story. Most assessments only read the surface.
+
+The Aesthetic Wellness Index is VIO's clinical standard for understanding what is actually happening — hydration depth, structural integrity, cellular resilience — and building a personal plan that works with your biology, not against it.
+
+This September, we are introducing something different. A diagnostic that starts where most stop.
+
+Link in bio to learn more.</div>
+          <div class="post-card-tags">#AestheticWellness #VIO #AestheticWellnessIndex #ClinicalSkinHealth</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-card-head">
+        <span class="post-card-date">September 5 · Post 02</span>
+        <span class="post-card-type">The Trusted Steward · Authority</span>
+      </div>
+      <div class="post-card-body">
+        <div class="post-card-col">
+          <div class="post-card-label">Overlay Text</div>
+          <div class="post-card-overlay">Your biological blueprint.<br>We read it first.</div>
+          <div class="post-card-note" style="margin-top:10px;">Visual direction: Candid, high-production image — CMO or clinical lead reviewing a diagnostic screen with a guest. Real. Unhurried. No posed studio setup.</div>
+        </div>
+        <div class="post-card-col">
+          <div class="post-card-label">Caption</div>
+          <div class="post-card-caption">Stewardship starts with understanding.
+
+Before VIO recommends anything, we listen to what your skin is already telling us. The Aesthetic Wellness Index audits hydration levels, DNA resilience, and structural foundation — giving us a complete picture before we build your personal plan.
+
+This is what clinical guidance looks like in practice.
+
+The Index opens this month. Link in bio.</div>
+          <div class="post-card-tags">#VIO #AestheticWellness #ClinicalGuidance #SkinHealth</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-card-head">
+        <span class="post-card-date">September 10 · Post 03</span>
+        <span class="post-card-type">The Launch · Live</span>
+      </div>
+      <div class="post-card-body">
+        <div class="post-card-col">
+          <div class="post-card-label">Overlay Text</div>
+          <div class="post-card-overlay">The Index is live.</div>
+          <div class="post-card-note" style="margin-top:10px;">Visual direction: Carousel — Slide 1: Clean Index result graphic in VIO typography. Slide 2: A real guest, unhurried, confident. No reveal language. No transformation framing.</div>
+        </div>
+        <div class="post-card-col">
+          <div class="post-card-label">Caption</div>
+          <div class="post-card-caption">Today, the Aesthetic Wellness Index is live across all VIO locations.
+
+It is not a facial. It is not an assessment form. It is a clinical conversation — one that starts with your biology and builds a personal plan for the months ahead.
+
+Your becoming has a foundation now.
+
+Book your Index consultation at the link in bio.</div>
+          <div class="post-card-tags">#AestheticWellnessIndex #VIO #BecomingStartsHere #ClinicalAesthetics</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div-rule">
+
+    <!-- BACK TO COLLEGE -->
+    <div class="sl">Back-to-College & Parental Reset — Campaign Copy · August 2026</div>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-light);max-width:620px;line-height:1.85;margin-bottom:28px;">Two audiences. One campaign window. The student entering high-stress and high-visibility. The parent reclaiming themselves. Neither is a "before." Both are a becoming.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--greige);border:1px solid var(--greige);margin-bottom:20px;">
+      <div style="background:var(--lotion);padding:24px 22px;">
+        <div class="post-card-label">Student — Skin Resilience for the Semester</div>
+        <div style="font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink);line-height:1.4;margin-bottom:12px;">"The semester brings a lot. Your skin does not have to absorb all of it."</div>
+        <div style="font-size:12px;font-weight:300;color:var(--ink-mid);line-height:1.8;">College changes your sleep, your environment, your stress load. VIO's clinical approach to skin resilience is built for exactly this kind of transition — a personal plan that supports your biology through the semester, not just before it starts.<br><br>Book your skin consultation before August 15.</div>
+      </div>
+      <div style="background:var(--ink-mid);padding:24px 22px;">
+        <div class="post-card-label" style="color:var(--mouse);">Parent — The Reset</div>
+        <div style="font-family:var(--serif);font-size:17px;font-weight:300;font-style:italic;color:var(--lotion);line-height:1.4;margin-bottom:12px;">"The house is quieter now. This is for you."</div>
+        <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.8;">For years, wellness has been everyone else's. August is the moment it returns to you. VIO's personal plan consultation is a conversation about what your body needs now — not what it needed five years ago, and not what a trend says it should want.<br><br>Book your personal plan consultation. Your VIO is ready.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--alabaster);border:1px solid var(--greige);padding:20px 24px;margin-bottom:36px;">
+      <div class="post-card-label">Language Standard — Back-to-College</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:4px;">
+        <div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#2A5A2A;margin-bottom:8px;">Always</div>
+          <div style="font-size:12px;font-weight:300;color:var(--ink-mid);line-height:1.8;">"Skin resilience for the semester"<br>"Clinical skin health consultation"<br>"Personal plan for biological transition"<br>"Your VIO supports you through it"</div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--danger);margin-bottom:8px;">Never</div>
+          <div style="font-size:12px;font-weight:300;color:var(--ink-mid);line-height:1.8;">"Clear skin for school"<br>"Acne packages" or "student discounts"<br>"Dorm-life detox" (clinical copy)<br>"Get glowing before move-in day"</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div-rule">
+
+    <!-- RETAIL KIT -->
+    <div class="sl">Semester Skin Resilience Kit — Retail · August 2026</div>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-light);max-width:600px;line-height:1.85;margin-bottom:24px;">Four clinical components. Named for what they do, not what they fix. Social copy for this kit can be warmer and more direct — the audience is younger, the register meets them there without leaving the brand behind.</p>
+
+    <div class="kit-grid">
+      <div class="kit-cell">
+        <div class="kit-num">01</div>
+        <div class="kit-name">The Reset</div>
+        <div class="kit-product">Medical-Grade Cleanser</div>
+        <div class="kit-desc">Salicylic and glycolic acids. Maintains a clear biological baseline through irregular sleep, stress, and campus environment.</div>
+      </div>
+      <div class="kit-cell">
+        <div class="kit-num">02</div>
+        <div class="kit-name">The Shield</div>
+        <div class="kit-product">Broad-Spectrum SPF 50+</div>
+        <div class="kit-desc">Matte, oil-free formula. Daily atmospheric defense — the non-negotiable foundation of any personal skin plan.</div>
+      </div>
+      <div class="kit-cell">
+        <div class="kit-num">03</div>
+        <div class="kit-name">The Support</div>
+        <div class="kit-product">Niacinamide Hydrator</div>
+        <div class="kit-desc">Skin architecture support against blue light exposure, disrupted sleep, and shifting environmental conditions.</div>
+      </div>
+      <div class="kit-cell">
+        <div class="kit-num">04</div>
+        <div class="kit-name">The Response</div>
+        <div class="kit-product">Clarifying Spot Treatment</div>
+        <div class="kit-desc">Precision clinical response for biological flare-ups during high-stress periods. Targeted. Not reactive.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--alabaster);border:1px solid var(--greige);padding:20px 24px;margin-bottom:20px;">
+      <div class="post-card-label">Social Copy — Kit Launch (Warmer Register)</div>
+      <div style="font-size:13px;font-weight:300;color:var(--ink-mid);line-height:1.85;max-width:620px;">
+        <em style="font-family:var(--serif);font-size:16px;color:var(--ink);">"Four things your skin actually needs this semester."</em><br><br>
+        New environment, new stress load, new sleep schedule. Your skin feels all of it. VIO's Semester Skin Resilience Kit is four clinical essentials — chosen for this exact kind of transition, not for a trend cycle.<br><br>
+        Available at your VIO now. Ask your specialist which ones are right for your biology.
+      </div>
+    </div>
+
+    <div class="ok-notice">✓ AWI conflict resolved — launch date locked at October 2026 (Q4). Timeline slide Month 16–17 notation reflects the 2027 annual edition. Both dates are now correct in context.</div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-note">VIO — Aesthetic Wellness · 360° Control Tower 2026<br>Internal Use Only · Brand Lead Approval Required on All Deliverables · Built on V6 Brand Standards</div>
+  <div class="footer-std">Clinical guidance to live life well.</div>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      document.querySelector('.nav-shell').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Layer toggles
+  document.querySelectorAll('.layer-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const layer = btn.dataset.layer;
+      const row = document.getElementById('row-' + layer);
+      const isOn = btn.classList.contains('on');
+      if (isOn) {
+        btn.classList.remove('on');
+        row.querySelectorAll('.lg-cell, .lg-row-label').forEach(el => {
+          el.style.display = 'none';
+        });
+      } else {
+        btn.classList.add('on');
+        row.querySelectorAll('.lg-cell, .lg-row-label').forEach(el => {
+          el.style.display = '';
+        });
+      }
+    });
+  });
+
+  function downloadPRBrief() {
+    const brief = `VIO — PR AGENCY BRIEF 2026
+Clinical guidance to live life well.
+Internal Use Only — Brand Lead Approval Required
+========================================
+
+THE STANDARD
+VIO is Aesthetic Wellness. Brand statement: "Clinical guidance to live life well."
+Voice: Refined. Authoritative. Warm. Unhurried.
+In all copy: VIO only. Never "VIO Med Spa."
+Clients, members, or guests. Never patients. Never customers.
+
+NEVER LIST — ABSOLUTE
+- Anti-aging language of any kind
+- "Protocol" in any context
+- Treatment packages or deals
+- Exclamation points in editorial or media copy
+- Defining VIO by what it is not
+- Urgency or scarcity as default tactic
+- "VIO Med Spa" in any copy
+
+========================================
+2026 PR NARRATIVE CALENDAR — V6 CORRECTED
+
+JAN — Biological Reset
+Narrative: Diagnostic skin fitness and cellular support at the start of the year.
+Clinical focus: Inner architecture — establishing baselines before any intervention.
+PR hook: Nashville HQ as VIO's center of clinical excellence.
+
+FEB — Heart-Centered Vitality
+Narrative: Circulation, lymphatic support, and the metabolic foundations of Aesthetic Wellness.
+Clinical focus: Metabolic beauty through internal support.
+PR moment: AMWC Americas — industry context for integrative Aesthetic Wellness pitching. Attendance TBD.
+
+MAR — Intentional Evolution
+Narrative: Sleep, recovery, and the biostimulatory foundations that carry the year.
+Clinical focus: Aesthetic equity — building biological groundwork for long-term skin health.
+PR hook: VIO as the leading med spa franchise — three consecutive years.
+
+APR — Psychological Literacy (Restoration arc begins)
+Narrative: The skin-stress relationship and VIO's clinical response.
+Clinical focus: Neuro-cosmetics and the skin-brain axis.
+PR moment: AmSpa Show — industry context for clinical leadership positioning. Attendance TBD.
+
+MAY — Restorative Milestones
+Narrative: Graduation and Mother's Day — two moments of becoming.
+Clinical focus: Matrescence and biological transition.
+PR hook: CMO as teaching faculty at The Aesthetic Society on facial architecture.
+
+JUN — Modern Masculine
+Narrative: Men's Aesthetic Wellness — low-downtime, high-performance, deeply personal.
+Clinical focus: Optimized vitality for high-performance lives.
+PR hook: New market entries — California and Northeast.
+
+JUL — Atmospheric Defense (Reconstruction arc begins)
+Narrative: Summer as a test of the investment — protecting what has been built.
+Clinical focus: Environmental resilience through UV exposure and heat.
+PR moment: Monarch Summit — regenerative tools context for pitching. Attendance TBD.
+
+AUG — Resilient Routines
+Narrative: Back-to-College and the Parental Reset — two audiences, one moment of reclaiming.
+Clinical focus: Re-establishing biological baselines post-summer.
+PR hook: Franchisee leadership profiles — multi-unit growth at scale.
+
+SEP — Regenerative Reconstruction
+Narrative: Skin Awareness Month — cellular repair and ongoing becoming.
+Clinical focus: DNA repair and Polynucleotides at the structural level.
+PR moment: Aesthetic Next — industry timing alignment with AWI launch. Attendance TBD.
+
+OCT — Self-Repair and Community (Investment Protection arc begins)
+Narrative: Breast Cancer Awareness — post-treatment skin support and long-term restoration.
+Clinical focus: Cellular ATP activation and internal healing capacity.
+PR hook: AESTHETIC WELLNESS INDEX LIVE. Advisory Board expansion announced.
+NOTE: AWI launch is locked October 2026.
+
+NOV — Reflective Visibility
+Narrative: Healthy Skin Month — care that prepares, not just performs.
+Clinical focus: Deep nourishment and structural support for the holiday season.
+PR moment: GAC Miami — year-end commercial context. Attendance TBD.
+
+DEC — The Personal Treasury
+Narrative: End-of-year gifting, ClubVIO, and the 2027 longevity roadmap.
+Clinical focus: Stewardship audit — planning the year ahead with intention.
+PR hook: Freeman Spogli partnership and 2027 development targets.
+
+========================================
+ASSET HANDOVER DATES (2-QUARTER LEAD)
+
+March 1 — Q2 Kit to agencies
+June 1 — Q3 Kit (Back-to-College + Parental Reset + AWI preview)
+September 1 — Q4 Kit (AWI live + Holiday + ClubVIO)
+December 1 — Q1 2027 Kit
+
+========================================
+AGENCY SUBMISSION FORMAT
+All proposed activities must reference:
+1. VIO Brand Arc theme (exact name)
+2. Proposed go-live date
+3. Assets required from VIO and by when
+4. Any conflict flags
+
+Activities that do not map to the brand arc are returned before review.
+
+========================================
+VIO — Aesthetic Wellness · viomedspa.com
+Brand Lead Approval Required on All Deliverables
+Built on V6 Brand Standards`;
+
+    const blob = new Blob([brief], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'VIO-PR-Agency-Brief-2026.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
