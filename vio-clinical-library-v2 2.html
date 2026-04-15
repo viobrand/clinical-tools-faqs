@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Nunito+Sans:wght@300;400;500;600&display=swap">
 <title>VIO Clinical Library</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Nunito+Sans:wght@300;400;500;600&display=swap');
+
 :root{--ink:#030303;--lotion:#FEFFF9;--greige:#E9E3DC;--alabaster:#F2F0E6;--mouse:#B29D92;--fd:'Cormorant Garamond',serif;--fb:'Nunito Sans',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--lotion);color:var(--ink);font-family:'Nunito Sans',sans-serif;font-size:14px;min-height:100vh}
@@ -277,6 +281,21 @@ textarea{resize:vertical;min-height:100px;line-height:1.65}
 <div class="sec" id="s-gen">
   <div class="sh">Generate</div>
   <div class="ss">Select an entry. Choose what you need. The library data informs it — the brand system shapes it.</div>
+
+  <div style="background:var(--alabaster);border:.5px solid rgba(3,3,3,.1);border-radius:8px;padding:20px 24px;margin-bottom:28px">
+    <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mouse);margin-bottom:10px;font-weight:600">What This Tab Does</div>
+    <div style="font-size:13px;line-height:1.78;color:rgba(3,3,3,.78);margin-bottom:16px">The Generate tab takes any entry in the clinical library and produces on-brand copy for a specific output type — service page briefs, campaign social copy, accordion copy for the website, clinical reference cards, and more. The library data (mechanism, plain language summary, ideal candidate, contraindications) informs the content. The brand system — voice, register, never list, and copy standards — shapes how it is written.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--lotion);border:.5px solid rgba(3,3,3,.1);border-radius:6px;padding:14px 16px">
+        <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mouse);margin-bottom:6px;font-weight:600">Who Uses This</div>
+        <div style="font-size:12px;line-height:1.65;color:rgba(3,3,3,.72)">Brand team and copywriter. Use this to draft service page copy, social campaign content, FAQ sets, and clinical accordion copy — then review and refine before deployment. Approval by Tara required before any copy goes live.</div>
+      </div>
+      <div style="background:var(--lotion);border:.5px solid rgba(3,3,3,.1);border-radius:6px;padding:14px 16px">
+        <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mouse);margin-bottom:6px;font-weight:600">How To Use It</div>
+        <div style="font-size:12px;line-height:1.65;color:rgba(3,3,3,.72)">1. Enter your Anthropic API key in the header. 2. Select a library entry from the list. 3. Choose an output type. 4. Add optional context (target audience, campaign angle). 5. Click Generate. Review the output — it is a draft, not a final.</div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="fl">Select Library Entry</div>
     <div class="gswrap">
@@ -1121,6 +1140,16 @@ function seedLibrary() {
 }
 
 
+window.addEventListener('load', function(){
+  var k=sessionStorage.getItem('vk');
+  if(k){ document.getElementById('apikey').value=k; document.getElementById('kdot').classList.add('on'); document.getElementById('klbl').textContent='API key saved for this session'; }
+  seedLibrary();
+  updCt();
+  renderLib();
+  renderGL();
+  initFaqs();
+
+
 // Tab event delegation — no inline onclick
 document.getElementById('main-nav').addEventListener('click', function(e){
   var btn = e.target.closest('.ntab');
@@ -1200,14 +1229,6 @@ document.querySelectorAll('[data-action]').forEach(function(btn){
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-window.addEventListener('load', function(){
-  var k=sessionStorage.getItem('vk');
-  if(k){ document.getElementById('apikey').value=k; document.getElementById('kdot').classList.add('on'); document.getElementById('klbl').textContent='API key saved for this session'; }
-  seedLibrary();
-  updCt();
-  renderLib();
-  renderGL();
-  initFaqs();
 });
 </script>
 </body>
