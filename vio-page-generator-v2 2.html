@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIO Page Copy Generator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FEFFF9;color:#030303;min-height:100vh}
+.wrap{max-width:780px;margin:0 auto;padding:40px 24px}
+.hdr{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;border-bottom:0.5px solid rgba(3,3,3,0.15);margin-bottom:28px}
+.brand{font-family:'Georgia',serif;font-size:13px;letter-spacing:0.2em;color:#030303;text-transform:uppercase}
+.hdr-label{font-size:11px;letter-spacing:0.13em;color:#888;text-transform:uppercase}
+.field-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#888;margin-bottom:7px}
+.row{margin-bottom:18px}
+select,textarea,input[type=text]{width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:#030303;background:#fff;border:0.5px solid rgba(3,3,3,0.25);border-radius:8px;padding:9px 11px;outline:none}
+select:focus,textarea:focus,input:focus{border-color:rgba(3,3,3,0.5)}
+textarea{resize:vertical;line-height:1.6}
+.btn-primary{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;letter-spacing:0.11em;text-transform:uppercase;color:#FEFFF9;background:#030303;border:none;border-radius:8px;padding:10px 22px;cursor:pointer}
+.btn-primary:hover{opacity:0.85}
+.btn-primary:disabled{opacity:0.35;cursor:default}
+.btn-ghost{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;letter-spacing:0.11em;text-transform:uppercase;color:#888;background:none;border:0.5px solid rgba(3,3,3,0.2);border-radius:8px;padding:10px 18px;cursor:pointer}
+.btn-ghost:hover{background:#F2F0E6}
+.btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.status{font-size:12px;color:#888;padding:10px 0;display:none}
+.status.on{display:block}
+.progress-bar{height:2px;background:rgba(3,3,3,0.1);border-radius:2px;margin:8px 0;display:none}
+.progress-bar.on{display:block}
+.progress-fill{height:100%;background:#030303;border-radius:2px;transition:width 0.4s ease;width:0%}
+.topic-list{display:flex;flex-direction:column;gap:0;border:0.5px solid rgba(3,3,3,0.2);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.topic-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:0.5px solid rgba(3,3,3,0.08);cursor:pointer;transition:background 0.12s;user-select:none}
+.topic-item:last-child{border-bottom:none}
+.topic-item:hover{background:#F2F0E6}
+.topic-item.selected{background:#F2F0E6}
+.topic-check{width:16px;height:16px;border:0.5px solid rgba(3,3,3,0.25);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.12s}
+.topic-item.selected .topic-check{background:#030303;border-color:#030303}
+.check-mark{width:8px;height:8px;display:none}
+.topic-item.selected .check-mark{display:block;fill:#FEFFF9}
+.topic-name{font-size:13px;color:#030303;flex:1}
+.topic-notes{font-size:11px;color:#888;font-style:italic}
+.topic-actions{display:flex;gap:12px;margin-top:6px;margin-bottom:4px;align-items:center}
+.topic-action-btn{font-size:11px;color:#888;background:none;border:none;cursor:pointer;padding:0;letter-spacing:0.06em}
+.topic-action-btn:hover{color:#030303}
+.sel-count{font-size:11px;color:#888;letter-spacing:0.06em}
+.add-topic-row{display:flex;gap:8px;margin-top:8px}
+.add-topic-row input{flex:1}
+.add-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;color:#888;background:none;border:0.5px solid rgba(3,3,3,0.2);border-radius:8px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.add-btn:hover{color:#030303}
+.results{margin-top:24px}
+.page-result{border:0.5px solid rgba(3,3,3,0.12);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.page-head{padding:12px 16px;background:#F2F0E6;border-bottom:0.5px solid rgba(3,3,3,0.1);display:flex;justify-content:space-between;align-items:center}
+.page-name{font-size:12px;font-weight:500;color:#030303;letter-spacing:0.06em;text-transform:uppercase}
+.page-type-badge{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:0.5px solid rgba(3,3,3,0.15);color:#888}
+.zone{border-bottom:0.5px solid rgba(3,3,3,0.08);padding:12px 16px}
+.zone:last-child{border-bottom:none}
+.zone-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#888;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.zone-copy{font-family:'Georgia',serif;font-size:13px;line-height:1.75;color:#030303;white-space:pre-wrap}
+.copy-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#888;background:none;border:0.5px solid rgba(3,3,3,0.15);border-radius:6px;padding:2px 8px;cursor:pointer;flex-shrink:0}
+.copy-btn:hover{color:#030303}
+.copy-all-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888;background:none;border:0.5px solid rgba(3,3,3,0.15);border-radius:6px;padding:5px 12px;cursor:pointer}
+.copy-all-btn:hover{color:#030303}
+.empty-state{padding:18px;font-size:13px;color:#aaa;text-align:center}
+.preset-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;color:#030303;background:#F2F0E6;border:0.5px solid rgba(3,3,3,0.12);padding:5px 12px;cursor:pointer;letter-spacing:0.04em;transition:background 0.12s;}
+.preset-btn:hover{background:#E9E3DC;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <span class="brand">VIO</span>
+    <span class="hdr-label">Page Copy Generator</span>
+  </div>
+
+  <div class="row" id="api-key-row">
+    <div class="field-label">API Key</div>
+    <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
+    <div class="hint" style="margin-top:5px">Your Anthropic API key — stays local, never stored</div>
+  </div>
+
+  <div class="row">
+    <div class="field-label">Page Level</div>
+    <select id="page-level" onchange="onLevelChange()">
+      <option value="">Select level...</option>
+      <option value="detail">Detail Page (e.g. Wrinkle Relaxers)</option>
+      <option value="seo">SEO Page (e.g. Botox, Dysport — single treatment)</option>
+      <option value="landing">Landing Page (campaign, ClubVIO, seasonal, B2B)</option>
+    </select>
+  </div>
+
+  <div class="row" id="preset-section" style="display:none">
+    <div class="field-label" style="margin-bottom:10px">Quick Load — Full Treatment Category</div>
+    <div id="preset-wrap"></div>
+  </div>
+
+  <div class="row" id="parent-row" style="display:none">
+    <div class="field-label">Parent Detail Page</div>
+    <input type="text" id="parent-input" placeholder="e.g. Wrinkle Relaxers">
+    <div class="hint">The detail page these SEO pages live under</div>
+  </div>
+
+  <div class="row" id="topics-section" style="display:none">
+    <div class="field-label" style="margin-bottom:10px">Topics</div>
+    <div class="topic-list" id="topic-list">
+      <div class="empty-state">Add topics below to get started</div>
+    </div>
+    <div class="topic-actions" id="topic-actions" style="display:none">
+      <button class="topic-action-btn" onclick="selectAll()">Select all</button>
+      <button class="topic-action-btn" onclick="deselectAll()">Deselect all</button>
+      <span class="sel-count" id="sel-count"></span>
+    </div>
+    <div class="add-topic-row">
+      <input type="text" id="new-topic-input" placeholder="Topic name — add notes after a colon e.g. Botox: longest track record" onkeydown="if(event.key==='Enter')addTopic()">
+      <button class="add-btn" onclick="addTopic()">+ Add</button>
+    </div>
+  </div>
+
+  <div class="row" id="context-section" style="display:none">
+    <div class="field-label">Additional Context (optional)</div>
+    <textarea id="context-input" rows="3" placeholder="Any raw copy, clinical notes, or direction to apply across all generated pages..."></textarea>
+  </div>
+
+  <div id="btn-section" style="display:none">
+    <div class="btn-row">
+      <button class="btn-primary" id="gen-btn" onclick="runGenerate()" disabled>Generate Selected ↗</button>
+      <button class="btn-ghost" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+
+  <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill"></div></div>
+  <div class="status" id="status-msg"></div>
+  <div class="results" id="results-wrap"></div>
+</div>
+
+<script>
+let topics=[];
+
+const BRAND_CORE=`You are the brand copy system for VIO Med Spa, operating with the precision and editorial judgment of the brand strategist who built VIO.
+
+OPERATING STANDARD (not a tagline): "Clinical guidance to live life well."
+Every word must embody both clinical expertise AND deeply personal connection simultaneously. When copy tips too clinical it reads hospital. When it tips too personal without the clinical grounding it reads spa. The brand lives precisely in between. This is the dual mandate — always both, never one without the other.
+Brand benchmark: Ralph Lauren. Timeless. Ease. Standard. Quality. The Ralph Lauren of aesthetic wellness.
+Tagline: "Beyond Aesthetics. Becoming Starts Here."
+Guardrail I — Elite Standard: VIO is the clinical reference point. Not aspiration. Operating standard. The standard does not explain itself.
+Guardrail II — Felt Experience: Every word must make the reader feel seen, safe, supported, and guided. Clinical trust creates personal connection.
+
+VOICE: Precise, direct, personal without being soft. Clinical without being cold. Unhurried. The trusted guide, not the salesperson. Restraint is expertise. A little more than spare — never cryptic, never fluffy.
+
+ABSOLUTE NOs — never in any copy, any context, any audience:
+- "protocol" — absolute no, every context
+- anti-aging / aging gracefully / turn back the clock
+- "care" / "we care" — hospital language, wrong kind of clinical distance
+- pampering / indulge / treat yourself
+- feel your best (vague, earns nothing)
+- "endure" or "enduring" anywhere
+- exclamation points in editorial copy
+- "VIO Med Spa" — always "VIO"
+- defining VIO against what others do wrong — no contrast framing, no "finally," no "unlike others"
+- clinical disclosures written as hero copy (e.g. "You will feel intense involuntary contractions")
+- defensive copy — "what we stock, we use ourselves" — the standard does not explain itself
+- "precision" used more than once per page — audit for overuse
+- "architecture" overused — use sparingly
+- "partnership" overused — use sparingly
+- "longitudinally," "navigable," "perks" — absolute nos
+- shame or flaw language — no double chin, sagging, stubborn, problem areas
+- "what your skin tells us" — rephrase always
+
+CONDITIONAL — depends on context and audience:
+- "Transformative": earned after clinical credibility is established — never as opening claim
+- Desire-forward language: appropriate at browse/concern entry level; clinical voice takes over at treatment family level
+- "Results": acceptable in browse context; prefer "outcome" at treatment page level
+- "Intention": acceptable when doing specific work; never as filler paired with a word that already carries the meaning
+
+COPY STRUCTURE RULES:
+- Accordion headers: "What is [Treatment]?" / "Is This For You?" / "What to Expect" — locked
+- "Is This For You" zone: never name the problem the person has been living in — name the life they are already building and show where the treatment belongs inside it
+- Closing pull quotes: always exactly two lines
+- Category header blurbs: one line, navigation-first — tells someone if it is relevant so they click in
+- Scroll stop format: 8 words or fewer, a felt truth
+- "Best for" bullets belong in a filter layer — never in page body
+- Step 05 of VIO Experience: title is always "THE RESULT"
+- Footer links are always exactly: FIND YOUR VIO | CURIOUS ABOUT YOUR WELLNESS? | JOIN THE CLUB — never change, never paraphrase`;
+
+const SYSTEM_DETAIL=BRAND_CORE+`
+
+PAGE TYPE: Detail Page — covers a service category, introduces treatments within it. Establish clinical authority for the category first.
+
+Return JSON with exactly these keys:
+{"category_label":"2-3 word category ALL CAPS","hero_subline":"1 sentence clinical philosophy — editorial not benefit statement","treatments_list":[{"name":"","description":"1-2 sentences mechanism first then what it addresses"}],"closing_pull_quote":"2 lines personal + intentional no rhyme no softness","focus_areas":[{"number":"01","name":"ALL CAPS","description":"1 sentence"}],"vio_experience":[{"step":"01","title":"ALL CAPS","body":"2-3 sentences"}],"footer_links":["contextual link 1","contextual link 2","contextual link 3"]}
+
+focus_areas: exactly 4 items 01-04. Names ALL CAPS. Specific to this category.
+vio_experience: steps 01-04 are consultation/protocol arc. Step 05 title always "THE RESULT" — 2 sentences personal no superlatives.
+footer_links: 3 links specific to what someone reading this category page wants next — vary per category.
+Respond ONLY with valid JSON. No markdown no preamble.`;
+
+const SYSTEM_SEO=BRAND_CORE+`
+
+PAGE TYPE: SEO Page — single treatment deep-dive under a parent detail page. Reader already knows what this treatment is. Meet them there.
+
+ACCORDION tone reference (Botox): What it is: "The foundation of modern neuromodulator therapy. Botox® refines dynamic expression — softening movement patterns that no longer serve how you wish to be seen." Who it serves: "For those who recognize aesthetic wellness as integral to how they show up in the world. This is partnership, not vanity — an ongoing conversation between you and the version of yourself you're becoming."
+
+Return JSON with exactly these keys:
+{"treatment_name":"ALL CAPS","hero_subline":"1 sentence clinical identity of this treatment","what_it_is":"2-3 sentences clinical foundation mechanism VIO voice","who_it_serves":"2-3 sentences mindset life context identity not demographics no age references","what_to_expect":"3-5 sentences full arc: consultation protocol timeline outcome close with ongoing refinement","closing_pull_quote":"2 lines the feeling after not the feature personal intentional","focus_areas":[{"number":"01","name":"ALL CAPS","description":"1 sentence specific to this treatment"}],"footer_links":["contextual link 1","contextual link 2","contextual link 3"]}
+
+focus_areas: exactly 4 items 01-04. Specific to this treatment — not generic medspa benefits.
+footer_links: 3 links specific to what someone on this treatment page wants next — mix of actions, related treatments, education/membership. Vary per treatment.
+Respond ONLY with valid JSON. No markdown no preamble.`;
+
+const SYSTEM_LANDING=BRAND_CORE+`
+
+PAGE TYPE: Landing Page — campaign, membership, seasonal, or B2B outreach. Single purpose, single audience, single action. The entire page earns one conversion: a booking, a membership sign-up, a conversation.
+
+Unlike treatment pages, landing pages are permitted a warmer entry — but clinical authority must be present by the second section. Never open with a claim you have not earned. Never close without a clear next step.
+
+LANDING PAGE ZONES:
+- Hero: H1 (6 words or fewer, felt truth) + subline (1-2 sentences, earns the headline)
+- Body Block 1: The positioning — what this is and why it exists. 2-3 sentences.
+- Body Block 2: The proof or the experience — what makes this real. 2-3 sentences.
+- Pull Quote: 2 lines. Personal. The feeling after.
+- CTA Block: The action. Direct. Never "learn more" — always specific.
+- Footer: locked links.
+
+LANDING PAGE VOICE NOTE: Warmer entry is permitted. Wit is permitted in invite and event contexts. Scarcity language when needed: "A select number remain" is the approved form — never "limited time," never countdown language.
+
+Return JSON with exactly these keys:
+{"page_title":"ALL CAPS campaign or page name","hero_h1":"6 words or fewer — felt truth, not a tagline","hero_subline":"1-2 sentences that earn the headline","body_block_1":"2-3 sentences. What this is and why it exists. Clinical authority present.","body_block_2":"2-3 sentences. The proof, the experience, or the differentiator.","pull_quote":"2 lines. Personal. The feeling after. No rhyme, no superlatives.","cta_label":"The action — specific, direct. Not learn more.","cta_subtext":"1 sentence beneath the CTA button. Optional urgency or reassurance.","footer_links":["FIND YOUR VIO","CURIOUS ABOUT YOUR WELLNESS?","JOIN THE CLUB"]}
+
+footer_links: always exactly these three, verbatim.
+Respond ONLY with valid JSON. No markdown no preamble.`;
+
+const PRESETS={
+  injectables_neuromodulators:{label:"Wrinkle Relaxers",parent:"Injectable Services",items:[
+    {name:"Botox®",notes:"Flagship neuromodulator, decades of clinical precision, expression lines, forehead, brow"},
+    {name:"Daxxify®",notes:"Extended-duration, fewer sessions, frown lines, longer intervals"},
+    {name:"Dysport®",notes:"Fast-acting, natural diffusion, forehead movement, larger areas"},
+    {name:"Jeuveau®",notes:"Modern formula, consistent refined results, frown lines, newer to neuromodulators"},
+    {name:"Xeomin®",notes:"Pure formulation, no additives, sensitivities, lighter clinical touch"}
+  ]},
+  injectables_fillers:{label:"Dermal Fillers",parent:"Injectable Services",items:[
+    {name:"RHA® Collection",notes:"Dynamic filler engineered to move with expression, smile lines, lip corners"},
+    {name:"Restylane®",notes:"Targeted precision, lip definition, under-eye hollows, cheek volume"},
+    {name:"Juvéderm®",notes:"Versatile HA platform, deeper folds, volume restoration, sustained results"},
+    {name:"Belotero Balance®",notes:"Fine-gauge, delicate zones, fine lines around lips, tear troughs"}
+  ]},
+  injectables_collagen:{label:"Collagen Production",parent:"Injectable Services",items:[
+    {name:"Sculptra®",notes:"Poly-L-lactic acid, gradual collagen replacement, midface volume, temple fullness"},
+    {name:"Radiesse®",notes:"Calcium hydroxylapatite, immediate structure plus collagen stimulation, jawline, hands"},
+    {name:"Skinvive™",notes:"Intradermal hydration, cheek texture, luminosity, surface crepiness"},
+    {name:"PRP",notes:"Platelet-rich plasma, autologous growth factors, under-eye, fine lines, skin quality"},
+    {name:"PRF EZ Gel",notes:"Regenerative platelet matrix, natural scaffolding, neck, décolletage, hands"}
+  ]},
+  lift_contour:{label:"Lift & Contour",parent:"Injectable Services",items:[
+    {name:"PDO Threads",notes:"Dissolvable scaffold, body's healing response, jawline, brow lift, midface support"},
+    {name:"Kybella®",notes:"Deoxycholic acid, lasting chin contour, jawline clarity"}
+  ]},
+  facials:{label:"Facials",parent:"Skin Treatment Services",items:[
+    {name:"Glacial Rx",notes:"Cryostimulation technology, anti-inflammatory, reduces redness and pore appearance, calms sensitized skin, post-procedure recovery, rosacea, acne-prone, reactive skin"},
+    {name:"VIO Signature Facial",notes:"Tailored protocol addressing skin's present needs, maintenance between clinical treatments"},
+    {name:"HydraFacial",notes:"Multi-step cleansing and extraction respecting skin's barrier, congestion, dullness, pre-event"},
+    {name:"Glo2Facial",notes:"CO₂-driven oxygenation, cellular function, tired complexions, uneven tone"},
+    {name:"PRP Facial",notes:"Autologous platelets, tissue renewal, texture refinement, overall vitality"},
+    {name:"Dermaplaning",notes:"Blade exfoliation, surface buildup, product penetration, makeup application"}
+  ]},
+  microneedling:{label:"Microneedling",parent:"Skin Treatment Services",items:[
+    {name:"Morpheus8 RF Microneedling",notes:"Subdermal radiofrequency remodeling, skin laxity, neck texture, deeper structural concerns"},
+    {name:"Pixel8 RF Microneedling",notes:"Precision RF, delicate zones, enlarged pores, fine lines, acne scarring"},
+    {name:"SkinPen Microneedling",notes:"Controlled injury, collagen stimulation, early texture, acne scarring, overall tone"},
+    {name:"SkinStylus Microneedling",notes:"Gentle needling, sensitive skin, lip lines, maintenance"}
+  ]},
+  laser_light:{label:"Laser & Light Therapy",parent:"Skin Treatment Services",items:[
+    {name:"BBL + Moxi",notes:"Dual-platform, pigment tone texture simultaneously, sun damage, redness, age spots"},
+    {name:"IPL Therapy",notes:"Broad-spectrum light, chromophores, capillaries, sun spots, diffuse redness"},
+    {name:"LED Light Therapy",notes:"Low-level wavelengths, cellular repair, post-procedure recovery, active breakouts"},
+    {name:"Pix:E Laser",notes:"Fractionated precision, acne scarring, enlarged pores"},
+    {name:"Erbium Laser",notes:"Controlled ablative resurfacing, deeper lines, surgical scars"}
+  ]},
+  peels:{label:"Peels",parent:"Skin Treatment Services",items:[
+    {name:"Linder Health Peel",notes:"Clinical-grade exfoliation, dullness, surface texture, pre-event"},
+    {name:"VI Peel",notes:"Dual-action pigment and texture, melasma, sun damage, acne scarring"},
+    {name:"Perfect Derma Peel",notes:"Multi-layer renewal, deeper pigment, significant texture"}
+  ]},
+  body_contouring:{label:"Body Contouring & Sculpting",parent:"Body Treatment Services",items:[
+    {name:"EmSculpt NEO",notes:"Simultaneous muscle engagement and fat reduction, core, muscle tone, recomposition"},
+    {name:"CoolSculpting",notes:"Cryolipolysis, targeted reduction, diet and exercise resistant, abdomen flanks thighs"},
+    {name:"CoolTone",notes:"Magnetic muscle stimulation, core strength, glutes, thighs"},
+    {name:"Lipotropic Injections",notes:"Amino acids and B vitamins, metabolic fat processing, energy, active weight management"}
+  ]},
+  skin_tightening:{label:"Skin Tightening & Resurfacing",parent:"Body Treatment Services",items:[
+    {name:"Morpheus8 Body",notes:"Subdermal RF remodeling, body laxity, deeper structural tightening"},
+    {name:"Hyperdilute Radiesse®",notes:"Bio-stimulatory, firms and smooths without adding volume, neck chest hands"},
+    {name:"PRF EZ Gel Body",notes:"Regenerative platelet foundation, gradual tissue renewal, neck décolletage"}
+  ]},
+  hair_scalp:{label:"Hair & Scalp Restoration",parent:"Body Treatment Services",items:[
+    {name:"Laser Hair Removal",notes:"Targeted follicle disruption, permanent reduction"},
+    {name:"HydraFacial Keravive",notes:"Scalp cleansing and peptide infusion, thinning hair, scalp health, pre-restoration"},
+    {name:"PRF Hair Restoration",notes:"Platelet-rich fibrin, hair density, non-surgical restoration"}
+  ]},
+  metabolic:{label:"Metabolic Health",parent:"Wellness Services",items:[
+    {name:"Semaglutide (GLP-1)",notes:"Clinically proven appetite regulation, metabolic support, weight management"},
+    {name:"Tirzepatide (GLP-1/GIP)",notes:"Dual-action hunger and glucose regulation, broader metabolic support"}
+  ]},
+  hormones:{label:"Hormone Support",parent:"Wellness Services",items:[
+    {name:"BHRT Pellets",notes:"Sustained-release bioidentical hormones, consistent levels, energy libido mood stability"},
+    {name:"Testosterone (TRT)",notes:"Precision hormone replacement, strength, mood, vitality, low testosterone"}
+  ]},
+  peptides_body:{label:"Peptide Therapy — Body",parent:"Wellness Services",items:[
+    {name:"Sermorelin",notes:"Growth hormone releasing peptide, natural production, sleep quality, recovery, lean muscle"},
+    {name:"Tesamorelin",notes:"Visceral adipose tissue, abdominal composition, metabolic support"},
+    {name:"PT-141",notes:"Desire, arousal, sexual confidence, low libido, sexual wellness"}
+  ]},
+  peptides_skin:{label:"Peptide Therapy — Skin",parent:"Wellness Services",items:[
+    {name:"Glutathione",notes:"Master antioxidant, detoxification, cellular defense, skin radiance"},
+    {name:"GHK-Cu",notes:"Copper peptide, collagen synthesis, tissue repair, skin rejuvenation, hair health"}
+  ]},
+  peptides_mood:{label:"Peptide Therapy — Mood",parent:"Wellness Services",items:[
+    {name:"Oxytocin",notes:"Neuropeptide, emotional connection, stress resilience, intimacy"},
+    {name:"Selank / Semax",notes:"Nootropic peptides, focus, stress resilience, cognitive clarity, memory"}
+  ]},
+  iv_therapy:{label:"IV Therapy",parent:"Wellness Services",items:[
+    {name:"Hydrate IV",notes:"Electrolyte and fluid restoration, dehydration, post-travel, illness recovery"},
+    {name:"Glow IV",notes:"Glutathione and vitamin C antioxidant infusion, skin luminosity, detoxification"},
+    {name:"Recover IV",notes:"Post-exertion blend, athletic recovery, physical stress, immune support"},
+    {name:"Perform IV",notes:"Pre-event optimization, athletic performance, demanding schedules"},
+    {name:"Immune IV",notes:"High-dose vitamin C and zinc, illness prevention, seasonal transitions"}
+  ]},
+  im_injections:{label:"IM Injections",parent:"Wellness Services",items:[
+    {name:"B12 Shots",notes:"Methylcobalamin intramuscular, energy, focus, B12 deficiency"},
+    {name:"Biotin Injections",notes:"B-vitamin, hair skin nail integrity, hair strength"},
+    {name:"NAD+ Injections",notes:"Cellular energy, mitochondrial, vitality, cognitive function"},
+    {name:"Tri-Immune Injections",notes:"Glutathione vitamin C zinc, immune resilience, seasonal illness prevention"}
+  ]}
+};
+
+function renderPresetGroups(){
+  const groups=[
+    {label:"INJECTABLE SERVICES",keys:["injectables_neuromodulators","injectables_fillers","injectables_collagen","lift_contour"]},
+    {label:"SKIN TREATMENT SERVICES",keys:["facials","microneedling","laser_light","peels"]},
+    {label:"BODY TREATMENT SERVICES",keys:["body_contouring","skin_tightening","hair_scalp"]},
+    {label:"WELLNESS SERVICES",keys:["metabolic","hormones","peptides_body","peptides_skin","peptides_mood","iv_therapy","im_injections"]}
+  ];
+  const wrap=document.getElementById('preset-wrap');
+  let html='';
+  groups.forEach(g=>{
+    html+=`<div style="margin-bottom:10px;"><div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#888;margin-bottom:6px;">${g.label}</div><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    g.keys.forEach(k=>{const p=PRESETS[k];html+=`<button class="preset-btn" onclick="loadPreset('${k}')">${p.label}</button>`;});
+    html+=`</div></div>`;
+  });
+  wrap.innerHTML=html;
+}
+
+function loadPreset(key){
+  const p=PRESETS[key];
+  if(!p)return;
+  topics=p.items.map(i=>({name:i.name,notes:i.notes,selected:true}));
+  const level=document.getElementById('page-level').value;
+  if(level==='seo') document.getElementById('parent-input').value=p.label;
+  renderTopics();
+  document.getElementById('topics-section').style.display='block';
+  document.getElementById('context-section').style.display='block';
+  document.getElementById('btn-section').style.display='block';
+}
+
+function onLevelChange(){
+  const level=document.getElementById('page-level').value;
+  document.getElementById('parent-row').style.display=level==='seo'?'block':'none';
+  document.getElementById('topics-section').style.display=level?'block':'none';
+  document.getElementById('context-section').style.display=level?'block':'none';
+  document.getElementById('btn-section').style.display=level?'block':'none';
+  document.getElementById('preset-section').style.display=(level&&level!=='landing')?'block':'none';
+  if(level) renderPresetGroups();
+}
+
+function addTopic(){
+  const input=document.getElementById('new-topic-input');
+  const val=input.value.trim();
+  if(!val)return;
+  const[namePart,...rest]=val.split(':');
+  topics.push({name:namePart.trim(),notes:rest.join(':').trim(),selected:true});
+  input.value='';
+  renderTopics();
+}
+
+function renderTopics(){
+  const list=document.getElementById('topic-list');
+  const actions=document.getElementById('topic-actions');
+  if(!topics.length){
+    list.innerHTML='<div class="empty-state">Add topics below to get started</div>';
+    actions.style.display='none';
+    updateGenBtn();
+    return;
+  }
+  actions.style.display='flex';
+  list.innerHTML=topics.map((t,i)=>`
+    <div class="topic-item ${t.selected?'selected':''}" onclick="toggleTopic(${i})">
+      <div class="topic-check">
+        <svg class="check-mark" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" stroke="#FEFFF9" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="topic-name">${t.name}</span>
+      ${t.notes?`<span class="topic-notes">${t.notes}</span>`:''}
+      <button style="font-size:11px;color:#aaa;background:none;border:none;cursor:pointer;padding:0 0 0 8px;flex-shrink:0" onclick="removeTopic(event,${i})">✕</button>
+    </div>
+  `).join('');
+  updateSelCount();
+  updateGenBtn();
+}
+
+function toggleTopic(i){topics[i].selected=!topics[i].selected;renderTopics();}
+function removeTopic(e,i){e.stopPropagation();topics.splice(i,1);renderTopics();}
+function selectAll(){topics.forEach(t=>t.selected=true);renderTopics();}
+function deselectAll(){topics.forEach(t=>t.selected=false);renderTopics();}
+function updateSelCount(){const n=topics.filter(t=>t.selected).length;document.getElementById('sel-count').textContent=n?`${n} selected`:'None selected';}
+function updateGenBtn(){const n=topics.filter(t=>t.selected).length;document.getElementById('gen-btn').disabled=n===0;}
+
+function clearAll(){
+  topics=[];
+  document.getElementById('context-input').value='';
+  document.getElementById('parent-input').value='';
+  document.getElementById('results-wrap').innerHTML='';
+  document.getElementById('status-msg').classList.remove('on');
+  document.getElementById('status-msg').textContent='';
+  document.getElementById('prog-bar').classList.remove('on');
+  renderTopics();
+}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied';setTimeout(()=>{btn.textContent='Copy'},1800);});
+}
+
+function copyAllZones(pageId){
+  const zones=document.querySelectorAll('#page-'+pageId+' .zone');
+  let out='';
+  zones.forEach(z=>{
+    const label=z.querySelector('.zone-label-text').textContent;
+    const copy=z.querySelector('.zone-copy').textContent;
+    out+=label+'\n'+copy+'\n\n';
+  });
+  navigator.clipboard.writeText(out.trim());
+}
+
+async function runGenerate(){
+  const level=document.getElementById('page-level').value;
+  const context=document.getElementById('context-input').value.trim();
+  const parent=document.getElementById('parent-input').value.trim();
+  const selected=topics.filter(t=>t.selected);
+  if(!selected.length)return;
+
+  const apiKey=document.getElementById('api-key-input').value.trim();
+  if(!apiKey){alert('Please enter your Anthropic API key at the top of the page.');return;}
+  const statusEl=document.getElementById('status-msg');
+  const progBar=document.getElementById('prog-bar');
+  const progFill=document.getElementById('prog-fill');
+  const resultsWrap=document.getElementById('results-wrap');
+
+  resultsWrap.innerHTML='';
+  statusEl.textContent=`Generating ${selected.length} page${selected.length>1?'s':''}...`;
+  statusEl.classList.add('on');
+  progBar.classList.add('on');
+  progFill.style.width='0%';
+  document.getElementById('gen-btn').disabled=true;
+
+
+  const systemPrompt=level==='seo'?SYSTEM_SEO:level==='landing'?SYSTEM_LANDING:SYSTEM_DETAIL;
+
+  for(let i=0;i<selected.length;i++){
+    const t=selected[i];
+    statusEl.textContent=`Generating ${i+1} of ${selected.length}: ${t.name}...`;
+    progFill.style.width=Math.round((i/selected.length)*100)+'%';
+    let userMsg=`Topic: ${t.name}`;
+    if(parent&&level==='seo')userMsg+=`\nParent page: ${parent}`;
+    if(t.notes)userMsg+=`\nNotes: ${t.notes}`;
+    if(context)userMsg+=`\nAdditional context: ${context}`;
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","anthropic-dangerous-direct-browser-access":"true","x-api-key":apiKey},body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:4000,system:systemPrompt,messages:[{role:"user",content:userMsg}]})});
+      const data=await res.json();
+      if(data.error){statusEl.textContent='API Error: '+data.error.type+' — '+data.error.message;console.error('Full API error:',JSON.stringify(data));renderError(t.name,i,resultsWrap);continue;}
+      const text=data.content.map(b=>b.text||'').join('');
+      const clean=text.replace(/```json[\s\S]*?```|```/g,'').trim();
+      let parsed;
+      try{parsed=JSON.parse(clean);}catch(je){statusEl.textContent='JSON parse error on '+t.name+': '+clean.slice(0,200);renderError(t.name,i,resultsWrap);continue;}
+      renderPage(t.name,level,parsed,i,resultsWrap);
+    }catch(e){statusEl.textContent='Network/fetch error: '+e.message;renderError(t.name,i,resultsWrap);}
+  }
+
+  progFill.style.width='100%';
+  statusEl.textContent=`${selected.length} page${selected.length>1?'s':''} generated.`;
+  setTimeout(()=>{progBar.classList.remove('on')},800);
+  document.getElementById('gen-btn').disabled=false;
+  updateGenBtn();
+}
+
+function zoneEl(label,content,pid,zi){
+  const zid='z-'+pid+'-'+zi;
+  return `<div class="zone"><div class="zone-label"><span class="zone-label-text">${label}</span><button class="copy-btn" onclick="copyText(document.getElementById('${zid}').textContent,this)">Copy</button></div><div class="zone-copy" id="${zid}">${content||'—'}</div></div>`;
+}
+
+function renderPage(name,level,data,idx,wrap){
+  const pid='p'+Date.now()+idx;
+  const div=document.createElement('div');
+  div.className='page-result';
+  div.id='page-'+pid;
+  let zh='';let zi=0;
+  if(level==='detail'){
+    if(data.category_label)zh+=zoneEl('Category Label',data.category_label,pid,zi++);
+    if(data.hero_subline)zh+=zoneEl('Hero Subline',data.hero_subline,pid,zi++);
+    if(data.treatments_list&&data.treatments_list.length)zh+=zoneEl('Treatments List',data.treatments_list.map(t=>`${t.name}\n${t.description}`).join('\n\n'),pid,zi++);
+    if(data.closing_pull_quote)zh+=zoneEl('Closing Pull Quote',data.closing_pull_quote,pid,zi++);
+    if(data.focus_areas&&data.focus_areas.length)zh+=zoneEl('Focus Areas',data.focus_areas.map(f=>`${f.number} | ${f.name}: ${f.description}`).join('\n\n'),pid,zi++);
+    if(data.vio_experience&&data.vio_experience.length)zh+=zoneEl('The VIO Experience',data.vio_experience.map(s=>`${s.step} | ${s.title}\n${s.body}`).join('\n\n'),pid,zi++);
+    if(data.footer_links)zh+=zoneEl('Footer Bar Links',data.footer_links.join('          '),pid,zi++);
+  }
+  if(level==='seo'){
+    if(data.treatment_name)zh+=zoneEl('Treatment Name',data.treatment_name,pid,zi++);
+    if(data.hero_subline)zh+=zoneEl('Hero Subline',data.hero_subline,pid,zi++);
+    if(data.what_it_is)zh+=zoneEl('What It Is',data.what_it_is,pid,zi++);
+    if(data.who_it_serves)zh+=zoneEl('Who It Serves',data.who_it_serves,pid,zi++);
+    if(data.what_to_expect)zh+=zoneEl('What to Expect',data.what_to_expect,pid,zi++);
+    if(data.closing_pull_quote)zh+=zoneEl('Closing Pull Quote',data.closing_pull_quote,pid,zi++);
+    if(data.focus_areas&&data.focus_areas.length)zh+=zoneEl('Focus Areas',data.focus_areas.map(f=>`${f.number} | ${f.name}: ${f.description}`).join('\n\n'),pid,zi++);
+    if(data.footer_links)zh+=zoneEl('Footer Bar Links',data.footer_links.join('          '),pid,zi++);
+  }
+  if(level==='landing'){
+    if(data.page_title)zh+=zoneEl('Page Title',data.page_title,pid,zi++);
+    if(data.hero_h1)zh+=zoneEl('Hero H1',data.hero_h1,pid,zi++);
+    if(data.hero_subline)zh+=zoneEl('Hero Subline',data.hero_subline,pid,zi++);
+    if(data.body_block_1)zh+=zoneEl('Body Block 1',data.body_block_1,pid,zi++);
+    if(data.body_block_2)zh+=zoneEl('Body Block 2',data.body_block_2,pid,zi++);
+    if(data.pull_quote)zh+=zoneEl('Pull Quote',data.pull_quote,pid,zi++);
+    if(data.cta_label)zh+=zoneEl('CTA Label',data.cta_label,pid,zi++);
+    if(data.cta_subtext)zh+=zoneEl('CTA Subtext',data.cta_subtext,pid,zi++);
+    if(data.footer_links)zh+=zoneEl('Footer Bar Links',data.footer_links.join('          '),pid,zi++);
+  }
+  div.innerHTML=`<div class="page-head"><span class="page-name">${name}</span><div style="display:flex;gap:8px;align-items:center"><button class="copy-all-btn" onclick="copyAllZones('${pid}')">Copy All</button><span class="page-type-badge">${level==='seo'?'SEO Page':level==='landing'?'Landing Page':'Detail Page'}</span></div></div><div>${zh}</div>`;
+  wrap.appendChild(div);
+}
+
+function renderError(name,idx,wrap){
+  const div=document.createElement('div');
+  div.className='page-result';
+  div.innerHTML=`<div class="page-head"><span class="page-name">${name}</span><span class="page-type-badge" style="color:#c0392b">Error — try again</span></div>`;
+  wrap.appendChild(div);
+}
+</script>
+</body>
+</html>
