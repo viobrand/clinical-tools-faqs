@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Kaleidoscope — VIO Brand Orchestration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #030303;
+  --lotion: #FEFFF9;
+  --greige: #E9E3DC;
+  --alabaster: #F2F0E6;
+  --mouse: #B29D92;
+  --mouse-light: #D4C8C0;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+
+  /* Layer colors */
+  --horizon: #6B7B8A;
+  --horizon-bg: #EEF1F4;
+  --campaign: #7A6855;
+  --campaign-bg: #F4EDE6;
+  --resource: #5A7A6A;
+  --resource-bg: #E8F0EC;
+  --social: #8A6A7A;
+  --social-bg: #F4ECF0;
+
+  /* Audience colors */
+  --corp: #030303;
+  --franchise: #7A6855;
+  --provider: #5A7A6A;
+  --pr: #6B7B8A;
+  --customer: #8A6A7A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--lotion);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.hdr {
+  background: var(--ink);
+  padding: 36px 48px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.hdr-left {}
+.hdr-mark {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  display: block;
+  margin-bottom: 10px;
+}
+.hdr-title {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--lotion);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hdr-title em { font-style: italic; opacity: 0.5; }
+.hdr-sub {
+  font-size: 12px;
+  color: rgba(254,255,249,0.38);
+  line-height: 1.7;
+  margin-top: 8px;
+  max-width: 440px;
+}
+.hdr-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* ── AUDIENCE SELECTOR ── */
+.audience-bar {
+  background: var(--alabaster);
+  border-bottom: 1px solid var(--greige);
+  padding: 12px 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.audience-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+.aud-btn {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  color: var(--mouse);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.aud-btn:hover { border-color: var(--mouse-light); color: var(--ink); }
+.aud-btn.active { background: var(--ink); color: var(--lotion); border-color: var(--ink); }
+.aud-btn.active.a-franchise { background: var(--franchise); border-color: var(--franchise); }
+.aud-btn.active.a-provider { background: var(--provider); border-color: var(--provider); }
+.aud-btn.active.a-pr { background: var(--pr); border-color: var(--pr); }
+.aud-btn.active.a-customer { background: var(--customer); border-color: var(--customer); }
+
+/* ── CONTROLS ── */
+.controls {
+  background: var(--lotion);
+  border-bottom: 1px solid var(--greige);
+  padding: 10px 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.view-group { display: flex; gap: 2px; }
+.view-btn {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  color: var(--mouse);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.view-btn.active { background: var(--ink); color: var(--lotion); border-color: var(--ink); }
+.view-btn:hover:not(.active) { background: var(--alabaster); color: var(--ink); }
+.controls-sep { width: 1px; height: 24px; background: var(--greige); }
+.layer-toggles { display: flex; gap: 6px; flex-wrap: wrap; }
+.layer-tog {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  color: var(--mouse);
+  cursor: pointer;
+  transition: all 0.12s;
+  user-select: none;
+}
+.layer-tog .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.layer-tog.on { color: var(--ink); }
+.layer-tog.on.l-horizon { border-color: var(--horizon); background: var(--horizon-bg); color: var(--horizon); }
+.layer-tog.on.l-campaign { border-color: var(--campaign); background: var(--campaign-bg); color: var(--campaign); }
+.layer-tog.on.l-resource { border-color: var(--resource); background: var(--resource-bg); color: var(--resource); }
+.layer-tog.on.l-social { border-color: var(--social); background: var(--social-bg); color: var(--social); }
+.dot-horizon { background: var(--horizon); }
+.dot-campaign { background: var(--campaign); }
+.dot-resource { background: var(--resource); }
+.dot-social { background: var(--social); }
+
+.controls-right { margin-left: auto; }
+.nav-arrows { display: flex; gap: 4px; }
+.nav-btn {
+  width: 30px; height: 30px;
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  color: var(--mouse);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.nav-btn:hover { background: var(--greige); color: var(--ink); }
+
+/* ── MAIN CONTENT ── */
+.main { padding: 0; }
+
+/* ── VIEWS ── */
+.view-panel { display: none; }
+.view-panel.active { display: block; }
+
+/* ── 18-MONTH VIEW ── */
+.eighteen-wrap { overflow-x: auto; padding: 32px 48px 48px; }
+.eighteen-grid {
+  display: grid;
+  grid-template-columns: 120px repeat(18, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--greige);
+  border: 1px solid var(--greige);
+  min-width: 1400px;
+}
+.eg-corner { background: var(--lotion); padding: 10px 12px; }
+.eg-month-head {
+  background: var(--lotion);
+  padding: 10px 8px;
+  text-align: center;
+  position: relative;
+}
+.eg-month-name {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: block;
+}
+.eg-month-year {
+  font-size: 8px;
+  color: var(--mouse);
+  display: block;
+  margin-top: 1px;
+}
+.eg-month-head.now-month { background: var(--ink); }
+.eg-month-head.now-month .eg-month-name { color: var(--lotion); }
+.eg-month-head.now-month .eg-month-year { color: var(--mouse-light); }
+.eg-row-label {
+  background: var(--alabaster);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+}
+.eg-row-label-text {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.eg-cell {
+  background: var(--lotion);
+  padding: 6px 6px;
+  min-height: 60px;
+  vertical-align: top;
+  position: relative;
+}
+.eg-cell.now-col { background: rgba(3,3,3,0.02); }
+.eg-item {
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 3px 6px;
+  margin-bottom: 2px;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: opacity 0.12s;
+  border-radius: 1px;
+}
+.eg-item:hover { opacity: 0.75; }
+.eg-item.horizon { border-left-color: var(--horizon); background: var(--horizon-bg); color: var(--horizon); }
+.eg-item.campaign { border-left-color: var(--campaign); background: var(--campaign-bg); color: var(--campaign); }
+.eg-item.resource { border-left-color: var(--resource); background: var(--resource-bg); color: var(--resource); }
+.eg-item.social { border-left-color: var(--social); background: var(--social-bg); color: var(--social); }
+.eg-item.span-block {
+  position: absolute;
+  top: 4px; left: 4px; right: 4px;
+  font-weight: 500;
+  z-index: 1;
+}
+
+/* ── QUARTER VIEW ── */
+.quarter-wrap { padding: 32px 48px 48px; }
+.quarter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.quarter-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--ink);
+}
+.quarter-sub {
+  font-size: 11px;
+  color: var(--mouse);
+  margin-top: 2px;
+}
+.quarter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.month-card {
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  overflow: hidden;
+}
+.month-card-head {
+  background: var(--alabaster);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--greige);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.month-card-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.month-card-head.now-head { background: var(--ink); }
+.month-card-head.now-head .month-card-name { color: var(--lotion); }
+.month-card-body { padding: 12px 18px; }
+.month-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(233,227,220,0.6);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.month-item:last-child { border-bottom: none; }
+.month-item:hover { background: var(--alabaster); margin: 0 -18px; padding: 6px 18px; }
+.month-item-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.month-item-content {}
+.month-item-layer {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 1px;
+}
+.month-item-title {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.month-item-sub {
+  font-size: 10px;
+  color: var(--mouse);
+  line-height: 1.4;
+  margin-top: 1px;
+}
+
+/* ── MONTH VIEW ── */
+.month-wrap { padding: 32px 48px 48px; }
+.month-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+}
+.month-view-title {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+}
+.month-view-sub { font-size: 12px; color: var(--mouse); margin-top: 6px; }
+.month-two-col { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+.month-main {}
+.month-week {
+  margin-bottom: 20px;
+}
+.month-week-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--greige);
+  margin-bottom: 8px;
+}
+.month-day-item {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(233,227,220,0.5);
+  cursor: pointer;
+}
+.month-day-item:hover { background: var(--alabaster); margin: 0 -8px; padding: 8px; }
+.month-day-num {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mouse-light);
+  width: 32px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.month-day-num.today { color: var(--ink); font-weight: 400; }
+.month-day-events { flex: 1; }
+.month-event-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 400;
+  padding: 2px 8px;
+  margin: 1px 3px 1px 0;
+  border-radius: 2px;
+}
+.chip-horizon { background: var(--horizon-bg); color: var(--horizon); }
+.chip-campaign { background: var(--campaign-bg); color: var(--campaign); }
+.chip-resource { background: var(--resource-bg); color: var(--resource); }
+.chip-social { background: var(--social-bg); color: var(--social); }
+
+/* Month sidebar */
+.month-sidebar {}
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-section-head {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--greige);
+  margin-bottom: 12px;
+}
+.sidebar-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(233,227,220,0.5);
+}
+.sidebar-item:last-child { border-bottom: none; }
+.sidebar-item-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 2px;
+}
+.sidebar-item-text {
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.lead-time-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.lead-time-track {
+  flex: 1;
+  height: 3px;
+  background: var(--greige);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.lead-time-fill {
+  height: 100%;
+  background: var(--campaign);
+  border-radius: 2px;
+}
+.lead-time-label {
+  font-size: 9px;
+  color: var(--mouse);
+  white-space: nowrap;
+}
+
+/* ── WEEK VIEW ── */
+.week-wrap { padding: 32px 48px 48px; }
+.week-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  gap: 1px;
+  background: var(--greige);
+  border: 1px solid var(--greige);
+}
+.wg-head {
+  background: var(--alabaster);
+  padding: 10px 8px;
+  text-align: center;
+}
+.wg-day-name {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mouse);
+}
+.wg-day-num {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink);
+  display: block;
+  margin-top: 2px;
+}
+.wg-head.today-col { background: var(--ink); }
+.wg-head.today-col .wg-day-name { color: var(--mouse-light); }
+.wg-head.today-col .wg-day-num { color: var(--lotion); }
+.wg-time-label {
+  background: var(--lotion);
+  padding: 8px 10px;
+  font-size: 9px;
+  color: var(--mouse);
+  text-align: right;
+  border-top: 1px solid rgba(233,227,220,0.4);
+}
+.wg-cell {
+  background: var(--lotion);
+  padding: 4px;
+  min-height: 48px;
+  border-top: 1px solid rgba(233,227,220,0.4);
+  position: relative;
+}
+.wg-cell.today-col { background: rgba(3,3,3,0.01); }
+.wg-event {
+  font-size: 9px;
+  font-weight: 400;
+  padding: 3px 6px;
+  margin-bottom: 2px;
+  border-radius: 1px;
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+/* ── FRANCHISEE PORTAL VIEW ── */
+.portal-wrap { padding: 32px 48px 48px; }
+.portal-welcome {
+  background: var(--ink);
+  padding: 32px 36px;
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.portal-welcome-text {}
+.portal-greeting {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 6px;
+}
+.portal-name {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--lotion);
+  line-height: 1.1;
+}
+.portal-date {
+  font-size: 11px;
+  color: rgba(254,255,249,0.38);
+  margin-top: 6px;
+}
+.portal-focus {
+  text-align: right;
+}
+.portal-focus-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 4px;
+}
+.portal-focus-theme {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--lotion);
+}
+.portal-grid { display: grid; grid-template-columns: 1fr 1fr 300px; gap: 16px; }
+.portal-card {
+  border: 1px solid var(--greige);
+  background: var(--lotion);
+  overflow: hidden;
+}
+.portal-card-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--greige);
+  background: var(--alabaster);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.portal-card-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.portal-card-badge {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  background: var(--campaign-bg);
+  color: var(--campaign);
+  border: 1px solid var(--campaign);
+}
+.portal-card-body { padding: 16px 18px; }
+.action-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(233,227,220,0.5);
+  align-items: flex-start;
+}
+.action-item:last-child { border-bottom: none; }
+.action-due {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--campaign);
+  white-space: nowrap;
+  padding-top: 2px;
+  min-width: 52px;
+}
+.action-due.urgent { color: #8A3028; }
+.action-due.done { color: var(--resource); }
+.action-text { flex: 1; }
+.action-title { font-size: 11px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+.action-sub { font-size: 10px; color: var(--mouse); margin-top: 2px; }
+.action-link {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--campaign);
+  text-decoration: none;
+  margin-top: 4px;
+  padding: 3px 8px;
+  border: 1px solid var(--campaign);
+  transition: all 0.12s;
+}
+.action-link:hover { background: var(--campaign); color: var(--lotion); }
+
+/* ── EVENT MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3,3,3,0.5);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--lotion);
+  max-width: 540px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-head {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--greige);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.modal-layer-tag {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.modal-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--mouse);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.modal-body { padding: 20px 28px 28px; }
+.modal-section { margin-bottom: 20px; }
+.modal-section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--greige);
+}
+.modal-section-text {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.75;
+}
+.modal-deliverables { display: flex; flex-direction: column; gap: 6px; }
+.modal-deliverable {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.modal-deliverable::before {
+  content: '→';
+  color: var(--mouse);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.modal-audience-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.modal-aud-tag {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid var(--greige);
+  color: var(--mouse);
+}
+.modal-lead-times { display: flex; flex-direction: column; gap: 8px; }
+.modal-lead-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 11px;
+}
+.modal-lead-date {
+  font-weight: 500;
+  color: var(--campaign);
+  white-space: nowrap;
+  min-width: 80px;
+}
+.modal-lead-action { color: var(--ink); }
+.modal-cta {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  background: var(--ink);
+  color: var(--lotion);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  margin-top: 4px;
+}
+
+/* ── BRAND TIMELINE VIEW ── */
+.tl-wrap { padding: 32px 48px 48px; overflow-x: auto; }
+.tl-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.tl-title { font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--ink); line-height: 1.1; }
+.tl-sub { font-size: 11px; color: var(--mouse); margin-top: 4px; }
+.tl-legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.tl-leg { display: flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mouse); }
+.tl-lp { width: 18px; height: 9px; border-radius: 1px; flex-shrink: 0; }
+.tl-grid-outer { overflow-x: auto; padding-bottom: 12px; }
+.tl-grid {
+  display: grid;
+  grid-template-columns: 150px repeat(24, minmax(44px, 1fr));
+  gap: 2px;
+  min-width: 1200px;
+}
+.tl-mo { font-size: 8px; text-align: center; color: var(--mouse); font-weight: 600; letter-spacing: 0.06em; padding-bottom: 4px; border-bottom: 1px solid var(--greige); }
+.tl-mo.tl-now { color: var(--ink); font-weight: 700; border-bottom: 2px solid var(--ink); }
+.tl-sec-label {
+  grid-column: 1 / -1;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--mouse);
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--greige);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tl-sec-tag { font-size: 7px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 8px; }
+.tl-sec-tag.og { background: var(--greige); color: var(--ink); }
+.tl-sec-tag.add { background: #ECEAF5; color: #3A3460; border: 1px solid #C0BCD8; }
+.tl-sec-tag.fwd { background: var(--alabaster); color: var(--mouse); }
+.tl-row-lbl {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink);
+  padding-right: 8px;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+}
+.tl-row-sub { font-size: 8px; color: var(--mouse); font-weight: 300; display: block; margin-top: 1px; }
+.tl-bar { height: 20px; border-radius: 1px; background: var(--greige); opacity: 0.15; }
+.tl-bar.on { opacity: 1; }
+.tl-bar.c-done { background: var(--ink); }
+.tl-bar.c-prog { background: #8A7570; }
+.tl-bar.c-open { background: var(--mouse-light); border: 1px solid var(--mouse); }
+.tl-bar.c-add { background: #3A3460; }
+.tl-bar.c-add-open { background: #C0BCD8; border: 1px solid #3A3460; }
+.tl-bar.c-spr { background: #8A9E82; }
+.tl-bar.c-sum { background: var(--mouse); }
+.tl-bar.c-aut { background: #8A7050; }
+.tl-bar.c-win { background: #707A8A; }
+.tl-bar.tl-now-col { outline: 2px solid rgba(3,3,3,0.25); }
+.tl-ms-cell { height: 14px; display: flex; align-items: center; justify-content: center; position: relative; }
+.tl-diamond { width: 7px; height: 7px; transform: rotate(45deg); border: 1.5px solid var(--ink); background: var(--ink); }
+.tl-diamond.hollow { background: transparent; }
+.tl-diamond.add { border-color: #3A3460; background: #3A3460; }
+.tl-ms-tip { position: absolute; bottom: 13px; left: 50%; transform: translateX(-50%); font-size: 7px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--ink); pointer-events: none; }
+.tl-ms-tip.add { color: #3A3460; }
+.tl-corner { background: var(--lotion); }
+
+/* ── ADD EVENT ── */
+.add-event-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: var(--ink);
+  color: var(--lotion);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  margin-left: auto;
+}
+.add-event-btn:hover { opacity: 0.8; }
+
+.add-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3,3,3,0.55);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.add-modal-overlay.open { display: flex; }
+.add-modal {
+  background: var(--lotion);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.add-modal-head {
+  background: var(--ink);
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-modal-head-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--lotion);
+}
+.add-modal-close {
+  background: none;
+  border: none;
+  color: var(--mouse);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+}
+.add-modal-body { padding: 24px 28px 28px; }
+.form-row { margin-bottom: 18px; }
+.form-row-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 6px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink);
+  background: var(--lotion);
+  border: 1px solid var(--greige);
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--mouse); }
+.form-textarea { resize: vertical; min-height: 72px; line-height: 1.65; }
+.form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23B29D92'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px; }
+.form-submit {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 12px;
+  background: var(--ink);
+  color: var(--lotion);
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.15s;
+}
+.form-submit:hover { opacity: 0.8; }
+.form-note { font-size: 10px; color: var(--mouse); margin-top: 6px; line-height: 1.6; }
+.added-tag {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: var(--campaign-bg);
+  color: var(--campaign);
+  border: 1px solid var(--campaign);
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.custom-events-list { margin-top: 12px; }
+.custom-event-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--greige);
+  font-size: 11px;
+  color: var(--ink);
+}
+.custom-event-row:last-child { border-bottom: none; }
+.custom-event-delete {
+  background: none;
+  border: none;
+  color: var(--mouse);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 4px;
+  transition: color 0.12s;
+}
+.custom-event-delete:hover { color: var(--ink); }
+
+/* ── BRAND PROJECTION VIEW ── */
+.proj-wrap { padding: 32px 48px 48px; }
+.proj-header { margin-bottom: 32px; }
+.proj-title { font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--ink); }
+.proj-sub { font-size: 12px; color: var(--mouse); margin-top: 6px; line-height: 1.7; max-width: 560px; }
+.proj-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--greige); border: 1px solid var(--greige); margin-bottom: 36px; }
+.proj-stat { background: var(--lotion); padding: 18px 20px; }
+.proj-stat-num { font-family: var(--serif); font-size: 38px; font-weight: 300; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+.proj-stat-label { font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mouse); }
+.proj-stat-note { font-size: 11px; font-weight: 300; color: var(--mouse); margin-top: 3px; }
+.proj-section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--greige);
+  margin-bottom: 16px;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.proj-tag { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 10px; }
+.proj-tag.og { background: var(--greige); color: var(--ink); }
+.proj-tag.add { background: #ECEAF5; color: #3A3460; border: 1px solid #C0BCD8; }
+.proj-tag.fwd { background: var(--alabaster); color: var(--mouse); }
+.proj-items-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.proj-item {
+  border: 1px solid var(--greige);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.proj-item:hover { border-color: var(--mouse); }
+.proj-item.st-done { border-left: 3px solid var(--ink); }
+.proj-item.st-prog { border-left: 3px solid #8A7570; }
+.proj-item.st-open { border-left: 3px solid var(--mouse-light); }
+.proj-item.st-add { border-left: 3px solid #3A3460; }
+.proj-item-status {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mouse);
+  margin-bottom: 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.proj-item-name { font-family: var(--serif); font-size: 16px; font-weight: 300; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+.proj-item-desc { font-size: 11px; color: var(--mouse); line-height: 1.6; }
+.proj-callout {
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  border-left: 3px solid var(--ink);
+  background: var(--alabaster);
+}
+.proj-callout p { font-family: var(--serif); font-size: 16px; font-weight: 300; color: var(--ink); line-height: 1.6; margin-bottom: 4px; }
+.proj-callout .proj-callout-sub { font-size: 12px; color: var(--mouse); line-height: 1.7; }
+.horizon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+.horizon-card { border: 1px solid var(--greige); padding: 14px 16px; }
+.horizon-card-time { font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mouse); margin-bottom: 4px; }
+.horizon-card-title { font-family: var(--serif); font-size: 15px; font-weight: 300; color: var(--ink); margin-bottom: 4px; }
+.horizon-card-tracks { display: flex; flex-direction: column; gap: 3px; margin-top: 6px; }
+.horizon-track-tag { font-size: 8px; font-weight: 500; padding: 2px 7px; color: var(--mouse); background: var(--greige); display: inline-block; }
+
+/* ── FOOTER ── */
+.footer {
+  padding: 20px 48px;
+  border-top: 1px solid var(--greige);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--alabaster);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-mark { font-size: 10px; color: var(--mouse); letter-spacing: 0.06em; }
+.footer-std {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--mouse);
+}
+
+/* ── LEGEND ── */
+.legend-bar {
+  padding: 8px 48px;
+  background: var(--lotion);
+  border-bottom: 1px solid var(--greige);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 300; color: var(--mouse); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  .hdr, .audience-bar, .controls, .eighteen-wrap, .quarter-wrap, .month-wrap, .week-wrap, .portal-wrap, .footer, .legend-bar { padding-left: 20px; padding-right: 20px; }
+  .quarter-grid { grid-template-columns: 1fr; }
+  .portal-grid { grid-template-columns: 1fr; }
+  .month-two-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <span class="hdr-mark">VIO — Aesthetic Wellness</span>
+    <div class="hdr-title">The Kaleidoscope <em>— 18 Months</em></div>
+    <div class="hdr-sub">One system. Every audience. Every milestone. The same data reflected differently depending on who is looking through the lens.</div>
+  </div>
+  <div class="hdr-right">
+    <div style="font-size:9px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--mouse);text-align:right;">Currently Viewing</div>
+    <div id="currentPeriodLabel" style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--lotion);text-align:right;">Q2 2026</div>
+  </div>
+</div>
+
+<!-- AUDIENCE SELECTOR -->
+<div class="audience-bar">
+  <span class="audience-label">View as:</span>
+  <button class="aud-btn active" data-aud="all">All — Corporate</button>
+  <button class="aud-btn a-franchise" data-aud="franchise">Franchisee</button>
+  <button class="aud-btn a-provider" data-aud="provider">Provider</button>
+  <button class="aud-btn a-pr" data-aud="pr">PR Agency</button>
+  <button class="aud-btn a-customer" data-aud="customer">Client-Facing</button>
+</div>
+
+<!-- LAYER TOGGLES + CONTROLS -->
+<div class="controls">
+  <div class="view-group">
+    <button class="view-btn" data-view="eighteen">18 Month</button>
+    <button class="view-btn" data-view="quarter">Quarter</button>
+    <button class="view-btn active" data-view="month">Month</button>
+    <button class="view-btn" data-view="week">Week</button>
+    <button class="view-btn" data-view="portal">My Portal</button>
+    <button class="view-btn" data-view="timeline">Brand Timeline</button>
+    <button class="view-btn" data-view="projection">Brand Projection</button>
+  </div>
+  <div class="controls-sep"></div>
+  <div class="layer-toggles">
+    <button class="layer-tog on l-horizon" data-layer="horizon"><span class="dot dot-horizon"></span>Horizon</button>
+    <button class="layer-tog on l-campaign" data-layer="campaign"><span class="dot dot-campaign"></span>Campaigns</button>
+    <button class="layer-tog on l-resource" data-layer="resource"><span class="dot dot-resource"></span>Deliverables</button>
+    <button class="layer-tog on l-social" data-layer="social"><span class="dot dot-social"></span>Social &amp; Lifestyle</button>
+  </div>
+  <div class="controls-right">
+    <div class="nav-arrows">
+      <button class="nav-btn" id="prevBtn">&#8592;</button>
+      <button class="nav-btn" id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+  <button class="add-event-btn" onclick="openAddModal()">+ Add Event</button>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--horizon)"></div>Horizon — Fixed holidays, industry moments, NCOs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--campaign)"></div>Campaign — Seasonal strategy &amp; brand arc</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--resource)"></div>Deliverables — Assets, lead times, deadlines</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--social)"></div>Social &amp; Lifestyle — Awareness moments, retail calendar</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ══════ 18-MONTH VIEW ══════ -->
+<div class="view-panel" id="view-eighteen">
+  <div class="eighteen-wrap">
+    <div class="eighteen-grid" id="eighteenGrid"></div>
+  </div>
+</div>
+
+<!-- ══════ QUARTER VIEW ══════ -->
+<div class="view-panel" id="view-quarter">
+  <div class="quarter-wrap">
+    <div class="quarter-header">
+      <div>
+        <div class="quarter-title" id="quarterTitle">Q2 2026</div>
+        <div class="quarter-sub" id="quarterSub">April · May · June — Restoration</div>
+      </div>
+    </div>
+    <div class="quarter-grid" id="quarterGrid"></div>
+  </div>
+</div>
+
+<!-- ══════ MONTH VIEW ══════ -->
+<div class="view-panel active" id="view-month">
+  <div class="month-wrap">
+    <div class="month-view-header">
+      <div>
+        <div class="month-view-title" id="monthViewTitle">April 2026</div>
+        <div class="month-view-sub" id="monthViewSub">Restoration · Q2 · Psychological Literacy</div>
+      </div>
+    </div>
+    <div class="month-two-col">
+      <div class="month-main" id="monthMain"></div>
+      <div class="month-sidebar" id="monthSidebar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ WEEK VIEW ══════ -->
+<div class="view-panel" id="view-week">
+  <div class="week-wrap">
+    <div class="month-view-header" style="margin-bottom:20px;">
+      <div>
+        <div class="month-view-title" id="weekViewTitle">Week of April 14, 2026</div>
+        <div class="month-view-sub">Restoration · Q2</div>
+      </div>
+    </div>
+    <div class="week-grid" id="weekGrid"></div>
+  </div>
+</div>
+
+<!-- ══════ PORTAL VIEW ══════ -->
+<div class="view-panel" id="view-portal">
+  <div class="portal-wrap">
+    <div class="portal-welcome">
+      <div class="portal-welcome-text">
+        <div class="portal-greeting">Your Kaleidoscope</div>
+        <div class="portal-name" id="portalName">Franchisee Portal</div>
+        <div class="portal-date" id="portalDate">April 2026 · Restoration Season</div>
+      </div>
+      <div class="portal-focus">
+        <div class="portal-focus-label">This Month's Focus</div>
+        <div class="portal-focus-theme" id="portalFocus">Psychological Literacy</div>
+      </div>
+    </div>
+    <div class="portal-grid" id="portalGrid"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-layer-tag" id="modalLayerTag"></div>
+        <div class="modal-title" id="modalTitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ══════ BRAND TIMELINE VIEW ══════ -->
+<div class="view-panel" id="view-timeline">
+  <div class="tl-wrap">
+    <div class="tl-header">
+      <div>
+        <div class="tl-title">Brand Transformation <em style="opacity:0.5">— 24 Months</em></div>
+        <div class="tl-sub">April 2026 · Week 11 · Aesthetic Wellness · Now = Month 3</div>
+      </div>
+      <div class="tl-legend">
+        <div class="tl-leg"><div class="tl-lp" style="background:#030303"></div>Complete</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#8A7570"></div>In Progress</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:var(--mouse-light);border:1px solid var(--mouse)"></div>Coming</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#3A3460"></div>Added · Complete</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#C0BCD8;border:1px solid #3A3460"></div>Added · Coming</div>
+        <div style="width:1px;height:14px;background:var(--greige)"></div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#8A9E82"></div>Spring</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:var(--mouse)"></div>Summer</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#8A7050"></div>Autumn</div>
+        <div class="tl-leg"><div class="tl-lp" style="background:#707A8A"></div>Winter</div>
+      </div>
+    </div>
+    <div class="tl-grid-outer">
+      <div class="tl-grid" id="tlGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ BRAND PROJECTION VIEW ══════ -->
+<div class="view-panel" id="view-projection">
+  <div class="proj-wrap">
+    <div class="proj-header">
+      <div class="proj-title">Brand Projection</div>
+      <div class="proj-sub">The full arc of where VIO is, what has been built, and where the brand goes from here. Week 11 · April 2026 · Aesthetic Wellness.</div>
+    </div>
+
+    <div class="proj-stats">
+      <div class="proj-stat">
+        <div class="proj-stat-num">11</div>
+        <div class="proj-stat-label">Weeks In</div>
+        <div class="proj-stat-note">April 2026 · Month 3</div>
+      </div>
+      <div class="proj-stat">
+        <div class="proj-stat-num">6+</div>
+        <div class="proj-stat-label">Deliverables Complete</div>
+        <div class="proj-stat-note">Planned + Added</div>
+      </div>
+      <div class="proj-stat">
+        <div class="proj-stat-num">60+</div>
+        <div class="proj-stat-label">Locations — Year Two</div>
+        <div class="proj-stat-note">Trained · Brand champions</div>
+      </div>
+      <div class="proj-stat">
+        <div class="proj-stat-num">18</div>
+        <div class="proj-stat-label">Month Horizon</div>
+        <div class="proj-stat-note">Through Dec 2027</div>
+      </div>
+    </div>
+
+    <div class="proj-callout">
+      <p>"The brand is further along than the engagement calendar reflects."</p>
+      <div class="proj-callout-sub">What was scoped as a brand foundation engagement has expanded into a full brand operating system — voice, architecture, tools, sub-brands, campaigns, and infrastructure. The forward arc builds from a stronger base than planned.</div>
+    </div>
+
+    <!-- PLANNED & DELIVERED -->
+    <div class="proj-section-label"><span class="proj-tag og">Planned</span>Brand Foundation</div>
+    <div class="proj-items-grid">
+      <div class="proj-item st-done"><div class="proj-item-status">✓ Complete</div><div class="proj-item-name">Brand Positioning</div><div class="proj-item-desc">Aesthetic Wellness as a new category. VIO as its pioneer. Operating standard established. 10+ presentations.</div></div>
+      <div class="proj-item st-done"><div class="proj-item-status">✓ Complete</div><div class="proj-item-name">Voice System</div><div class="proj-item-desc">Complete verbal identity. Never list. Conditional words. Two-register model. 10 audience segments.</div></div>
+      <div class="proj-item st-prog"><div class="proj-item-status">↻ In Progress</div><div class="proj-item-name">Brand Guidelines V6</div><div class="proj-item-desc">Living HTML tool with AI copy review. Final copy refinement: 1–2 weeks. V6 is the operating standard.</div></div>
+      <div class="proj-item st-prog"><div class="proj-item-status">↻ In Progress</div><div class="proj-item-name">Website Architecture</div><div class="proj-item-desc">V2 live April 15–22. V3 fluid design in build. Ask Violette enters development Month 8–9.</div></div>
+      <div class="proj-item st-done"><div class="proj-item-status">✓ Complete</div><div class="proj-item-name">Service Architecture</div><div class="proj-item-desc">Four service families. Your Face · Your Skin · Your Body · Your Wellness. Full copy architecture per page.</div></div>
+      <div class="proj-item st-done"><div class="proj-item-status">✓ Complete</div><div class="proj-item-name">Franchise Microsite V1</div><div class="proj-item-desc">Full partner site with all 6 franchise emails, brand positioning, campaign overview. Delivered April 1.</div></div>
+      <div class="proj-item st-prog"><div class="proj-item-status">↻ In Progress</div><div class="proj-item-name">Franchisee Toolkit</div><div class="proj-item-desc">Framework complete. Social templates and seasonal campaign kits building. Review form v4 ready for developer.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Ahead</div><div class="proj-item-name">Training & Governance</div><div class="proj-item-desc">Brand scorecard. Approval workflow. New location onboarding checklist. 60+ location compliance system.</div></div>
+    </div>
+
+    <!-- ADDED & DELIVERED -->
+    <div class="proj-section-label"><span class="proj-tag add">Added &amp; Delivered</span>Scope Beyond Engagement</div>
+    <div class="proj-items-grid">
+      <div class="proj-item st-prog" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · In Progress</div><div class="proj-item-name">ClubVIO — Entire Sub-Brand</div><div class="proj-item-desc">A second brand created and launched mid-engagement. Three-tier architecture. Full language system. Founding Member framework (150/location).</div></div>
+      <div class="proj-item st-done" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · Complete</div><div class="proj-item-name">Franchise Email Series</div><div class="proj-item-desc">6 emails. Full copy, image sourcing, production. Live April 1. Not in original scope.</div></div>
+      <div class="proj-item st-done" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · Complete</div><div class="proj-item-name">Whisper Campaign</div><div class="proj-item-desc">National brand launch. 6 posts. Copy + image direction complete. Awaiting launch trigger.</div></div>
+      <div class="proj-item st-prog" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · Ongoing</div><div class="proj-item-name">Zionsville Grand Opening</div><div class="proj-item-desc">Stepped in as creative director. Email campaigns, copy, image sourcing, direction — from nothing to full campaign.</div></div>
+      <div class="proj-item st-done" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · Complete</div><div class="proj-item-name">Proprietary Brand Tools</div><div class="proj-item-desc">Page generator · AI copy review tool · Brand voice quiz. All three conceived and built. In active use.</div></div>
+      <div class="proj-item st-prog" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Added · In Progress</div><div class="proj-item-name">FAQ Hub + Clinical Library</div><div class="proj-item-desc">Architecture complete. Public-facing FAQ hub and clinical education library. Content build in progress.</div></div>
+    </div>
+
+    <!-- FORWARD ARC -->
+    <div class="proj-section-label"><span class="proj-tag fwd">Forward Arc</span>Where the Brand Goes From Here</div>
+    <div class="horizon-grid">
+      <div class="horizon-card">
+        <div class="horizon-card-time">Months 3–5 · Now → May</div>
+        <div class="horizon-card-title">Close, launch, and enter the market.</div>
+        <div class="horizon-card-tracks">
+          <span class="horizon-track-tag">Website V2 live Apr 15–22</span>
+          <span class="horizon-track-tag">Whisper campaign triggers</span>
+          <span class="horizon-track-tag">Franchise emails deploy</span>
+          <span class="horizon-track-tag">ClubVIO Founding Member opens</span>
+        </div>
+      </div>
+      <div class="horizon-card">
+        <div class="horizon-card-time">Months 5–7 · May → July</div>
+        <div class="horizon-card-title">Summer School Tour. Photo shoot. Advisory outreach.</div>
+        <div class="horizon-card-tracks">
+          <span class="horizon-track-tag">6 markets · brand in the room</span>
+          <span class="horizon-track-tag">Photo shoot — 5 content streams</span>
+          <span class="horizon-track-tag">Medical advisory outreach begins</span>
+          <span class="horizon-track-tag">LinkedIn thought leadership opens</span>
+        </div>
+      </div>
+      <div class="horizon-card">
+        <div class="horizon-card-time">Months 7–9 · July → Sept</div>
+        <div class="horizon-card-title">V3 launches. Violette enters build. Advisory assembled.</div>
+        <div class="horizon-card-tracks">
+          <span class="horizon-track-tag">Website V3 live</span>
+          <span class="horizon-track-tag">Ask Violette — AI concierge</span>
+          <span class="horizon-track-tag">Advisory board announced</span>
+          <span class="horizon-track-tag">Co-brand brief begins</span>
+        </div>
+      </div>
+      <div class="horizon-card">
+        <div class="horizon-card-time">Months 9–13 · Sept → Jan</div>
+        <div class="horizon-card-title">Violette live. PR. Conferences. Interior concept.</div>
+        <div class="horizon-card-tracks">
+          <span class="horizon-track-tag">Ask Violette goes live</span>
+          <span class="horizon-track-tag">PR — Vogue · Well+Good · trade</span>
+          <span class="horizon-track-tag">Interior rebrand concept · Rachel</span>
+          <span class="horizon-track-tag">VIO University annual event</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-items-grid">
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 5–7</div><div class="proj-item-name">Summer School Tour</div><div class="proj-item-desc">May–July. All six markets. Brand immersion. Membership conversion. Content camp.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 7</div><div class="proj-item-name">Brand Photo Shoot</div><div class="proj-item-desc">Editorial · Clinical · BTS · Lifestyle · In-clinic. Five content streams. 12-month asset library.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 8–9</div><div class="proj-item-name">Website V3 + Ask Violette</div><div class="proj-item-desc">Fluid, brand-expressive design. AI concierge. Named Violette. Clinical guidance, conversationally.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 9</div><div class="proj-item-name">Medical Advisory Board</div><div class="proj-item-desc">Oncologist, psychotherapist, chemist. Announced Month 9. Future: ClubVIO Elite tier access.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 8 → 13</div><div class="proj-item-name">Co-Brand Partnerships</div><div class="proj-item-desc">Vuori · Thorne · Oura Ring. Brief Month 8. Launch Month 13.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 9 → 13</div><div class="proj-item-name">Influencer Program</div><div class="proj-item-desc">Three tiers. Clinical voices, lifestyle alignment, local market amplifiers. Membership-first approach.</div></div>
+      <div class="proj-item st-prog" style="border-left-color:#3A3460"><div class="proj-item-status" style="color:#3A3460">◆ Active Now</div><div class="proj-item-name">Interior Refresh — Network Rollout</div><div class="proj-item-desc">V6 interior standard rolling out across all locations now. Operational, not branded. Every location to standard before Q4.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Q4 2026 Launch</div><div class="proj-item-name">The Autograph Collection</div><div class="proj-item-desc">Elevated interior tier for select markets and qualifying owners. Launches Q4 2026. Rachel collaboration. Two-tier interior design program above the standard refresh.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 10</div><div class="proj-item-name">VIO University — Annual</div><div class="proj-item-desc">CME-accredited annual clinical event. Holds and deepens the provider standard every year.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ May 2026</div><div class="proj-item-name">The Reference Point</div><div class="proj-item-desc">Client encyclopedia · FAQ hub · clinical library. When clients want to understand — VIO is the source. Launch May 2026.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 13 → 16</div><div class="proj-item-name">Retail Concept</div><div class="proj-item-desc">Vuori · Thorne · Oura Ring · curated skincare. A boutique edit. Products vetted by the provider.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 14</div><div class="proj-item-name">VIO Residency Program</div><div class="proj-item-desc">Flagship proof-of-concept locations. New services and interiors tested before rolling to network.</div></div>
+      <div class="proj-item st-open"><div class="proj-item-status">○ Month 18</div><div class="proj-item-name">Aesthetic Wellness Index — 1st Edition</div><div class="proj-item-desc">Annual benchmark. VIO defines the category metrics. Press cites it. Conferences invite VIO to present it.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD EVENT MODAL -->
+<div class="add-modal-overlay" id="addModalOverlay">
+  <div class="add-modal">
+    <div class="add-modal-head">
+      <span class="add-modal-head-title">Add an Event</span>
+      <button class="add-modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="add-modal-body">
+      <div class="form-row-two">
+        <div>
+          <label class="form-label">Month</label>
+          <select class="form-select" id="addMonth">
+            <option value="2025-07">Jul 2025</option>
+            <option value="2025-08">Aug 2025</option>
+            <option value="2025-09">Sep 2025</option>
+            <option value="2025-10">Oct 2025</option>
+            <option value="2025-11">Nov 2025</option>
+            <option value="2025-12">Dec 2025</option>
+            <option value="2026-01">Jan 2026</option>
+            <option value="2026-02">Feb 2026</option>
+            <option value="2026-03">Mar 2026</option>
+            <option value="2026-04" selected>Apr 2026</option>
+            <option value="2026-05">May 2026</option>
+            <option value="2026-06">Jun 2026</option>
+            <option value="2026-07">Jul 2026</option>
+            <option value="2026-08">Aug 2026</option>
+            <option value="2026-09">Sep 2026</option>
+            <option value="2026-10">Oct 2026</option>
+            <option value="2026-11">Nov 2026</option>
+            <option value="2026-12">Dec 2026</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Layer</label>
+          <select class="form-select" id="addLayer">
+            <option value="horizon">Horizon — Fixed Moment</option>
+            <option value="campaign">Campaign — Brand Arc</option>
+            <option value="resource">Deliverable — Lead Time</option>
+            <option value="social" selected>Social &amp; Lifestyle</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Event Title</label>
+        <input class="form-input" id="addTitle" type="text" placeholder="e.g. Grand Opening — Nashville">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Date or Timing</label>
+        <input class="form-input" id="addSub" type="text" placeholder="e.g. Oct 12 · or · Full Month · or · Internal">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="addDetail" placeholder="What is this, why does it matter, who needs to act on it."></textarea>
+      </div>
+      <div class="form-row-two">
+        <div>
+          <label class="form-label">Audience</label>
+          <select class="form-select" id="addAudience">
+            <option value="all">All — Corporate</option>
+            <option value="franchise">Franchisee</option>
+            <option value="provider">Provider</option>
+            <option value="pr">PR Agency</option>
+            <option value="customer">Client-Facing</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">First Lead-Time Deadline</label>
+          <input class="form-input" id="addLeadDate" type="text" placeholder="e.g. Sep 1 — Brief locked">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Key Deliverable</label>
+        <input class="form-input" id="addDeliverable" type="text" placeholder="e.g. Campaign copy suite · Social templates · Staff talk track">
+      </div>
+      <button class="form-submit" onclick="submitAddEvent()">Add to Kaleidoscope</button>
+      <div class="form-note">Added events appear immediately across all views and persist for this session. Use the Brand Guidelines or Campaign Architecture for copy standards before adding campaign events.</div>
+
+      <div id="customEventsList" style="display:none;">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--mouse);padding:20px 0 8px;border-top:1px solid var(--greige);margin-top:20px;">Added This Session</div>
+        <div class="custom-events-list" id="customEventsListInner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-mark">VIO — The Kaleidoscope · 18-Month Brand Orchestration · Internal Use Only</span>
+  <span class="footer-std">Clinical guidance to live life well.</span>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+
+const MONTHS = [
+  { id:'2025-07', label:'Jul', year:'2025', q:'Q3', arc:'Reconstruction', theme:'Summer Strength' },
+  { id:'2025-08', label:'Aug', year:'2025', q:'Q3', arc:'Reconstruction', theme:'Parental Reset' },
+  { id:'2025-09', label:'Sep', year:'2025', q:'Q3', arc:'Reconstruction', theme:'Regenerative Reconstruction' },
+  { id:'2025-10', label:'Oct', year:'2025', q:'Q4', arc:'Investment Protection', theme:'Self-Repair' },
+  { id:'2025-11', label:'Nov', year:'2025', q:'Q4', arc:'Investment Protection', theme:'Reflective Visibility' },
+  { id:'2025-12', label:'Dec', year:'2025', q:'Q4', arc:'Investment Protection', theme:'Personal Treasury' },
+  { id:'2026-01', label:'Jan', year:'2026', q:'Q1', arc:'Biological Reset', theme:'New Year Reset' },
+  { id:'2026-02', label:'Feb', year:'2026', q:'Q1', arc:'Biological Reset', theme:'Heart-Centered Vitality' },
+  { id:'2026-03', label:'Mar', year:'2026', q:'Q1', arc:'Biological Reset', theme:'Intentional Evolution' },
+  { id:'2026-04', label:'Apr', year:'2026', q:'Q2', arc:'Restoration', theme:'Psychological Literacy', now:true },
+  { id:'2026-05', label:'May', year:'2026', q:'Q2', arc:'Restoration', theme:'Restorative Milestones' },
+  { id:'2026-06', label:'Jun', year:'2026', q:'Q2', arc:'Restoration', theme:'Modern Masculine' },
+  { id:'2026-07', label:'Jul', year:'2026', q:'Q3', arc:'Reconstruction', theme:'Atmospheric Defense' },
+  { id:'2026-08', label:'Aug', year:'2026', q:'Q3', arc:'Reconstruction', theme:'Resilient Routines' },
+  { id:'2026-09', label:'Sep', year:'2026', q:'Q3', arc:'Reconstruction', theme:'Regenerative Reconstruction' },
+  { id:'2026-10', label:'Oct', year:'2026', q:'Q4', arc:'Investment Protection', theme:'Self-Repair & Community' },
+  { id:'2026-11', label:'Nov', year:'2026', q:'Q4', arc:'Investment Protection', theme:'Reflective Visibility' },
+  { id:'2026-12', label:'Dec', year:'2026', q:'Q4', arc:'Investment Protection', theme:'Personal Treasury' },
+];
+
+const EVENTS = [
+  // HORIZON — fixed holidays & industry
+  { id:'h0a', layer:'horizon', month:'2026-04', title:'Website V2 Launch', sub:'Apr 22 — LIVE', audience:['all','franchise','provider','customer'], detail:'viomedspa.com V2 goes live. All copy locked. The brand is in the world. Whisper campaign trigger. This is the public-facing brand standard going live for the first time.', leadTimes:[{date:'Apr 15',action:'Final QA pass'},{date:'Apr 21',action:'All systems confirmed'},{date:'Apr 22',action:'LIVE'}], deliverables:['Website live confirmation to all teams','Whisper campaign trigger','Franchisee notification','Social Agency: organic announcement content'] },
+  { id:'h0b', layer:'horizon', month:'2026-05', title:'ZIO Days', sub:'May — Zero Days', audience:['all','franchise','provider'], detail:'VIO\'s internal ZIO Days. A company-wide moment. Internal culture, team recognition, brand belonging. Specific dates TBD — confirm with ops. Content and communications should reflect the internal standard.', leadTimes:[{date:'Apr 15',action:'Internal comms plan confirmed'},{date:'May 1',action:'Materials to all locations'}], deliverables:['Internal communications plan','ZIO Days team content','Location activation guide'] },
+  { id:'h2', layer:'horizon', month:'2026-01', title:'Martin Luther King Jr. Day', sub:'Jan 19', audience:['all'], detail:'Observed nationally. No campaign activation.', leadTimes:[], deliverables:[] },
+  { id:'h3', layer:'horizon', month:'2026-02', title:"Valentine's Day", sub:'Feb 14', audience:['all','franchise','customer'], detail:'Heart-centered vitality. Gifting season. ClubVIO gifting push.', leadTimes:[{date:'Jan 15',action:'Campaign assets to franchisees'},{date:'Jan 1',action:'Brief to social agency'}], deliverables:['Social series — 4 posts','Email to ClubVIO members','In-spa gifting signage'] },
+  { id:'h4', layer:'horizon', month:'2026-02', title:'AMWC Americas', sub:'Industry Moment', audience:['all','pr'], detail:'Industry moment for integrative Aesthetic Wellness pitching. Attendance TBD. PR timing anchor.', leadTimes:[{date:'Jan 15',action:'PR pitches prepared'}], deliverables:['PR pitch: Integrative Aesthetic Wellness'] },
+  { id:'h5', layer:'horizon', month:'2026-03', title:"Int'l Women's Day", sub:'Mar 8', audience:['all','franchise','customer'], detail:'Social moment. Align with Aesthetic Equity narrative. Not a sales push — a values moment.', leadTimes:[{date:'Feb 22',action:'Social content approved'}], deliverables:['1 Instagram post','1 LinkedIn leadership post'] },
+  { id:'h6', layer:'horizon', month:'2026-04', title:'Stress Awareness Month', sub:'Full Month', audience:['all','franchise','provider','customer'], detail:'Peak activation window. Skin-brain axis. Neuro-cosmetics. Psychological Literacy campaign month.', leadTimes:[{date:'Mar 1',action:'Campaign brief locked'},{date:'Mar 15',action:'Assets to franchisees'}], deliverables:['Campaign social series','Email to full list','In-spa materials','Staff talk track'] },
+  { id:'h7', layer:'horizon', month:'2026-04', title:'AmSpa Show', sub:'Industry Moment', audience:['all','pr'], detail:'Clinical leadership positioning opportunity. Attendance TBD. PR timing anchor.', leadTimes:[{date:'Mar 15',action:'PR pitches prepared'}], deliverables:['PR pitch: VIO clinical standard'] },
+  { id:'h8', layer:'horizon', month:'2026-05', title:'Graduation Season', sub:'May', audience:['all','franchise','customer'], detail:'Next Chapter campaign. Gifting angle. Family-driven. Memberships as gift of becoming.', leadTimes:[{date:'Mar 15',action:'Brief lock'},{date:'Apr 15',action:'Assets distributed'}], deliverables:['Graduation campaign full asset suite','ClubVIO gifting collateral','Social series — 6 posts','Email campaign'] },
+  { id:'h9', layer:'horizon', month:'2026-05', title:"Mother's Day", sub:'May 11', audience:['all','franchise','customer'], detail:'Matrescence. Biological transition support. Warmth-forward. Not promotional.', leadTimes:[{date:'Apr 1',action:'Copy approved'},{date:'Apr 15',action:'Assets ready'}], deliverables:['Social post series','Email campaign','In-spa card'] },
+  { id:'h10', layer:'horizon', month:'2026-05', title:'Nurses Month', sub:'Full Month — Social', audience:['all','customer'], detail:'Social awareness moment. Honor the clinical community VIO is part of.', leadTimes:[], deliverables:['1–2 Instagram posts'] },
+  { id:'h11', layer:'horizon', month:'2026-06', title:"Men's Health Month", sub:'Full Month', audience:['all','franchise','customer'], detail:'Modern Masculine campaign. Optimized vitality. Low-downtime, high-performance register.', leadTimes:[{date:'May 1',action:'Campaign brief to social agency'},{date:'May 15',action:'Assets approved'}], deliverables:['Modern Masculine social series','Email campaign','Staff talk track for men'] },
+  { id:'h12', layer:'horizon', month:'2026-06', title:"Father's Day", sub:'Jun 21', audience:['all','franchise','customer'], detail:'Gifting moment within Modern Masculine month. ClubVIO gifting push.', leadTimes:[{date:'Jun 1',action:'Assets ready'}], deliverables:['Social post','Email'] },
+  { id:'h13', layer:'horizon', month:'2026-07', title:'UV Safety Awareness', sub:'Full Month', audience:['all','franchise','customer'], detail:'Atmospheric Defense. Protecting the aesthetic investment from summer damage.', leadTimes:[{date:'Jun 1',action:'Social assets approved'}], deliverables:['Social series — 4 posts','Retail pairing content'] },
+  { id:'h14', layer:'horizon', month:'2026-08', title:'Back-to-School', sub:'Late Aug', audience:['all','franchise','customer','provider'], detail:'Resilient Routines. Two audiences: student entering stress + parent reclaiming self. Two-track campaign.', leadTimes:[{date:'Jun 1',action:'Brief lock'},{date:'Jul 1',action:'Assets to agencies'},{date:'Aug 1',action:'Campaign live'}], deliverables:['Student track: Semester Skin Resilience Kit','Parent track: The Reset','Social series — dual audience','Email campaign — two tracks','In-spa materials'] },
+  { id:'h15', layer:'horizon', month:'2026-09', title:'Skin Care Awareness Month', sub:'Full Month', audience:['all','franchise','customer'], detail:'Peak clinical authority month. DNA repair, Polynucleotides, regenerative reconstruction.', leadTimes:[{date:'Aug 1',action:'Content approved'}], deliverables:['Educational editorial series','Clinical social content','CMO authority piece'] },
+  { id:'h16', layer:'horizon', month:'2026-09', title:'Aesthetic Next', sub:'Industry Moment', audience:['all','pr'], detail:'AWI launch timing alignment. Attendance TBD.', leadTimes:[], deliverables:['PR pitch: AWI as first clinical standard for Aesthetic Wellness'] },
+  { id:'h17', layer:'horizon', month:'2026-10', title:'Breast Cancer Awareness', sub:'Full Month', audience:['all','franchise','customer'], detail:'Community and self-repair. Post-treatment longevity support. Gentle, restorative tone.', leadTimes:[{date:'Sep 15',action:'Content approved'}], deliverables:['Community-focused social content','Educational post on post-treatment skin support'] },
+  { id:'h18', layer:'horizon', month:'2026-06', title:'AWI Launch', sub:'Jun — LOCKED', audience:['all','franchise','provider','pr','customer'], detail:'Aesthetic Wellness Index goes live across all VIO locations. The first clinical standard for biological skin health. Category-defining moment.', leadTimes:[{date:'Mar 1',action:'Staff training complete'},{date:'May 1',action:'Full asset suite ready'},{date:'May 15',action:'PR pitches out'},{date:'Jun 1',action:'LAUNCH'}], deliverables:['AWI full launch campaign','National PR push','Social 3-post launch sequence','Email to full list + ClubVIO','In-spa AWI collateral','Staff explainer + talk track'] },
+  { id:'h_ac1', layer:'horizon', month:'2026-10', title:'Autograph Collection — Launch', sub:'Q4 2026 · Exact Date TBD', audience:['all','franchise','pr'], detail:'The Autograph Collection launches as VIO\'s elevated interior design tier for select markets and qualifying owners. Two-tier interior program: the standard refresh (network-wide, operational) and the Autograph Collection (select, announced). A category-level statement about what VIO believes a physical space should be.', leadTimes:[{date:'Jun 2026',action:'Zionsville proof-of-concept complete + documented'},{date:'Jul 2026',action:'Qualifying franchisee outreach begins'},{date:'Aug 2026',action:'Full program brief + specification ready'},{date:'Sep 2026',action:'Rachel consultations for first cohort'},{date:'Q4 2026',action:'LAUNCH: Autograph Collection announced'}], deliverables:['Autograph Collection brand brief','Program specification for franchisees','Rachel consultation framework','PR narrative: VIO interior standard','Franchisee qualification criteria','Photography of Zionsville proof-of-concept'] },
+  { id:'h_ir1', layer:'resource', month:'2026-04', title:'Interior Refresh — Active Now', sub:'All Locations · Operational', audience:['all','franchise'], detail:'The V6 interior standard is rolling out across all VIO locations now. This is operational — not a campaign, not a brand moment. Every location reaches the standard before the Autograph Collection launches in Q4. The refresh is the foundation the Autograph tier sits above.', leadTimes:[{date:'Apr 2026',action:'Refresh underway'},{date:'Q3 2026',action:'All locations to standard'}], deliverables:['V6 interior compliance checklist per location','Rachel assessment for Autograph-eligible locations','Network completion target: Q3 2026'] },
+  { id:'h19na', layer:'horizon', month:'2026-11', title:'National Healthy Skin Month', sub:'Full Month', audience:['all','franchise','customer'], detail:'Ongoing becoming. Holiday event prep. Visibility and confidence.', leadTimes:[], deliverables:['Social content series','Email — holiday prep messaging'] },
+  { id:'h18b', layer:'horizon', month:'2026-05', title:'The Reference Point — Launch', sub:'May — LOCKED', audience:['all','franchise','provider','customer'], detail:'The complete clinical encyclopedia goes live on viomedspa.com. 94 entries across treatments, ingredients, devices, conditions, and concepts. VIO becomes the source when clients want to understand. This is the authority infrastructure that supports every campaign.', leadTimes:[{date:'Mar 1',action:'Content build complete'},{date:'Apr 1',action:'Dev handover'},{date:'Apr 22',action:'QA pass'},{date:'May — TBD',action:'LIVE: viomedspa.com/reference-point'}], deliverables:['Reference Point live on website','Announcement email to full list','Social series: introducing The Reference Point','PR angle: VIO as the clinical authority in Aesthetic Wellness'] },
+  { id:'h20', layer:'horizon', month:'2026-12', title:'Holiday Season', sub:'Dec', audience:['all','franchise','customer'], detail:'Personal Treasury. End-of-year gifting. ClubVIO enrollment. 2027 longevity roadmap.', leadTimes:[{date:'Oct 1',action:'Brief lock'},{date:'Nov 1',action:'Campaign live'}], deliverables:['Holiday campaign full asset suite','ClubVIO gifting push','Founding Member close messaging','2027 longevity roadmap content'] },
+  { id:'h21', layer:'horizon', month:'2026-12', title:'GAC Miami', sub:'Industry Moment', audience:['all','pr'], detail:'Year-end commercial momentum context. Attendance TBD.', leadTimes:[], deliverables:['Year-end commercial narrative for press'] },
+
+  // CAMPAIGNS
+  { id:'c1', layer:'campaign', month:'2026-01', title:'Biological Reset Campaign', sub:'Q1 Brand Arc', audience:['all','franchise','customer'], detail:'The season of going inward. Rich treatments, deep hydration, collagen support that builds slowly and holds. The work done in January belongs to the whole year.', leadTimes:[{date:'Nov 1 2025',action:'Campaign brief locked'},{date:'Dec 1 2025',action:'Assets to agencies'},{date:'Dec 26',action:'Campaign live'}], deliverables:['Campaign copy — 3 lengths (social/email/web)','Brand editorial — 600 words','Social series — 6 posts','January Reset email','ClubVIO enrollment email'] },
+  { id:'c2', layer:'campaign', month:'2026-04', title:'Restoration Campaign', sub:'Q2 Brand Arc', audience:['all','franchise','customer'], detail:'Surface work and cellular repair. The body returns to itself. Stress Literacy. Neuro-cosmetics. DNA repair foundations.', leadTimes:[{date:'Feb 1',action:'Brief locked'},{date:'Mar 1',action:'Assets to agencies'},{date:'Apr 1',action:'Campaign live'}], deliverables:['Full campaign copy suite','Social series','Stress Awareness Month activation','Provider talk track','In-spa materials'] },
+  { id:'c3', layer:'campaign', month:'2026-07', title:'Reconstruction Campaign', sub:'Q3 Brand Arc', audience:['all','franchise','customer'], detail:'Structural. Collagen architecture, volume, definition. Building what lasts. Metabolic Beauty enters. The summer to fall transition.', leadTimes:[{date:'May 1',action:'Brief locked'},{date:'Jun 1',action:'Assets to agencies'},{date:'Jul 1',action:'Campaign live'}], deliverables:['Full campaign copy suite','Metabolic Beauty introduction assets','Social series','Back-to-College dual campaign','In-spa materials'] },
+  { id:'c4', layer:'campaign', month:'2026-10', title:'Investment Protection Campaign', sub:'Q4 Brand Arc', audience:['all','franchise','customer'], detail:'Protecting the year\'s work. Maintenance and membership. AWI. The long view — what becoming looks like held.', leadTimes:[{date:'Aug 1',action:'Brief locked'},{date:'Sep 1',action:'Assets to agencies'},{date:'Oct 1',action:'Campaign live'}], deliverables:['Full campaign copy suite','AWI launch campaign','Holiday gifting campaign','ClubVIO year-end enrollment','2027 preview content'] },
+
+  // RESOURCE / DELIVERABLE LAYER
+  { id:'r1', layer:'resource', month:'2026-01', title:'VIO University — Q1 Training', sub:'Staff Education', audience:['all','franchise','provider'], detail:'Annual Q1 training cadence. Clinical standards, brand voice, new service introductions. All locations.', leadTimes:[{date:'Dec 1',action:'Curriculum confirmed'},{date:'Jan 5',action:'Training begins'}], deliverables:['Training modules distributed','Language guide updated','Clinical standards brief'] },
+  { id:'r2', layer:'resource', month:'2026-02', title:'Q2 Agency Handover', sub:'Mar 1 Deadline', audience:['all','pr'], detail:'Full Q2 campaign kit to all agencies. 2-quarter lead time standard. PR, Social, Digital, Local all receive briefs simultaneously.', leadTimes:[{date:'Feb 15',action:'Internal review complete'},{date:'Mar 1',action:'HANDOVER'}], deliverables:['Q2 brand brief (all agencies)','Approved copy blocks','Social content calendar','PR pitches','Digital ad creative'] },
+  { id:'r3', layer:'resource', month:'2026-03', title:'Photo Shoot — Spring', sub:'Creative Production', audience:['all'], detail:'Seasonal editorial shoot. 5 content streams: editorial, clinical, BTS, lifestyle, in-clinic. Asset library for next 6 months.', leadTimes:[{date:'Jan 15',action:'Direction locked'},{date:'Feb 15',action:'Talent confirmed'},{date:'Mar — TBD',action:'Shoot day'}], deliverables:['Editorial content','Clinical procedure images','Lifestyle content','In-clinic environment shots','BTS content for social'] },
+  { id:'r4', layer:'resource', month:'2026-04', title:'Graduation Campaign Assets', sub:'Due Apr 15', audience:['all','franchise'], detail:'Full Graduation + Mother\'s Day asset suite. To franchisees 6 weeks before May milestone.', leadTimes:[{date:'Mar 15',action:'Brief lock'},{date:'Apr 1',action:'Assets in production'},{date:'Apr 15',action:'To franchisees'}], deliverables:['Social templates (Instagram)','Email templates','In-spa signage','Staff talking points','ClubVIO gifting collateral'] },
+  { id:'r5', layer:'resource', month:'2026-05', title:'Q3 Agency Handover', sub:'Jun 1 Deadline', audience:['all','pr'], detail:'Full Q3 campaign kit. Back-to-College + Parental Reset + Metabolic Beauty launch. Critical window — AWI preview begins.', leadTimes:[{date:'May 15',action:'Internal review complete'},{date:'Jun 1',action:'HANDOVER'}], deliverables:['Q3 brand brief','Back-to-College dual campaign kit','Metabolic Beauty introduction materials','AWI preview messaging'] },
+  { id:'r6', layer:'resource', month:'2026-06', title:'Metabolic Beauty — Staff Training', sub:'Jun 1 Gate', audience:['all','franchise','provider'], detail:'VIO University training on Metabolic Beauty MUST be complete before any public messaging. Non-negotiable gate.', leadTimes:[{date:'Apr 1',action:'Curriculum built'},{date:'May 1',action:'Training distributed'},{date:'Jun 1',action:'GATE: Training complete'}], deliverables:['Metabolic Beauty clinical brief','Staff talk track','Provider Q&A guide'] },
+  { id:'r7', layer:'resource', month:'2026-08', title:'AWI Staff Explainer', sub:'Sep 1 Gate', audience:['all','franchise','provider'], detail:'VIO University AWI module. Staff must understand the Index before it launches publicly. Completed before June launch..', leadTimes:[{date:'Mar 1',action:'Module written'},{date:'Apr 1',action:'Distributed'},{date:'May 1',action:'GATE: Complete before June launch'}], deliverables:['AWI staff explainer module','Client-facing talk track','FAQ document'] },
+  { id:'r8', layer:'resource', month:'2026-09', title:'Q4 Agency Handover', sub:'Sep 1 Deadline', audience:['all','pr'], detail:'Full Q4 kit. AWI launch. Holiday campaign. ClubVIO year-end enrollment. Freeman Spogli partnership narrative.', leadTimes:[{date:'Aug 15',action:'Internal review complete'},{date:'Sep 1',action:'HANDOVER'}], deliverables:['AWI launch campaign kit','Holiday campaign kit','ClubVIO enrollment campaign','PR narrative: year-end commercial momentum'] },
+  { id:'r9', layer:'resource', month:'2026-11', title:'Holiday Campaign Assets', sub:'Due Nov 1', audience:['all','franchise'], detail:'End-of-year gifting, ClubVIO Founding Member close. To franchisees October 1.', leadTimes:[{date:'Sep 15',action:'Brief lock'},{date:'Oct 15',action:'Assets in production'},{date:'Nov 1',action:'To franchisees'}], deliverables:['Holiday gifting social templates','ClubVIO gifting email sequence','Founding Member close email','In-spa holiday materials'] },
+
+  // SOCIAL & LIFESTYLE LAYER
+  { id:'s1', layer:'social', month:'2026-01', title:'New Year New You', sub:'Retail / Beauty Rhythm', audience:['all','customer'], detail:'The dominant consumer expectation for January. VIO expression: Biological Reset, not transformation language.', leadTimes:[], deliverables:['3 social posts — reset framing','Retail pairing: medical-grade cleansers'] },
+  { id:'s2', layer:'social', month:'2026-02', title:'Date-Night Radiance', sub:'Valentine\'s Lifestyle', audience:['all','customer'], detail:'Circulation, lymphatic support, lit-from-within glow. Warm register. Not transactional.', leadTimes:[], deliverables:['Social content — warmth-forward','Retail pairing: Vitamin C, eye serums'] },
+  { id:'s3', layer:'social', month:'2026-03', title:'The Beauty of Sleep', sub:'Sleep Awareness Week', audience:['all','customer'], detail:'Skin health tied to sleep. Recovery as ritual. Night recovery framing.', leadTimes:[], deliverables:['Educational social post','Retail pairing: night creams, lipid balms'] },
+  { id:'s4', layer:'social', month:'2026-03', title:"Women's Month", sub:'Full Month — Social', audience:['all','customer'], detail:'Social awareness moment. Values alignment. Not a promotion.', leadTimes:[], deliverables:['1–2 Instagram posts — values register','LinkedIn: leadership voice'] },
+  { id:'s5', layer:'social', month:'2026-04', title:'Stress-Proof Skin', sub:'Lifestyle Hook', audience:['all','customer'], detail:'Skin architecture through high-stress seasons. Tax season, life season. Niacinamide, de-stress kit pairing.', leadTimes:[], deliverables:['Social content — relatable, warm','Retail pairing: niacinamide, de-stress kit'] },
+  { id:'s6', layer:'social', month:'2026-04', title:'Pet Day', sub:'Apr 11 — Fun', audience:['all','customer'], detail:'Social fun moment if brand-adjacent content exists. Optional activation.', leadTimes:[], deliverables:['Optional 1 social post'] },
+  { id:'s7', layer:'social', month:'2026-05', title:'The Next Chapter', sub:'Graduation Lifestyle', audience:['all','customer'], detail:'High-visibility beauty for the moments that matter. Event-ready skin. Family photos.', leadTimes:[], deliverables:['Social content — celebration register','Retail: antioxidants, event prep'] },
+  { id:'s8', layer:'social', month:'2026-06', title:'Modern Masculine', sub:"Men's Month Lifestyle", audience:['all','customer'], detail:'Men\'s Aesthetic Wellness in a performance register. Simple, high-impact, personal.', leadTimes:[], deliverables:['Social series — men\'s register','Retail pairing: oil-free SPF, 3-step routine'] },
+  { id:'s9', layer:'social', month:'2026-06', title:'National Selfie Day', sub:'Jun 21 — Social Fun', audience:['all','customer'], detail:'Brand-adjacent social moment. Light tone. Optional activation.', leadTimes:[], deliverables:['Optional 1 social post'] },
+  { id:'s10', layer:'social', month:'2026-07', title:'Summer Smart Beauty', sub:'UV Safety Lifestyle', audience:['all','customer'], detail:'Atmospheric defense as the intelligent choice. Protection first. Summer socialite framing.', leadTimes:[], deliverables:['Social series — summer register','Retail: SPF 50+, antioxidant mists'] },
+  { id:'s11', layer:'social', month:'2026-08', title:'The Parental Reset', sub:'Lifestyle Hook', audience:['all','customer'], detail:'Reclaiming yourself after the school drop-off. Warm, specific, non-sentimental.', leadTimes:[], deliverables:['Social content — parent audience','Retail: Semester Skin Resilience Kit (confirmed)'] },
+  { id:'s12', layer:'social', month:'2026-09', title:'Post-Summer Edit', sub:'Lifestyle Hook', audience:['all','customer'], detail:'What summer asked of your skin. Regenerative reconstruction framing. DNA repair, cellular.', leadTimes:[], deliverables:['Social series — seasonal transition','Retail: DNA repair topicals'] },
+  { id:'s13', layer:'social', month:'2026-10', title:'Community Radiance', sub:'Breast Cancer Awareness', audience:['all','customer'], detail:'Gentle, restorative beauty. Community focus. Barrier repair, soothing topicals.', leadTimes:[], deliverables:['Community-forward social posts','Retail: clarifying masks, barrier repair'] },
+  { id:'s14', layer:'social', month:'2026-11', title:'Visibility & Confidence', sub:'Holiday Prep Lifestyle', audience:['all','customer'], detail:'Showing up as yourself, fully. Holiday event prep. Ongoing becoming.', leadTimes:[], deliverables:['Social series — holiday visibility','Retail: exfoliants, radiance support'] },
+  { id:'s15', layer:'social', month:'2026-12', title:'The Gift of Longevity', sub:'Holiday Gifting', audience:['all','customer'], detail:'Gifting as care. Personal plans and ClubVIO memberships over trinkets. Longevity kits.', leadTimes:[], deliverables:['Gifting social content','Retail: curated longevity kits — directional'] },
+
+  // ── RETAIL & PLANNING CALENDAR — full layer ──
+
+  // JULY 2025 — summer
+  { id:'rc1', layer:'social', month:'2025-07', title:'Summer Body Season', sub:'Retail Rhythm · Peak', audience:['all','franchise','customer'], detail:'The peak of summer body awareness. CoolSculpting, EmSculpt, body contouring. This is when the consumer is thinking about it most. Campaign support at full volume.', leadTimes:[{date:'May 15',action:'Summer campaign brief locked'},{date:'Jun 1',action:'Assets distributed'}], deliverables:['Body contouring social series','Summer retail pairing: SPF, antioxidant mists'] },
+  { id:'rc2', layer:'social', month:'2025-07', title:'Christmas in July Planning', sub:'Internal — 6 Months Out', audience:['all'], detail:'Start Holiday planning NOW. Photo shoot themes, gifting campaign strategy, ClubVIO enrollment push, Founding Member close. Six months from December means July is the planning window.', leadTimes:[{date:'Jul 1',action:'Holiday campaign brief starts'},{date:'Aug 1',action:'Creative direction locked'}], deliverables:['Holiday campaign strategy document','Photo shoot brief for winter content'] },
+
+  // AUGUST 2025
+  { id:'rc3', layer:'social', month:'2025-08', title:'Back to College', sub:'Student + Parent Audiences', audience:['all','franchise','customer'], detail:'Students entering high-stress, high-visibility environments. Parents reclaiming themselves. Dual-track campaign. Semester Skin Resilience Kit launch window.', leadTimes:[{date:'Jun 15',action:'Campaign brief locked'},{date:'Jul 15',action:'Kit assets ready'},{date:'Aug 1',action:'Campaign live'}], deliverables:['Student track copy','Parent track copy','Semester Skin Resilience Kit','Retail bundle kitting'] },
+  { id:'rc4', layer:'social', month:'2025-08', title:'National Wellness Month', sub:'Full Month', audience:['all','customer'], detail:'Full-month wellness awareness. VIO as the Aesthetic Wellness authority. Educational content moment — not promotional.', leadTimes:[], deliverables:['Educational social series — 4 posts','Wellness narrative content'] },
+
+  // SEPTEMBER 2025
+  { id:'rc5', layer:'social', month:'2025-09', title:'Fall Skin Prep', sub:'Retail Rhythm', audience:['all','franchise','customer'], detail:'Post-summer skin rehabilitation. Transition from protection to repair. Peels, resurfacing, collagen rebuild. The fall client is ready to invest.', leadTimes:[], deliverables:['Fall transition social series','Retail: DNA repair, resurfacing support'] },
+  { id:'rc6', layer:'social', month:'2025-09', title:'Holiday Gifting — Brief Lock', sub:'Internal · 3 Months Out', audience:['all'], detail:'Three months to December. Holiday campaign brief must be locked now. Gifting strategy, ClubVIO enrollment, Founding Member close messaging all need to be in production.', leadTimes:[{date:'Sep 1',action:'Holiday brief locked'},{date:'Sep 15',action:'Copy in production'}], deliverables:['Holiday campaign copy','ClubVIO gifting email sequence','Founding Member close messaging'] },
+
+  // OCTOBER 2025
+  { id:'rc7', layer:'social', month:'2025-10', title:'Halloween', sub:'Oct 31 · Optional', audience:['all','customer'], detail:'Light social moment. Optional activation. If VIO plays — keep it clinical and dry, never costume or gimmick.', leadTimes:[], deliverables:['Optional 1 social post'] },
+  { id:'rc8', layer:'social', month:'2025-10', title:'Holiday Assets — Due to Franchisees', sub:'Internal · 6 Weeks Out', audience:['all','franchise'], detail:'All holiday campaign assets must be in franchisees hands six weeks before November launch. This is the deadline that protects the execution.', leadTimes:[{date:'Oct 15',action:'Assets to franchisees'}], deliverables:['Holiday social templates','Email templates','In-spa signage','Staff talking points'] },
+
+  // NOVEMBER 2025
+  { id:'rc9', layer:'social', month:'2025-11', title:'Thanksgiving', sub:'Nov 27', audience:['all','customer'], detail:'Gratitude moment. Warm, values-aligned social content. Not a sales push.', leadTimes:[], deliverables:['1 social post — gratitude register'] },
+  { id:'rc10', layer:'social', month:'2025-11', title:'Holiday Campaign Live', sub:'Nov 1', audience:['all','franchise','customer'], detail:'Holiday gifting, ClubVIO enrollment, Founding Member close all go live. Full campaign window through December.', leadTimes:[{date:'Nov 1',action:'Campaign live across all channels'}], deliverables:['Full holiday campaign live'] },
+  { id:'rc11', layer:'social', month:'2025-11', title:'Black Friday / Cyber Monday', sub:'Nov 28–Dec 1', audience:['all','franchise','customer'], detail:'VIO does not do Black Friday discounts. If activating — frame as a curated gifting moment. ClubVIO gifting is the play, never a sale.', leadTimes:[], deliverables:['Optional ClubVIO gifting push','Framing: curated, not discounted'] },
+
+  // DECEMBER 2025
+  { id:'rc12', layer:'social', month:'2025-12', title:'Christmas', sub:'Dec 25', audience:['all','franchise','customer'], detail:'Warmth, belonging, reflection. Personal Treasury framing. The gift of becoming. ClubVIO as the gift that compounds.', leadTimes:[], deliverables:['Holiday social posts','ClubVIO gifting final push'] },
+  { id:'rc13', layer:'social', month:'2025-12', title:'New Year Planning — Campaign Prep', sub:'Internal · Brief Lock Jan', audience:['all'], detail:'January campaign brief must be locked in December. Biological Reset arc. The work that begins in January belongs to the whole year ahead. Agencies need it before the new year.', leadTimes:[{date:'Dec 15',action:'January brief locked'},{date:'Dec 26',action:'Campaign live'}], deliverables:['January Reset campaign copy','Brand editorial 600 words','ClubVIO enrollment email'] },
+
+  // JANUARY 2026
+  { id:'rc14', layer:'social', month:'2026-01', title:'Dry January', sub:'Wellness Trend · Jan', audience:['all','customer'], detail:'Consumer wellness mindset peaks. Align with cleanse, reset, detox narrative — in VIO voice. Not a trend adoption. The philosophy: what you invest in now builds all year.', leadTimes:[], deliverables:['1–2 social posts — reset register'] },
+  { id:'rc15', layer:'social', month:'2026-01', title:'Bridal Season Opens', sub:'Engagement Season Begins', audience:['all','franchise','customer'], detail:'Holiday engagement announcements drive bridal planning through spring. The bridal client is starting to think 6–12 months out. Begin bridal-adjacent content now. VIO as the skin preparation partner.', leadTimes:[{date:'Jan 1',action:'Bridal content arc begins'}], deliverables:['Bridal preparation social series — start','Retail: skin prep content'] },
+
+  // FEBRUARY 2026
+  { id:'rc16', layer:'social', month:'2026-02', title:'Galentine\'s Day', sub:'Feb 13 · Social Fun', audience:['all','customer'], detail:'Friends celebrating each other. Warm, social, inclusive. Optional social activation — community and belonging register.', leadTimes:[], deliverables:['Optional 1 social post — Galentine\'s register'] },
+  { id:'rc17', layer:'social', month:'2026-02', title:'Bridal Season — Peak Planning', sub:'Retail Rhythm', audience:['all','franchise','customer'], detail:'The window where spring and summer brides are in active planning. Skin timeline conversations. 6-month skin plan for wedding day. Collagen, fillers, laser timing.', leadTimes:[{date:'Jan 15',action:'Bridal content ready'}], deliverables:['Bridal skin timeline social content','Consultation push: bridal planning','Retail: bridal skin prep pairing'] },
+
+  // MARCH 2026
+  { id:'rc18', layer:'social', month:'2026-03', title:'Spring Transition', sub:'Retail Rhythm', audience:['all','franchise','customer'], detail:'Consumer mindset shifts from winter restoration to spring emergence. Exfoliants, brightening, emergence narrative. What was built all winter is now visible.', leadTimes:[], deliverables:['Spring transition social series','Retail: brightening, exfoliation'] },
+  { id:'rc19', layer:'social', month:'2026-03', title:'Sleep Awareness Week', sub:'Mar 9–15', audience:['all','customer'], detail:'Beauty of sleep. Skin health and recovery. Night support products. Education-first content.', leadTimes:[], deliverables:['Educational social post','Retail pairing: recovery balms, night creams'] },
+  { id:'rc20', layer:'social', month:'2026-03', title:'Spring Break', sub:'Late Mar', audience:['all','franchise','customer'], detail:'Travel and visibility moment. SPF, skin prep, quick-result treatments for pre-travel clients.', leadTimes:[], deliverables:['Pre-travel skin prep content','SPF and protection retail push'] },
+
+  // APRIL 2026
+  { id:'rc21', layer:'social', month:'2026-04', title:'Tax Season', sub:'Retail Psychology', audience:['all','customer'], detail:'Stress and spending psychology peaks. Two audiences: those spending refunds (investment moment) and those feeling depleted (recovery moment). Both are VIO clients.', leadTimes:[], deliverables:['Stress-acknowledgment social content','Retail: de-stress kit, niacinamide'] },
+  { id:'rc22', layer:'social', month:'2026-04', title:'Easter / Spring Holidays', sub:'Apr 5', audience:['all','customer'], detail:'Family gathering moment. Optional social activation. Warm, light, seasonal.', leadTimes:[], deliverables:['Optional 1 seasonal social post'] },
+
+  // MAY 2026
+  { id:'rc23', layer:'social', month:'2026-05', title:'Bridal Season — Peak Events', sub:'May–Jun · High Season', audience:['all','franchise','customer'], detail:'Peak wedding season. Pre-wedding appointment rush. Injectables, skin, last-session timing. Staff need to know the bridal conversation.', leadTimes:[{date:'Mar 1',action:'Bridal event-ready content ready'},{date:'Apr 15',action:'Staff talk track refreshed'}], deliverables:['Event-ready skin content','Staff bridal talk track','Consultation push: pre-event timing'] },
+  { id:'rc24', layer:'social', month:'2026-05', title:'Asian American & Pacific Islander Month', sub:'May · Awareness', audience:['all','customer'], detail:'Cultural awareness month. Community acknowledgment. Values alignment.', leadTimes:[], deliverables:['1 community-acknowledgment post'] },
+  { id:'rc25', layer:'social', month:'2026-05', title:'Memorial Day', sub:'May 25', audience:['all','franchise','customer'], detail:'Summer opens. Visibility and outdoor season begins. Transition moment — protection and preparation.', leadTimes:[], deliverables:['1 seasonal social post — summer opens'] },
+
+  // JUNE 2026
+  { id:'rc26', layer:'social', month:'2026-06', title:'Pride Month', sub:'Full Month', audience:['all','customer'], detail:'Inclusion and belonging. Community values. VIO serves everyone. Warm acknowledgment, not a promotional vehicle.', leadTimes:[], deliverables:['1–2 community values posts'] },
+  { id:'rc27', layer:'social', month:'2026-06', title:'Summer Solstice', sub:'Jun 21', audience:['all','customer'], detail:'The longest day. Social fun moment. Light, seasonal, brand-adjacent.', leadTimes:[], deliverables:['Optional 1 seasonal post'] },
+  { id:'rc28', layer:'social', month:'2026-06', title:'Juneteenth', sub:'Jun 19', audience:['all'], detail:'National holiday. Acknowledge with warmth and authenticity. Not a promotional moment.', leadTimes:[], deliverables:['Values acknowledgment'] },
+
+  // JULY 2026
+  { id:'rc29', layer:'social', month:'2026-07', title:'Fourth of July', sub:'Jul 4', audience:['all','franchise','customer'], detail:'Summer social moment. Optional light activation. SPF and summer protection framing if activating.', leadTimes:[], deliverables:['Optional seasonal social post'] },
+  { id:'rc30', layer:'social', month:'2026-07', title:'Christmas in July Planning', sub:'Internal — 6 Months Out', audience:['all'], detail:'Holiday 2026 planning window opens. Brief, strategy, photo shoot for winter content. Same discipline as last year. Six months is the minimum lead for a properly executed holiday campaign.', leadTimes:[{date:'Jul 1',action:'Holiday 2026 brief starts'},{date:'Aug 1',action:'Creative direction locked'}], deliverables:['Holiday 2026 campaign strategy','Photo shoot brief for winter content'] },
+  { id:'rc31', layer:'social', month:'2026-07', title:'Summer Body — Peak', sub:'Retail Rhythm', audience:['all','franchise','customer'], detail:'CoolSculpting, EmSculpt, body contouring peak demand window. Social support at full volume.', leadTimes:[], deliverables:['Body treatment social series','Retail: summer body pairings'] },
+
+  // AUGUST 2026
+  { id:'rc32', layer:'social', month:'2026-08', title:'National Wellness Month', sub:'Full Month', audience:['all','customer'], detail:'Wellness awareness. VIO as the Aesthetic Wellness authority. Educational content month.', leadTimes:[], deliverables:['Educational wellness content series'] },
+  { id:'rc33', layer:'social', month:'2026-08', title:'Back to School', sub:'Late Aug', audience:['all','franchise','customer'], detail:'Students and parents. Semester Skin Resilience Kit. Dual-track. Same framework as 2025 — if kit is confirmed, push harder.', leadTimes:[{date:'Jun 1',action:'Brief locked'},{date:'Jul 15',action:'Kit assets ready'},{date:'Aug 1',action:'Campaign live'}], deliverables:['Student + parent dual campaign','Semester Skin Kit push'] },
+
+  // SEPTEMBER 2026
+  { id:'rc34', layer:'social', month:'2026-09', title:'Fall Skin Prep', sub:'Retail Rhythm', audience:['all','franchise','customer'], detail:'Post-summer skin rehabilitation. Repair window. Peels, resurfacing, DNA repair. Consumer is ready to invest in fall recovery.', leadTimes:[], deliverables:['Fall repair social series','Retail: DNA repair, resurfacing'] },
+  { id:'rc35', layer:'social', month:'2026-09', title:'Hispanic Heritage Month', sub:'Sep 15 – Oct 15', audience:['all','customer'], detail:'Cultural awareness. Community acknowledgment. VIO serves all skin tones. Glacial Rx and skin-tone-safe treatment content relevant here.', leadTimes:[], deliverables:['1–2 community and skin equity posts'] },
+
+  // OCTOBER 2026
+  { id:'rc36', layer:'social', month:'2026-10', title:'Halloween', sub:'Oct 31 · Optional', audience:['all','customer'], detail:'Optional social activation. VIO tone: dry, knowing, never costume. If activating — clinical confidence angle.', leadTimes:[], deliverables:['Optional 1 social post'] },
+  { id:'rc37', layer:'social', month:'2026-10', title:'Holiday Assets — Due to Franchisees', sub:'Internal · 6 Weeks Out', audience:['all','franchise'], detail:'All holiday 2026 campaign assets to franchisees six weeks before November launch.', leadTimes:[{date:'Oct 15',action:'Assets to franchisees'}], deliverables:['Holiday social templates','Email templates','In-spa materials'] },
+
+  // NOVEMBER 2026
+  { id:'rc38', layer:'social', month:'2026-11', title:'Holiday Campaign Live', sub:'Nov 1', audience:['all','franchise','customer'], detail:'Holiday gifting, ClubVIO enrollment, year-end push all live. Full campaign window.', leadTimes:[{date:'Nov 1',action:'Campaign live'}], deliverables:['Full holiday 2026 campaign live'] },
+  { id:'rc39', layer:'social', month:'2026-11', title:'Black Friday / Cyber Monday', sub:'Nov 27–30', audience:['all','franchise','customer'], detail:'VIO does not do discounts. ClubVIO gifting is the activation. Curated, not on sale.', leadTimes:[], deliverables:['ClubVIO gifting push — curated register'] },
+  { id:'rc40', layer:'social', month:'2026-11', title:'Thanksgiving', sub:'Nov 26', audience:['all','customer'], detail:'Gratitude. Warmth. Values-aligned. Not promotional.', leadTimes:[], deliverables:['1 social post — gratitude register'] },
+
+  // DECEMBER 2026
+  { id:'rc41', layer:'social', month:'2026-12', title:'Christmas', sub:'Dec 25', audience:['all','franchise','customer'], detail:'Warmth, belonging. Personal Treasury. The gift of becoming. ClubVIO as the gift that compounds through 2027.', leadTimes:[], deliverables:['Holiday social posts','ClubVIO final gifting push'] },
+  { id:'rc42', layer:'social', month:'2026-12', title:'New Year 2027 — Brief Lock', sub:'Internal · Due Dec 15', audience:['all'], detail:'January 2027 Biological Reset brief must lock in December. Same discipline, every year.', leadTimes:[{date:'Dec 15',action:'Q1 2027 brief locked'}], deliverables:['Q1 2027 campaign brief','January Reset copy — 3 lengths'] },
+
+  // ── INDUSTRY BEAUTY CALENDAR — agency intelligence layer ──
+
+  // Q1 SKIN FOCUS
+  { id:'ic1', layer:'social', month:'2025-07', title:'National Lipstick Day', sub:'Jul 29', audience:['all','customer'], detail:'High-conversion social day in the beauty industry. VIO angle: confidence, not cosmetics. If activating — tie to facial aesthetic wellness. One post, warm register.', leadTimes:[], deliverables:['Optional 1 social post'] },
+  { id:'ic2', layer:'social', month:'2025-08', title:'National Men\'s Grooming Day', sub:'Aug 21', audience:['all','customer'], detail:'Second window for men\'s Aesthetic Wellness content. Back-to-work crowd. Neuromodulators, skin health, SPF. Performance register — not spa register.', leadTimes:[], deliverables:['1 social post — men\'s performance register'] },
+  { id:'ic3', layer:'social', month:'2025-09', title:'International Beauty Day', sub:'Sep 9', audience:['all','franchise','customer'], detail:'Celebrating clinical professionals and the science of beauty. VIO angle: honor the providers who hold the standard. Internal team recognition content.', leadTimes:[], deliverables:['Provider appreciation content','1 brand authority post'] },
+  { id:'ic4', layer:'social', month:'2025-09', title:'World Afro Day', sub:'Sep 15', audience:['all','customer'], detail:'Celebrating natural hair textures. Scalp health, follicle health, PRF Hair Restoration relevance. VIO serves all hair types. Community acknowledgment.', leadTimes:[], deliverables:['1 scalp/hair health education post'] },
+  { id:'ic5', layer:'social', month:'2025-10', title:'World Menopause Day', sub:'Oct 18', audience:['all','franchise','customer','provider'], detail:'Booming clinical category. Hormonal aging skin, collagen changes, hot flash support. BHRT, GLP-1 integration, skin support. This is squarely in the VIO wellness offering.', leadTimes:[], deliverables:['Educational social post','Provider talk track: menopause + aesthetics'] },
+  { id:'ic6', layer:'social', month:'2025-11', title:'World Vegan Day', sub:'Nov 1', audience:['all','customer'], detail:'Ethical beauty moment. VIO angle: clinical standards, not marketing labels. One values-aligned post if relevant to retail lineup.', leadTimes:[], deliverables:['Optional 1 values post'] },
+  { id:'ic7', layer:'social', month:'2025-12', title:'Winter Skin Prep — Consumer Mindset', sub:'Dec · Retail Rhythm', audience:['all','franchise','customer'], detail:'Consumer entering winter mode. Heavy hydration, barrier support, deep nourishment. Retail pairings: rich moisturizers, barrier creams, lipid balms. VIO angle: investment in what the body builds slowly.', leadTimes:[], deliverables:['Winter skin education content','Retail: hydration pairing'] },
+
+  // Q1 2026 INDUSTRY
+  { id:'ic8', layer:'social', month:'2026-01', title:'Winter Skin Relief', sub:'Jan · Retail Rhythm', audience:['all','franchise','customer'], detail:'The dominant consumer skin concern in January. Dehydration, barrier damage from cold and central heating. VIO retail: medical-grade cleansers, barrier repair, HydraFacial as monthly reset.', leadTimes:[], deliverables:['Winter skin relief social content','Retail: cleanser + hydrator pairing'] },
+  { id:'ic9', layer:'social', month:'2026-01', title:'Veganuary', sub:'Full Month — UK/North America', audience:['all','customer'], detail:'Clean beauty and ethical consumption movement peaks. Relevant if VIO retail lineup includes certified-clean products. One educational post if applicable — do not overextend.', leadTimes:[], deliverables:['Optional 1 clean beauty education post'] },
+  { id:'ic10', layer:'social', month:'2026-02', title:'National Lash Day', sub:'Feb 19', audience:['all','franchise','customer'], detail:'High-conversion niche day. VIO angle: PRF for lash health, neuromodulators framing the eye area. Subtle activation — one post, clinical authority.', leadTimes:[], deliverables:['1 eye area education post'] },
+  { id:'ic11', layer:'social', month:'2026-03', title:'World Sleep Day', sub:'Mar 13', audience:['all','customer'], detail:'Beauty sleep is a clinically valid claim. VIO angle: overnight skin recovery, stress and skin relationship, hormone health and sleep. Educational.', leadTimes:[], deliverables:['Sleep + skin education post','Retail: recovery + night support'] },
+  { id:'ic12', layer:'social', month:'2026-03', title:'Fragrance Day', sub:'Mar 21', audience:['all','customer'], detail:'A sensory and lifestyle moment. VIO angle: the in-spa experience, scent as part of belonging. One atmospheric post — no product push.', leadTimes:[], deliverables:['Optional 1 atmospheric brand post'] },
+  { id:'ic13', layer:'social', month:'2026-03', title:'Spring Equinox — Consumer Reset', sub:'Mar 20', audience:['all','franchise','customer'], detail:'Emergence from winter. Consumer mindset: shed the old, prepare for visibility. Exfoliants, brightening, peel season opens. The skin that was built all winter is about to be seen.', leadTimes:[], deliverables:['Spring emergence social series','Retail: exfoliation, brightening'] },
+
+  // Q2 2026 INDUSTRY
+  { id:'ic14', layer:'social', month:'2026-04', title:'National Vitamin C Day', sub:'Apr 4', audience:['all','franchise','customer'], detail:'High-conversion educational moment. VIO angle: Vitamin C in clinical context — Glow IV, antioxidant support, skin brightening. Education-first.', leadTimes:[], deliverables:['Vitamin C education post','Retail: Vitamin C serum pairing'] },
+  { id:'ic15', layer:'social', month:'2026-05', title:'National Sunscreen Day', sub:'May 27', audience:['all','franchise','customer'], detail:'Peak sunscreen awareness. VIO standard: SPF is non-negotiable. Clinical framing — UV is the single biggest threat to every treatment investment. Provider voice.', leadTimes:[], deliverables:['SPF authority post','Provider quote: SPF and treatment longevity','Retail: SPF 50+ pairing'] },
+  { id:'ic16', layer:'social', month:'2026-06', title:'World Oceans Day', sub:'Jun 8', audience:['all','customer'], detail:'Reef-safe SPF, environmental stewardship, clean beauty values. VIO angle: the standards we hold in the clinic extend to what we recommend for daily use. Values post.', leadTimes:[], deliverables:['1 environmental values post'] },
+  { id:'ic17', layer:'social', month:'2026-06', title:'National Selfie Day', sub:'Jun 21', audience:['all','customer'], detail:'Social fun moment. VIO angle: confidence, skin health, clinical results you can see. Light, direct, one post.', leadTimes:[], deliverables:['1 light confidence post'] },
+
+  // Q3 2026 INDUSTRY
+  { id:'ic18', layer:'social', month:'2026-07', title:'International Self Care Day', sub:'Jul 24', audience:['all','franchise','customer'], detail:'VIO\'s entire philosophy expressed in a single day. Aesthetic Wellness as intentional self-investment, not indulgence. Membership, personal plan consultations, the relationship with your body that compounds. High priority activation.', leadTimes:[{date:'Jul 10',action:'Content approved'}], deliverables:['Self Care Day social series — 2 posts','ClubVIO tie-in','Educational thread on Aesthetic Wellness vs. self-care as trend'] },
+  { id:'ic19', layer:'social', month:'2026-07', title:'National Clean Beauty Day', sub:'Jul 15', audience:['all','customer'], detail:'Clean clinical standards. VIO angle: clinical grade is cleaner than clean. The products VIO recommends are chosen for efficacy and safety — not as a marketing category.', leadTimes:[], deliverables:['1 clinical standards education post'] },
+  { id:'ic20', layer:'social', month:'2026-08', title:'National Relaxation Day', sub:'Aug 15', audience:['all','franchise','customer'], detail:'Post-summer recovery mindset. Stress literacy. The body after a season of disruption. VIO angle: what it takes to return to yourself — clinically, not just emotionally.', leadTimes:[], deliverables:['1 stress + skin recovery post','Retail: recovery support pairing'] },
+  { id:'ic21', layer:'social', month:'2026-09', title:'Post-Summer Repair Season', sub:'Sep · Retail Rhythm', audience:['all','franchise','customer'], detail:'The consumer is ready to treat what summer did. Hyperpigmentation, sun damage, dehydration, texture. Peak season for peels, resurfacing, DNA repair, Polynucleotides. VIO clinical authority at its highest relevance.', leadTimes:[{date:'Aug 1',action:'Content approved and ready'}], deliverables:['Post-summer repair social series — 4 posts','Provider education: sun damage reversal timeline','Retail: post-summer repair kit'] },
+  { id:'ic22', layer:'social', month:'2026-09', title:'International Beauty Day', sub:'Sep 9', audience:['all','franchise','customer'], detail:'Celebrating the professionals and the science of beauty. Provider appreciation. VIO clinical collective recognition.', leadTimes:[], deliverables:['Provider appreciation post','Brand authority content'] },
+
+  // Q4 2026 INDUSTRY
+  { id:'ic23', layer:'social', month:'2026-10', title:'World Menopause Day', sub:'Oct 18', audience:['all','franchise','customer','provider'], detail:'Menopause beauty is a growing clinical category. Hormonal skin aging, collagen loss, hot flashes. BHRT, GLP-1, skin support all relevant. VIO is uniquely positioned to own this conversation.', leadTimes:[{date:'Oct 1',action:'Content ready'}], deliverables:['Menopause + aesthetics education post','Provider talk track refresh','ClubVIO tie-in: long-term wellness relationship'] },
+  { id:'ic24', layer:'social', month:'2026-11', title:'World Vegan Day', sub:'Nov 1', audience:['all','customer'], detail:'Opens the holiday gifting window with an ethical values note. Optional activation if relevant to retail lineup.', leadTimes:[], deliverables:['Optional 1 values post'] },
+  { id:'ic25', layer:'social', month:'2026-11', title:'Diwali', sub:'Nov 8 · Festival of Lights', audience:['all','customer'], detail:'Celebration, light, luxury, community. Markets with South Asian diaspora. Warm acknowledgment. Not a promotional vehicle — a values alignment.', leadTimes:[], deliverables:['1 community warmth post'] },
+  { id:'ic26', layer:'social', month:'2026-12', title:'Holiday Advent Calendar Window', sub:'Dec · Retail Intelligence', audience:['all','franchise'], detail:'Industry intelligence: Advent calendars require 6-month lead times for assembly. If VIO ever activates this category — the conversation starts in June. File for future planning.', leadTimes:[{date:'Jun 1',action:'Brief needed if activating Advent Calendar'}], deliverables:['Note for future: Advent Calendar brief by June'] },
+
+  // ── MED SPA CLIENT MINDSET & CONTENT STRATEGY — monthly signals ──
+
+  { id:'cs1', layer:'resource', month:'2026-01', title:'Client Mindset: New Year Skin Planning', sub:'Content Strategy · Jan', audience:['all','franchise','provider'], detail:'Clients motivated to reset, simplify, start long-term routines. High receptivity to annual skin plans, aging roadmaps, and barrier-focused education. Best performing content: yearly skin plan, natural results education, anatomy-based filler explanations. CTA: Start Your 2026 Skin Plan.', leadTimes:[], deliverables:['Yearly skin plan content','Aging roadmap educational post','Barrier routine education','Treatment focus: peels, laser series, neuromodulators'] },
+  { id:'cs2', layer:'resource', month:'2026-02', title:'Client Mindset: Subtle Enhancement Season', sub:'Content Strategy · Feb', audience:['all','franchise','provider'], detail:'Clients want to look refreshed for events — not changed. Fear of overdone is highest this month. Lead with natural lip shaping, expression balancing, how subtle enhancements age well. CTA: Soft, Natural Enhancements. Treatment demand: lip filler, Botox, hydration facials.', leadTimes:[], deliverables:['Natural results education posts','Full-face expression balancing content','Lip structure vs volume explainer'] },
+  { id:'cs3', layer:'resource', month:'2026-03', title:'Client Mindset: Spring Brightness', sub:'Content Strategy · Mar', audience:['all','franchise','provider'], detail:'Clients craving brightness, clarity, refreshed look as seasons change. Midface and undereye harmony content performs well. Light resurfacing education. CTA: Spring Refresh Plan. Treatment demand: microneedling, undereye treatments, spring brightening facials.', leadTimes:[], deliverables:['Midface/undereye harmony content','Light resurfacing education','Eye-brightening strategy posts'] },
+  { id:'cs4', layer:'resource', month:'2026-04', title:'Client Mindset: Barrier-First Skin Health', sub:'Content Strategy · Apr', audience:['all','franchise','provider'], detail:'Clients want healthy, resilient, balanced skin. Skin barrier fundamentals content peaks this month. Realistic expectations messaging performs well. CTA: Build Your Skin Foundation. Treatment demand: microneedling, hydration, mild peels, barrier rebuilding.', leadTimes:[], deliverables:['Skin barrier fundamentals post','Gentle protocol education','What to pause during seasonal change content'] },
+  { id:'cs5', layer:'resource', month:'2026-05', title:'Client Mindset: Pre-Event Polish', sub:'Content Strategy · May', audience:['all','franchise','provider'], detail:'Graduations, weddings, celebrations driving consultation requests. Clients want polished not overdone. Full-face balancing content, undereye correction, subtle lip refreshes. Why structure matters before volume. CTA: Look Rested, Not Overdone. Treatment demand: neuromodulators, filler adjustments, brightening.', leadTimes:[], deliverables:['Full-face balancing content','Pre-event treatment timeline education','Structure before volume explainer'] },
+  { id:'cs6', layer:'resource', month:'2026-06', title:'Client Mindset: Summer Maintenance', sub:'Content Strategy · Jun', audience:['all','franchise','provider'], detail:'Clients want glow but are cautious about sun exposure. Safe summer treatments, prevention-focused education, sunscreen breakdowns, maintaining results during travel. CTA: Your Summer Treatment Plan. Treatment demand: hydrating facials, mild resurfacing, Botox maintenance.', leadTimes:[], deliverables:['Safe summer treatment education','SPF + treatment longevity content','Travel skincare guidance'] },
+  { id:'cs7', layer:'resource', month:'2026-07', title:'Client Mindset: Protection & Prevention', sub:'Content Strategy · Jul', audience:['all','franchise','provider'], detail:'Clients feeling summer sun effects. Pigmentation clarity, SPF education, repairing dehydration, protecting long-term collagen health. CTA: Repair and Protect. Treatment demand: hydrating treatments, pigment-safe facials, LED therapy, barrier repair.', leadTimes:[], deliverables:['Pigmentation education posts','SPF protection content','Collagen protection education'] },
+  { id:'cs8', layer:'resource', month:'2026-08', title:'Client Mindset: Back-to-Routine Reset', sub:'Content Strategy · Aug', audience:['all','franchise','provider'], detail:'Clients ready for consistency after summer travel. Long-term treatment planning, monthly skin routines, neuromodulator refreshers. CTA: Reset for Fall. Treatment demand: Botox, monthly skin plans, light resurfacing, fall preparation.', leadTimes:[], deliverables:['Long-term planning content','Monthly routine education','Fall treatment preparation posts'] },
+  { id:'cs9', layer:'resource', month:'2026-09', title:'Client Mindset: Collagen Renewal Season', sub:'Content Strategy · Sep', audience:['all','franchise','provider'], detail:'Peak demand for intensive treatments as sun exposure drops. Peel and laser education, collagen-focused care, what to expect from deeper rejuvenation, long-term improvement messaging. CTA: Fall Renewal. Treatment demand: peels, lasers, microneedling series, collagen restoration.', leadTimes:[], deliverables:['Peel + laser education content','Collagen renewal education','Realistic results timeline posts','Quarterly content performance review due'] },
+  { id:'cs10', layer:'resource', month:'2026-10', title:'Client Mindset: Holiday Preparation', sub:'Content Strategy · Oct', audience:['all','franchise','provider'], detail:'Clients want their best look for upcoming photos, gatherings, events. Holiday enhancement strategies, natural midface support, undereye brightening, timeline-focused education. CTA: Holiday Ready Skin. Treatment demand: filler, Botox, brightening facials, undereye.', leadTimes:[], deliverables:['Holiday enhancement education','Treatment timing explainer','Undereye brightening content'] },
+  { id:'cs11', layer:'resource', month:'2026-11', title:'Client Mindset: High-Demand Booking Season', sub:'Content Strategy · Nov', audience:['all','franchise','provider'], detail:'Busiest treatment booking season. Clients planning ahead. Purposeful promotions (not deep discounts), gifting treatments responsibly, bundling education. CTA: Your Holiday Treatment Plan. Treatment demand: giftable treatments, facial series, winter skin prep.', leadTimes:[], deliverables:['Gifting education content (ClubVIO angle)','Booking urgency — not scarcity','Winter prep treatment posts'] },
+  { id:'cs12', layer:'resource', month:'2026-12', title:'Client Mindset: Reflection & 2027 Planning', sub:'Content Strategy · Dec', audience:['all','franchise','provider'], detail:'Clients reflective, looking ahead. Aging pattern education, yearly planning, structural vs volume corrections, 2027 goals. CTA: Plan Your 2027 Aesthetic Year. Treatment demand: consultations, treatment mapping, yearly plans, skin health resets.', leadTimes:[{date:'Dec 1',action:'Book 2027 planning consultation push'}], deliverables:['2027 aesthetic year planning content','Aging pattern education post','Consultation booking push','Quarterly review: what performed, what to adjust'] },
+
+  // QUARTERLY REVIEW REMINDERS
+  { id:'qr1', layer:'resource', month:'2026-03', title:'Q1 Content Review', sub:'Internal · Quarterly', audience:['all','franchise'], detail:'Quarterly check-in. Review: what content performed well, what clients asked most in consultations, seasonal booking patterns, areas to adjust, educational gaps to fill. Align next quarter content with real-time client behavior.', leadTimes:[{date:'Mar 25',action:'Q1 content review complete'}], deliverables:['Content performance review','Consultation question log','Q2 content adjustments confirmed'] },
+  { id:'qr2', layer:'resource', month:'2026-06', title:'Q2 Content Review', sub:'Internal · Quarterly', audience:['all','franchise'], detail:'Mid-year review. Summer content performance, pre-event campaign results, treatment demand signals for Q3. Adjust fall content plan based on what actually resonated.', leadTimes:[{date:'Jun 25',action:'Q2 content review complete'}], deliverables:['Mid-year content audit','Q3 content adjustments','Booking pattern analysis'] },
+  { id:'qr3', layer:'resource', month:'2026-09', title:'Q3 Content Review', sub:'Internal · Quarterly', audience:['all','franchise'], detail:'Pre-holiday review. What drove the most consultations, which educational content built the most trust, what to amplify in Q4. Critical window — Q4 is 40% of annual revenue.', leadTimes:[{date:'Sep 25',action:'Q3 review complete · Q4 plan finalized'}], deliverables:['Q3 performance review','Q4 content strategy locked','Holiday campaign final confirmation'] },
+  { id:'qr4', layer:'resource', month:'2026-12', title:'Annual Content Review', sub:'Internal · Year End', audience:['all','franchise'], detail:'Full-year review. What built trust, what drove bookings, what content types to double down on in 2027. Input into Kaleidoscope for next year\'s planning cycle.', leadTimes:[{date:'Dec 20',action:'Annual review complete'}], deliverables:['Annual content performance report','2027 content strategy input','Kaleidoscope update for new year'] },
+];
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let currentView = 'month';
+let currentAudience = 'all';
+let activeLayers = { horizon:true, campaign:true, resource:true, social:true };
+let currentMonthIndex = MONTHS.findIndex(m => m.now) || 9;
+let currentQuarterStart = 9; // Apr 2026
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function getLayerColor(layer) {
+  const map = { horizon:'var(--horizon)', campaign:'var(--campaign)', resource:'var(--resource)', social:'var(--social)' };
+  return map[layer] || '#999';
+}
+function getLayerBg(layer) {
+  const map = { horizon:'var(--horizon-bg)', campaign:'var(--campaign-bg)', resource:'var(--resource-bg)', social:'var(--social-bg)' };
+  return map[layer] || '#eee';
+}
+function layerLabel(layer) {
+  const map = { horizon:'Horizon', campaign:'Campaign', resource:'Deliverable', social:'Social & Lifestyle' };
+  return map[layer] || layer;
+}
+function filterEvents(monthId) {
+  return EVENTS.filter(e => {
+    if (e.month !== monthId) return false;
+    if (!activeLayers[e.layer]) return false;
+    if (currentAudience !== 'all' && !e.audience.includes(currentAudience) && !e.audience.includes('all')) return false;
+    return true;
+  });
+}
+function openModal(eventId) {
+  const ev = EVENTS.find(e => e.id === eventId);
+  if (!ev) return;
+  const tag = document.getElementById('modalLayerTag');
+  tag.textContent = layerLabel(ev.layer);
+  tag.style.background = getLayerBg(ev.layer);
+  tag.style.color = getLayerColor(ev.layer);
+  document.getElementById('modalTitle').textContent = ev.title;
+  let html = '';
+  if (ev.sub) html += `<div class="modal-section"><div class="modal-section-label">When</div><div class="modal-section-text">${ev.sub}</div></div>`;
+  if (ev.detail) html += `<div class="modal-section"><div class="modal-section-label">What &amp; Why</div><div class="modal-section-text">${ev.detail}</div></div>`;
+  if (ev.leadTimes && ev.leadTimes.length) {
+    html += `<div class="modal-section"><div class="modal-section-label">Lead Times — Back-Map</div><div class="modal-lead-times">`;
+    ev.leadTimes.forEach(lt => { html += `<div class="modal-lead-item"><span class="modal-lead-date">${lt.date}</span><span class="modal-lead-action">${lt.action}</span></div>`; });
+    html += `</div></div>`;
+  }
+  if (ev.deliverables && ev.deliverables.length) {
+    html += `<div class="modal-section"><div class="modal-section-label">Deliverables</div><div class="modal-deliverables">`;
+    ev.deliverables.forEach(d => { html += `<div class="modal-deliverable">${d}</div>`; });
+    html += `</div></div>`;
+  }
+  html += `<div class="modal-section"><div class="modal-section-label">Audience</div><div class="modal-audience-tags">`;
+  ev.audience.forEach(a => { html += `<span class="modal-aud-tag">${a}</span>`; });
+  html += `</div></div>`;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+// 18-MONTH VIEW
+// ══════════════════════════════════════════════
+function build18Month() {
+  const grid = document.getElementById('eighteenGrid');
+  grid.innerHTML = '';
+  const rows = ['horizon','campaign','resource','social'];
+  const rowLabels = ['Horizon','Campaign','Deliverables','Social & Lifestyle'];
+
+  // Corner
+  const corner = document.createElement('div');
+  corner.className = 'eg-corner';
+  grid.appendChild(corner);
+
+  // Month headers
+  MONTHS.forEach(m => {
+    const head = document.createElement('div');
+    head.className = 'eg-month-head' + (m.now ? ' now-month' : '');
+    head.innerHTML = `<span class="eg-month-name">${m.label}</span><span class="eg-month-year">${m.year}</span>`;
+    grid.appendChild(head);
+  });
+
+  // Data rows
+  rows.forEach((layer, ri) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'eg-row-label';
+    lbl.innerHTML = `<span class="eg-row-label-text" style="color:${getLayerColor(layer)}">${rowLabels[ri]}</span>`;
+    grid.appendChild(lbl);
+
+    MONTHS.forEach(m => {
+      const cell = document.createElement('div');
+      cell.className = 'eg-cell' + (m.now ? ' now-col' : '');
+      const evs = EVENTS.filter(e => e.month === m.id && e.layer === layer && activeLayers[e.layer]);
+      evs.forEach(ev => {
+        if (currentAudience !== 'all' && !ev.audience.includes(currentAudience) && !ev.audience.includes('all')) return;
+        const item = document.createElement('div');
+        item.className = `eg-item ${layer}`;
+        item.textContent = ev.title;
+        item.onclick = () => openModal(ev.id);
+        cell.appendChild(item);
+      });
+      grid.appendChild(cell);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+// QUARTER VIEW
+// ══════════════════════════════════════════════
+function buildQuarter() {
+  // Find which quarter currentMonthIndex falls in
+  const m = MONTHS[currentMonthIndex];
+  const q = m.q; const yr = m.year;
+  const qMonths = MONTHS.filter(mo => mo.q === q && mo.year === yr);
+  document.getElementById('quarterTitle').textContent = `${q} ${yr}`;
+  document.getElementById('quarterSub').textContent = qMonths.map(mo => mo.label).join(' · ') + ' — ' + m.arc;
+
+  const grid = document.getElementById('quarterGrid');
+  grid.innerHTML = '';
+  qMonths.forEach(mo => {
+    const evs = filterEvents(mo.id);
+    const card = document.createElement('div');
+    card.className = 'month-card';
+    const isNow = mo.now;
+    card.innerHTML = `<div class="month-card-head${isNow?' now-head':''}">
+      <span class="month-card-name">${mo.label} ${mo.year}</span>
+      <span style="font-size:9px;color:${isNow?'rgba(254,255,249,0.4)':'var(--mouse)'};letter-spacing:0.1em;text-transform:uppercase;">${mo.arc}</span>
+    </div>
+    <div class="month-card-body">${evs.length === 0 ? '<div style="font-size:11px;color:var(--mouse);padding:8px 0;">No items for current filters.</div>' : ''}</div>`;
+    const body = card.querySelector('.month-card-body');
+    evs.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'month-item';
+      item.innerHTML = `<div class="month-item-dot" style="background:${getLayerColor(ev.layer)}"></div>
+        <div class="month-item-content">
+          <span class="month-item-layer" style="color:${getLayerColor(ev.layer)}">${layerLabel(ev.layer)}</span>
+          <div class="month-item-title">${ev.title}</div>
+          ${ev.sub ? `<div class="month-item-sub">${ev.sub}</div>` : ''}
+        </div>`;
+      item.onclick = () => openModal(ev.id);
+      body.appendChild(item);
+    });
+    grid.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════
+// MONTH VIEW
+// ══════════════════════════════════════════════
+function buildMonth() {
+  const m = MONTHS[currentMonthIndex];
+  document.getElementById('monthViewTitle').textContent = `${m.label === 'Jan'?'January':m.label === 'Feb'?'February':m.label === 'Mar'?'March':m.label === 'Apr'?'April':m.label === 'May'?'May':m.label === 'Jun'?'June':m.label === 'Jul'?'July':m.label === 'Aug'?'August':m.label === 'Sep'?'September':m.label === 'Oct'?'October':m.label === 'Nov'?'November':'December'} ${m.year}`;
+  document.getElementById('monthViewSub').textContent = `${m.arc} · ${m.q} · ${m.theme}`;
+
+  const evs = filterEvents(m.id);
+  const main = document.getElementById('monthMain');
+  main.innerHTML = '';
+
+  // Group by layer
+  const layers = ['horizon','campaign','resource','social'];
+  const layerNames = ['Horizon — Fixed Moments','Campaign — Brand Arc','Deliverables — Lead Times','Social & Lifestyle'];
+  layers.forEach((layer, li) => {
+    const layerEvs = evs.filter(e => e.layer === layer);
+    if (!layerEvs.length || !activeLayers[layer]) return;
+    const section = document.createElement('div');
+    section.className = 'month-week';
+    section.innerHTML = `<div class="month-week-label" style="color:${getLayerColor(layer)};border-color:${getLayerColor(layer)}">${layerNames[li]}</div>`;
+    layerEvs.forEach(ev => {
+      const row = document.createElement('div');
+      row.className = 'month-day-item';
+      row.innerHTML = `<div style="width:8px;height:8px;border-radius:50%;background:${getLayerColor(ev.layer)};flex-shrink:0;margin-top:5px;"></div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:400;color:var(--ink)">${ev.title}</div>
+          ${ev.sub ? `<div style="font-size:10px;color:var(--mouse);margin-top:1px">${ev.sub}</div>` : ''}
+          ${ev.leadTimes && ev.leadTimes.length ? `<div style="font-size:10px;color:var(--resource);margin-top:2px">Next: ${ev.leadTimes[0].date} — ${ev.leadTimes[0].action}</div>` : ''}
+        </div>
+        <div style="font-size:9px;color:var(--mouse);letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;">Details →</div>`;
+      row.onclick = () => openModal(ev.id);
+      section.appendChild(row);
+    });
+    main.appendChild(section);
+  });
+
+  if (!evs.length) {
+    main.innerHTML = '<div style="padding:24px 0;font-size:12px;color:var(--mouse);">No items for current audience and layer filters.</div>';
+  }
+
+  // Sidebar
+  const sidebar = document.getElementById('monthSidebar');
+  sidebar.innerHTML = '';
+
+  // Month at a glance
+  const glance = document.createElement('div');
+  glance.className = 'sidebar-section';
+  glance.innerHTML = `<div class="sidebar-section-head">Month at a Glance</div>
+    <div class="sidebar-item"><div class="sidebar-item-label">Brand Arc</div><div class="sidebar-item-text">${m.arc}</div></div>
+    <div class="sidebar-item"><div class="sidebar-item-label">Campaign Theme</div><div class="sidebar-item-text">${m.theme}</div></div>
+    <div class="sidebar-item"><div class="sidebar-item-label">Quarter</div><div class="sidebar-item-text">${m.q} ${m.year}</div></div>
+    <div class="sidebar-item"><div class="sidebar-item-label">Total Items</div><div class="sidebar-item-text">${evs.length} active for current filters</div></div>`;
+  sidebar.appendChild(glance);
+
+  // Upcoming deadlines
+  const deadlines = evs.filter(e => e.leadTimes && e.leadTimes.length > 0);
+  if (deadlines.length) {
+    const dlSection = document.createElement('div');
+    dlSection.className = 'sidebar-section';
+    dlSection.innerHTML = `<div class="sidebar-section-head">Deadlines This Month</div>`;
+    deadlines.forEach(ev => {
+      ev.leadTimes.forEach(lt => {
+        const di = document.createElement('div');
+        di.className = 'sidebar-item';
+        di.innerHTML = `<div class="sidebar-item-label" style="color:var(--campaign)">${lt.date}</div><div class="sidebar-item-text">${ev.title} — ${lt.action}</div>`;
+        di.style.cursor = 'pointer';
+        di.onclick = () => openModal(ev.id);
+        dlSection.appendChild(di);
+      });
+    });
+    sidebar.appendChild(dlSection);
+  }
+}
+
+// ══════════════════════════════════════════════
+// WEEK VIEW
+// ══════════════════════════════════════════════
+function buildWeek() {
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dates = [13,14,15,16,17,18,19];
+  const grid = document.getElementById('weekGrid');
+  grid.innerHTML = '';
+
+  const corner = document.createElement('div');
+  corner.className = 'eg-corner';
+  corner.style.background = 'var(--lotion)';
+  grid.appendChild(corner);
+
+  days.forEach((d,i) => {
+    const h = document.createElement('div');
+    h.className = 'wg-head' + (i === 1 ? ' today-col' : '');
+    h.innerHTML = `<div class="wg-day-name">${d}</div><span class="wg-day-num">${dates[i]}</span>`;
+    grid.appendChild(h);
+  });
+
+  const m = MONTHS[currentMonthIndex];
+  const evs = filterEvents(m.id);
+
+  ['All Day','Morning','Afternoon','Evening'].forEach((timeSlot, ti) => {
+    const tl = document.createElement('div');
+    tl.className = 'wg-time-label';
+    tl.textContent = timeSlot;
+    grid.appendChild(tl);
+
+    days.forEach((d, di) => {
+      const cell = document.createElement('div');
+      cell.className = 'wg-cell' + (di === 1 ? ' today-col' : '');
+      if (ti === 0 && di === 0) {
+        evs.slice(0, 2).forEach(ev => {
+          const chip = document.createElement('div');
+          chip.className = `wg-event`;
+          chip.style.background = getLayerBg(ev.layer);
+          chip.style.color = getLayerColor(ev.layer);
+          chip.textContent = ev.title;
+          chip.onclick = () => openModal(ev.id);
+          cell.appendChild(chip);
+        });
+      }
+      grid.appendChild(cell);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+// PORTAL VIEW
+// ══════════════════════════════════════════════
+function buildPortal() {
+  const audMap = { all:'Corporate View', franchise:'Franchisee Portal', provider:'Provider Portal', pr:'PR Agency Portal', customer:'Client-Facing View' };
+  const m = MONTHS[currentMonthIndex];
+  document.getElementById('portalName').textContent = audMap[currentAudience] || 'Portal';
+  document.getElementById('portalDate').textContent = `${m.label} ${m.year} · ${m.arc}`;
+  document.getElementById('portalFocus').textContent = m.theme;
+
+  const evs = filterEvents(m.id);
+  const grid = document.getElementById('portalGrid');
+  grid.innerHTML = '';
+
+  // This Month
+  const thisMonth = document.createElement('div');
+  thisMonth.className = 'portal-card';
+  thisMonth.innerHTML = `<div class="portal-card-head"><span class="portal-card-title">This Month</span><span class="portal-card-badge">${m.arc}</span></div><div class="portal-card-body"></div>`;
+  const tmBody = thisMonth.querySelector('.portal-card-body');
+  evs.forEach(ev => {
+    const ai = document.createElement('div');
+    ai.className = 'action-item';
+    ai.innerHTML = `<div class="action-due">${ev.sub || m.label}</div>
+      <div class="action-text">
+        <div class="action-title">${ev.title}</div>
+        <div class="action-sub">${ev.detail.substring(0,80)}...</div>
+        <a class="action-link" href="#" onclick="openModal('${ev.id}');return false;">View Details</a>
+      </div>`;
+    tmBody.appendChild(ai);
+  });
+  if (!evs.length) tmBody.innerHTML = '<div style="font-size:11px;color:var(--mouse);padding:8px 0">No items for current filters.</div>';
+  grid.appendChild(thisMonth);
+
+  // Coming Up
+  const nextIdx = Math.min(currentMonthIndex + 1, MONTHS.length - 1);
+  const nextM = MONTHS[nextIdx];
+  const nextEvs = EVENTS.filter(e => e.month === nextM.id && activeLayers[e.layer] && (currentAudience === 'all' || e.audience.includes(currentAudience)));
+  const coming = document.createElement('div');
+  coming.className = 'portal-card';
+  coming.innerHTML = `<div class="portal-card-head"><span class="portal-card-title">Coming Up — ${nextM.label} ${nextM.year}</span></div><div class="portal-card-body"></div>`;
+  const cuBody = coming.querySelector('.portal-card-body');
+  nextEvs.slice(0,5).forEach(ev => {
+    const ai = document.createElement('div');
+    ai.className = 'action-item';
+    ai.innerHTML = `<div class="action-due" style="color:var(--resource)">Ahead</div>
+      <div class="action-text">
+        <div class="action-title">${ev.title}</div>
+        <div class="action-sub">${layerLabel(ev.layer)}</div>
+        <a class="action-link" href="#" style="border-color:var(--resource);color:var(--resource)" onclick="openModal('${ev.id}');return false;">Prepare</a>
+      </div>`;
+    cuBody.appendChild(ai);
+  });
+  if (!nextEvs.length) cuBody.innerHTML = '<div style="font-size:11px;color:var(--mouse);padding:8px 0">Nothing upcoming in filters.</div>';
+  grid.appendChild(coming);
+
+  // Quick Ref sidebar
+  const qr = document.createElement('div');
+  qr.className = 'portal-card';
+  qr.innerHTML = `<div class="portal-card-head"><span class="portal-card-title">Quick Reference</span></div>
+    <div class="portal-card-body">
+      <div class="sidebar-section">
+        <div class="sidebar-section-head">Brand Standard</div>
+        <div class="sidebar-item"><div class="sidebar-item-text" style="font-style:italic;font-family:var(--serif);font-size:13px;">"Clinical guidance to live life well."</div></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-head">Current Arc</div>
+        <div class="sidebar-item"><div class="sidebar-item-label">Q2 Theme</div><div class="sidebar-item-text">${m.arc}</div></div>
+        <div class="sidebar-item"><div class="sidebar-item-label">Month Focus</div><div class="sidebar-item-text">${m.theme}</div></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-head">Key Resources</div>
+        <div class="sidebar-item" style="cursor:pointer" onclick=""><div class="sidebar-item-text" style="color:var(--campaign)">→ Brand Guidelines V6</div></div>
+        <div class="sidebar-item" style="cursor:pointer"><div class="sidebar-item-text" style="color:var(--campaign)">→ Campaign Architecture</div></div>
+        <div class="sidebar-item" style="cursor:pointer"><div class="sidebar-item-text" style="color:var(--campaign)">→ VIO Wellness Portal</div></div>
+      </div>
+    </div>`;
+  grid.appendChild(qr);
+}
+
+// ══════════════════════════════════════════════
+// BRAND TIMELINE (24-month Gantt)
+// ══════════════════════════════════════════════
+const TL_NOW = 3;
+function mkC(ranges) {
+  const a = Array(24).fill('off');
+  ranges.forEach(([s,e,v]) => { for(let i=s-1;i<Math.min(e-1,24);i++) a[i]=v; });
+  return a;
+}
+const tlData = [
+  { sec:'Planned', tag:'og', tracks:[
+    { lbl:'Brand Positioning', sub:'', cells:mkC([[1,4,'done']]), ms:[{m:5,lbl:'Brand Lock'}] },
+    { lbl:'Voice + Guidelines', sub:'', cells:mkC([[1,5,'done'],[5,6,'prog']]) },
+    { lbl:'Website Architecture', sub:'V2 Apr · V3 Aug', cells:mkC([[2,6,'prog'],[6,9,'prog']]), ms:[{m:4,lbl:'V2 Live',h:true},{m:9,lbl:'V3 Live',h:true}] },
+    { lbl:'Service Architecture', sub:'', cells:mkC([[1,4,'done']]) },
+    { lbl:'Franchise Microsite V1', sub:'April 1', cells:mkC([[1,3,'done']]), ms:[{m:3,lbl:'Apr 1'}] },
+    { lbl:'Franchisee Toolkit', sub:'', cells:mkC([[3,7,'prog'],[7,11,'open']]) },
+    { lbl:'Training + Governance', sub:'', cells:mkC([[7,14,'open']]) },
+  ]},
+  { sec:'Added & Delivered', tag:'add', tracks:[
+    { lbl:'ClubVIO Sub-Brand ◆', sub:'entire second brand', cells:mkC([[2,7,'add'],[7,24,'add-open']]), ms:[{m:6,lbl:'Live',add:true}] },
+    { lbl:'Whisper Campaign', sub:'6 posts complete', cells:mkC([[2,4,'add']]), ms:[{m:4,lbl:'Launch'}] },
+    { lbl:'Franchise Email Series', sub:'live April 1', cells:mkC([[1,3,'add']]) },
+    { lbl:'Zionsville Opening', sub:'Wks 7–11', cells:mkC([[7,12,'add']]) },
+    { lbl:'Proprietary Brand Tools', sub:'generator · quiz · copy review', cells:mkC([[2,5,'add']]) },
+    { lbl:'FAQ Hub + Clinical Library', sub:'architecture complete', cells:mkC([[4,8,'add'],[8,24,'add-open']]) },
+  ]},
+  { sec:'Forward Arc', tag:'fwd', tracks:[
+    { lbl:'Summer School Tour', sub:'May–July · 6 markets', cells:mkC([[5,8,'open']]), ms:[{m:8,lbl:'Tour Closes',h:true}] },
+    { lbl:'Brand Photo Shoot', sub:'editorial · clinical · BTS', cells:mkC([[7,8,'open']]), ms:[{m:7,lbl:'Shoot',h:true}] },
+    { lbl:'Website V3 + Ask Violette', sub:'fluid design · AI concierge', cells:mkC([[5,9,'open'],[9,24,'open']]), ms:[{m:9,lbl:'V3+Violette',h:true}] },
+    { lbl:'360 Seasonal Campaigns', sub:'', cells:mkC([[4,7,'spr'],[7,10,'sum'],[10,13,'aut'],[13,16,'win'],[16,19,'spr'],[19,22,'sum'],[22,25,'aut']]) },
+    { lbl:'Medical Advisory Board', sub:'outreach → announced', cells:mkC([[5,9,'open'],[9,24,'open']]), ms:[{m:9,lbl:'Announced',h:true}] },
+    { lbl:'Co-Brand Partnerships', sub:'Vuori · Thorne · Oura Ring', cells:mkC([[8,13,'open'],[13,24,'open']]), ms:[{m:13,lbl:'Live',h:true}] },
+    { lbl:'Influencer Program', sub:'curated cohort', cells:mkC([[9,13,'open'],[13,24,'open']]), ms:[{m:13,lbl:'Launch',h:true}] },
+    { lbl:'PR — Trade + Consumer', sub:'Vogue · Well+Good · trade', cells:mkC([[9,24,'open']]) },
+    { lbl:'Conferences + Speaking', sub:'AMWC · Vegas CS · plastics', cells:mkC([[10,24,'open']]) },
+    { lbl:'LinkedIn Thought Leadership', sub:'CEO + CMO · ELF model', cells:mkC([[6,24,'open']]) },
+    { lbl:'Interior Refresh', sub:'All locations · Now', cells:mkC([[3,13,'add']]), ms:[{m:13,lbl:'Network Complete',h:true}] },
+    { lbl:'Autograph Collection', sub:'Select markets · Q4 launch', cells:mkC([[3,7,'prog'],[7,13,'open'],[13,24,'open']]), ms:[{m:7,lbl:'Zionsville POC',h:true},{m:13,lbl:'Q4 Launch',h:true},{m:18,lbl:'Rollout',h:true}] },
+    { lbl:'VIO University', sub:'annual CME event', cells:mkC([[10,11,'open'],[22,23,'open']]), ms:[{m:10,lbl:'Annual',h:true},{m:22,lbl:'Annual',h:true}] },
+    { lbl:'Retail Concept', sub:'Vuori · Thorne · curated edit', cells:mkC([[13,24,'open']]) },
+    { lbl:'VIO Residency Program', sub:'flagship proof-of-concept', cells:mkC([[14,24,'open']]) },
+    { lbl:'Aesthetic Wellness Index', sub:'annual benchmark · category authority', cells:mkC([[16,24,'open']]), ms:[{m:18,lbl:'1st Edition',h:true}] },
+    { lbl:'The Reference Point', sub:'client encyclopedia · FAQ', cells:mkC([[12,24,'open']]), ms:[{m:12,lbl:'Launch',h:true}] },
+    { lbl:'Full Network 60+', sub:'trained · brand champions', cells:mkC([[13,24,'open']]) },
+  ]}
+];
+const tlCMap = { done:'c-done', prog:'c-prog', open:'c-open', add:'c-add', 'add-open':'c-add-open', spr:'c-spr', sum:'c-sum', aut:'c-aut', win:'c-win' };
+
+function buildTimeline() {
+  const grid = document.getElementById('tlGrid');
+  grid.style.gridTemplateColumns = '150px repeat(24,minmax(40px,1fr))';
+  grid.innerHTML = '';
+
+  // Corner + month headers
+  const corner = document.createElement('div');
+  corner.className = 'tl-corner';
+  grid.appendChild(corner);
+  for(let m=1;m<=24;m++) {
+    const mo = document.createElement('div');
+    mo.className = 'tl-mo' + (m===TL_NOW?' tl-now':'');
+    mo.textContent = m + (m===TL_NOW?' ▼':'');
+    grid.appendChild(mo);
+  }
+
+  tlData.forEach(section => {
+    const slbl = document.createElement('div');
+    slbl.style.gridColumn = '1 / -1';
+    slbl.className = 'tl-sec-label';
+    slbl.innerHTML = `<span class="tl-sec-tag ${section.tag}">${section.sec}</span>`;
+    grid.appendChild(slbl);
+
+    section.tracks.forEach(track => {
+      const lbl = document.createElement('div');
+      lbl.className = 'tl-row-lbl';
+      lbl.innerHTML = `${track.lbl}${track.sub?`<span class="tl-row-sub">${track.sub}</span>`:''}`;
+      grid.appendChild(lbl);
+
+      track.cells.forEach((state, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'tl-bar' + (i===TL_NOW-1?' tl-now-col':'');
+        if(state !== 'off') cell.classList.add('on', tlCMap[state]||'');
+        grid.appendChild(cell);
+      });
+
+      if(track.ms && track.ms.length) {
+        const mlbl = document.createElement('div');
+        grid.appendChild(mlbl);
+        for(let m=1;m<=24;m++) {
+          const ms = track.ms.find(x=>x.m===m);
+          const cell = document.createElement('div');
+          cell.className = 'tl-ms-cell';
+          if(ms) {
+            const tip = document.createElement('div');
+            tip.className = 'tl-ms-tip' + (ms.add?' add':'');
+            tip.textContent = ms.lbl;
+            const d = document.createElement('div');
+            d.className = 'tl-diamond' + (ms.h?' hollow':'') + (ms.add?' add':'');
+            cell.appendChild(tip);
+            cell.appendChild(d);
+          }
+          grid.appendChild(cell);
+        }
+      }
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+// UPDATE PERIOD LABEL
+// ══════════════════════════════════════════════
+function updatePeriodLabel() {
+  const m = MONTHS[currentMonthIndex];
+  const labels = { eighteen:'18-Month Arc', quarter:`${m.q} ${m.year}`, month:`${m.label} ${m.year}`, week:`Week · ${m.label} ${m.year}`, portal:`${m.label} ${m.year}`, timeline:'24-Month Timeline', projection:'Brand Projection' };
+  document.getElementById('currentPeriodLabel').textContent = labels[currentView] || `${m.label} ${m.year}`;
+}
+
+// ══════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════
+function render() {
+  updatePeriodLabel();
+  if (currentView === 'eighteen') build18Month();
+  else if (currentView === 'quarter') buildQuarter();
+  else if (currentView === 'month') buildMonth();
+  else if (currentView === 'week') buildWeek();
+  else if (currentView === 'portal') buildPortal();
+  else if (currentView === 'timeline') buildTimeline();
+  // projection view is static HTML, no build needed
+}
+
+// ══════════════════════════════════════════════
+// EVENT LISTENERS
+// ══════════════════════════════════════════════
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    currentView = btn.dataset.view;
+    document.getElementById('view-' + currentView).classList.add('active');
+    render();
+  });
+});
+
+document.querySelectorAll('.aud-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.aud-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAudience = btn.dataset.aud;
+    render();
+  });
+});
+
+document.querySelectorAll('.layer-tog').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const layer = btn.dataset.layer;
+    activeLayers[layer] = !activeLayers[layer];
+    btn.classList.toggle('on', activeLayers[layer]);
+    render();
+  });
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentView === 'eighteen') return;
+  if (currentView === 'quarter') {
+    currentMonthIndex = Math.max(0, currentMonthIndex - 3);
+  } else {
+    currentMonthIndex = Math.max(0, currentMonthIndex - 1);
+  }
+  render();
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (currentView === 'eighteen') return;
+  if (currentView === 'quarter') {
+    currentMonthIndex = Math.min(MONTHS.length - 1, currentMonthIndex + 3);
+  } else {
+    currentMonthIndex = Math.min(MONTHS.length - 1, currentMonthIndex + 1);
+  }
+  render();
+});
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ══════════════════════════════════════════════
+// ADD EVENT
+// ══════════════════════════════════════════════
+let customEventCounter = 1000;
+
+function openAddModal() {
+  // Pre-select current month
+  const m = MONTHS[currentMonthIndex];
+  const sel = document.getElementById('addMonth');
+  if (sel) sel.value = m.id;
+  document.getElementById('addModalOverlay').classList.add('open');
+}
+
+function closeAddModal() {
+  document.getElementById('addModalOverlay').classList.remove('open');
+}
+
+function submitAddEvent() {
+  const title = document.getElementById('addTitle').value.trim();
+  if (!title) {
+    document.getElementById('addTitle').style.borderColor = '#8A3028';
+    document.getElementById('addTitle').focus();
+    return;
+  }
+  document.getElementById('addTitle').style.borderColor = '';
+
+  const month = document.getElementById('addMonth').value;
+  const layer = document.getElementById('addLayer').value;
+  const sub = document.getElementById('addSub').value.trim();
+  const detail = document.getElementById('addDetail').value.trim() || 'Custom event added to The Kaleidoscope.';
+  const audienceVal = document.getElementById('addAudience').value;
+  const leadDate = document.getElementById('addLeadDate').value.trim();
+  const deliverable = document.getElementById('addDeliverable').value.trim();
+
+  const newEvent = {
+    id: 'custom-' + (customEventCounter++),
+    layer,
+    month,
+    title,
+    sub: sub || null,
+    audience: [audienceVal === 'all' ? 'all' : audienceVal, 'all'].filter((v,i,a) => a.indexOf(v) === i),
+    detail,
+    leadTimes: leadDate ? [{ date: leadDate.split('—')[0].trim(), action: leadDate.split('—')[1] ? leadDate.split('—')[1].trim() : 'Deadline' }] : [],
+    deliverables: deliverable ? [deliverable] : [],
+    custom: true
+  };
+
+  EVENTS.push(newEvent);
+
+  // Update custom events list in modal
+  updateCustomList();
+
+  // Clear form
+  document.getElementById('addTitle').value = '';
+  document.getElementById('addSub').value = '';
+  document.getElementById('addDetail').value = '';
+  document.getElementById('addLeadDate').value = '';
+  document.getElementById('addDeliverable').value = '';
+
+  // Re-render current view
+  render();
+
+  // Show success briefly
+  const btn = document.querySelector('.form-submit');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Added';
+  btn.style.background = 'var(--resource)';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
+}
+
+function updateCustomList() {
+  const customEvs = EVENTS.filter(e => e.custom);
+  const container = document.getElementById('customEventsList');
+  const inner = document.getElementById('customEventsListInner');
+  if (!customEvs.length) { container.style.display = 'none'; return; }
+  container.style.display = 'block';
+  inner.innerHTML = '';
+  customEvs.forEach(ev => {
+    const row = document.createElement('div');
+    row.className = 'custom-event-row';
+    row.innerHTML = `<div>
+      <span style="font-weight:400">${ev.title}</span>
+      <span style="color:var(--mouse);font-size:10px;margin-left:8px">${ev.month} · ${layerLabel(ev.layer)}</span>
+    </div>
+    <button class="custom-event-delete" onclick="deleteCustomEvent('${ev.id}')" title="Remove">✕</button>`;
+    inner.appendChild(row);
+  });
+}
+
+function deleteCustomEvent(id) {
+  const idx = EVENTS.findIndex(e => e.id === id);
+  if (idx > -1) EVENTS.splice(idx, 1);
+  updateCustomList();
+  render();
+}
+
+document.getElementById('addModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAddModal();
+});
+
+// INIT
+render();
+</script>
+</body>
+</html>
